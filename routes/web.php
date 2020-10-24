@@ -22,3 +22,7 @@ Route::resource('movies', App\Http\Controllers\Movies\MovieController::class);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::resource('movies.watched', App\Http\Controllers\Watched\WatchedController::class);
+});

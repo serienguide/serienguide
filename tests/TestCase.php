@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -12,6 +13,58 @@ use Tests\CreatesApplication;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, RefreshDatabase;
+
+    protected $user;
+
+    protected function setUp() : void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
+
+    public function signIn(User $user = null)
+    {
+        if (is_null($user))
+        {
+            $user = $this->user;
+        }
+
+        if (! $this->isAuthenticated())
+        {
+            $this->actingAs($user);
+        }
+
+        return $user;
+    }
+
+    public function guestsCanNotAccess(array $actions) : void
+    {
+        $verbs = [
+            'index' => 'get',
+            'create' => 'get',
+            'store' => 'post',
+            'show' => 'get',
+            'edit' => 'get',
+            'update' => 'put',
+            'destroy' => 'delete',
+        ];
+
+        foreach ($actions as $action => $parameters) {
+            $this->assertAuthenticationRequired($action, $verbs[$action], $parameters);
+        }
+    }
+
+    protected function assertAuthenticationRequired(string $action, string $method = 'get', array $parameters = []) : void
+    {
+        $this->$method(route($this->base_route_name . '.' . $action, $parameters))
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertRedirect(basename(route('login')));
+
+        $method .= 'Json';
+        $this->$method(route($this->base_route_name . '.' . $action, $parameters))
+            ->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
 
     public function getIndexViewResponse(array $parameters = []) : TestResponse
     {
@@ -36,6 +89,24 @@ abstract class TestCase extends BaseTestCase
     protected function getViewResponse(string $action, array $parameters = []) : TestResponse
     {
         $response = $this->get(route($this->base_route_name . '.' . $action, $parameters));
+        $response->assertStatus(Response::HTTP_OK);
+
+        return $response;
+    }
+
+    public function getIndexJsonResponse(array $parameters = []) : TestResponse
+    {
+        return $this->getJsonResponse('index', $parameters);
+    }
+
+    public function getShowJsonResponse(array $parameters = []) : TestResponse
+    {
+        return $this->getJsonResponse('show', $parameters);
+    }
+
+    protected function getJsonResponse(string $action, array $parameters = []) : TestResponse
+    {
+        $response = $this->getJson(route($this->base_route_name . '.' . $action, $parameters));
         $response->assertStatus(Response::HTTP_OK);
 
         return $response;
@@ -93,5 +164,10 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         return $response;
+    }
+
+    protected function createModel(array $attributes) : Model
+    {
+        return $this->className::factory()->create($attributes);
     }
 }
