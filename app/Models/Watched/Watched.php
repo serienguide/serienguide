@@ -3,6 +3,7 @@
 namespace App\Models\Watched;
 
 use App\Models\User;
+use App\Traits\BelongsToUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Watched extends Model
 {
-    use HasFactory;
+    use BelongsToUser, HasFactory;
 
     protected $appends = [
         //
@@ -36,11 +37,6 @@ class Watched extends Model
     public function isDeletable() : bool
     {
         return true;
-    }
-
-    public function user() : BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function watchable() : MorphTo
