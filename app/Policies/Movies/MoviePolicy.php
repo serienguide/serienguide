@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Policies\Watched;
+namespace App\Policies\Movies;
 
-use App\Models\Watched\Watched;
+use App\Models\Movies\Movie;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class WatchedPolicy
+class MoviePolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class WatchedPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Watched\Watched  $watched
+     * @param  \App\Models\Movies\Movie  $movie
      * @return mixed
      */
-    public function view(User $user, Watched $watched)
+    public function view(User $user, Movie $movie)
     {
-        return ($user->id == $watched->user_id);
+        return true;
     }
 
     /**
@@ -48,47 +48,47 @@ class WatchedPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Watched\Watched  $watched
+     * @param  \App\Models\Movies\Movie  $movie
      * @return mixed
      */
-    public function update(User $user, Watched $watched)
+    public function update(User $user, Movie $movie)
     {
-        return ($user->id == $watched->user_id);
+        return true;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Watched\Watched  $watched
+     * @param  \App\Models\Movies\Movie  $movie
      * @return mixed
      */
-    public function delete(User $user, Watched $watched)
+    public function delete(User $user, Movie $movie)
     {
-        return ($user->id == $watched->user_id);
+        return true;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Watched\Watched  $watched
+     * @param  \App\Models\Movies\Movie  $movie
      * @return mixed
      */
-    public function restore(User $user, Watched $watched)
+    public function restore(User $user, Movie $movie)
     {
-        //
+        return true;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Watched\Watched  $watched
+     * @param  \App\Models\Movies\Movie  $movie
      * @return mixed
      */
-    public function forceDelete(User $user, Watched $watched)
+    public function forceDelete(User $user, Movie $movie)
     {
-        //
+        return true;
     }
 }

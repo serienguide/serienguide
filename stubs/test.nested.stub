@@ -1,0 +1,152 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use {{ namespacedParentModel }};
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Response;
+use Tests\TestCase;
+
+class {{ class }} extends TestCase
+{
+    protected $base_route_name = '{{ parentModelVariable }}s.{{ modelVariable }}s';
+    protected $base_view_path = '{{ parentModelVariable }}s.{{ modelVariable }}s';
+    protected $class_name = {{ model }}::class;
+
+    /**
+     * @test
+     */
+    public function guests_can_not_access_the_following_routes()
+    {
+        $model = $this->class_name::factory($this->class_name)->create();
+
+        $actions = [
+            'index' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id],
+            'store' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id],
+            'show' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id],
+            'edit' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id],
+            'update' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id],
+            'destroy' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id],
+        ];
+        $this->guestsCanNotAccess($actions);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_not_see_things_from_a_different_user()
+    {
+        $modelOfADifferentUser = $this->class_name::factory()->create();
+
+         $this->a_user_can_not_see_models_from_a_different_user([
+            '{{ parentModelVariable }}' => $modelOfADifferentUser->{{ parentModelVariable }}_id,
+            '{{ modelVariable }}' => $modelOfADifferentUser->id
+        ]);
+
+        $this->a_different_user_gets_a_403('index', 'get', [
+            '{{ parentModelVariable }}' => $modelOfADifferentUser->{{ parentModelVariable }}_id
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_get_a_collection_of_models()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $parent = $this->createParent();
+
+        $models = $this->class_name::factory()->count(3)->create([
+            'user_id' => $this->user->id,
+            '{{ parentModelVariable }}_id' => $parent->id,
+        ]);
+
+        $this->getCollection([
+            '{{ parentModelVariable }}' => $parent->id,
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_create_a_model()
+    {
+        $parent = $this->createParent();
+
+        $this->signIn();
+
+        $data = [
+
+        ];
+
+        $this->post(route($this->base_route_name . '.store', ['{{ parentModelVariable }}' => $parent->id]), $data)
+            ->assertStatus(Response::HTTP_CREATED);
+
+        $this->assertDatabaseHas((new $this->class_name)->getTable(), $data);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_get_the_show_json()
+    {
+        $this->signIn();
+
+        $model = $this->createModel();
+
+        $response = $this->getShowJsonResponse([
+            '{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id,
+            '{{ modelVariable }}' => $model->id
+        ], $model);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_update_a_model()
+    {
+        $this->withoutExceptionHandling();
+
+        $model = $this->createModel();
+
+        $this->signIn();
+
+        $data = [
+            //
+        ];
+
+        $response = $this->put(route($this->base_route_name . '.update', ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id]), $data)
+            ->assertStatus(Response::HTTP_FOUND)
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas($model->getTable(), [
+            'id' => $model->id,
+        ] + $data);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_delete_a_model()
+    {
+        $this->signIn();
+
+        $model = $this->createModel();
+
+        $this->deleteModel($model, ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id])
+            ->assertRedirect();
+    }
+
+    protected function createParent() : Model
+    {
+        return {{ parentModel }}::factory()->create([
+            'user_id' => $this->user->id,
+        ]);
+    }
+}

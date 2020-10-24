@@ -63,7 +63,28 @@ abstract class TestCase extends BaseTestCase
 
         $method .= 'Json';
         $this->$method(route($this->base_route_name . '.' . $action, $parameters))
-            ->assertStatus(Response::HTTP_UNAUTHORIZED);
+            ->assertUnauthorized();
+    }
+
+    public function a_user_can_not_see_models_from_a_different_user(array $parameters)
+    {
+        $this->signIn();
+
+        $this->a_different_user_gets_a_403('show', 'get', $parameters);
+
+        $this->a_different_user_gets_a_403('edit', 'get', $parameters);
+
+        $this->a_different_user_gets_a_403('update', 'put', $parameters);
+
+        $this->a_different_user_gets_a_403('destroy', 'delete', $parameters);
+    }
+
+    protected function a_different_user_gets_a_403(string $route, string $method = 'get', array $parameters = []) : TestResponse
+    {
+        $response = $this->$method(route($this->base_route_name . '.' . $route, $parameters))
+            ->assertForbidden();
+
+        return $response;
     }
 
     public function getIndexViewResponse(array $parameters = []) : TestResponse
@@ -99,26 +120,21 @@ abstract class TestCase extends BaseTestCase
         return $this->getJsonResponse('index', $parameters);
     }
 
-    public function getShowJsonResponse(array $parameters = []) : TestResponse
+    public function getShowJsonResponse(array $parameters = [], Model $model) : TestResponse
     {
-        return $this->getJsonResponse('show', $parameters);
+        $response = $this->getJsonResponse('show', $parameters)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJson([
+                'id' => $model->id,
+            ]);
+
+        return $response;
     }
 
     protected function getJsonResponse(string $action, array $parameters = []) : TestResponse
     {
         $response = $this->getJson(route($this->base_route_name . '.' . $action, $parameters));
         $response->assertStatus(Response::HTTP_OK);
-
-        return $response;
-    }
-
-    public function getModel(array $parameters = [], Model $model) : TestResponse
-    {
-        $response = $this->getJson(route($this->base_route_name . '.show', $parameters))
-            ->assertStatus(Response::HTTP_OK)
-            ->assertJson([
-                'id' => $model->id,
-            ]);
 
         return $response;
     }
@@ -166,8 +182,8 @@ abstract class TestCase extends BaseTestCase
         return $response;
     }
 
-    protected function createModel(array $attributes) : Model
+    protected function createModel(array $attributes = []) : Model
     {
-        return $this->className::factory()->create($attributes);
+        return $this->class_name::factory()->create($attributes);
     }
 }

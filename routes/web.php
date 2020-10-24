@@ -24,5 +24,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::resource('movies.watched', App\Http\Controllers\Watched\WatchedController::class);
+    Route::resource('{type}/watchable.watched', App\Http\Controllers\Watched\WatchedController::class);
+});
+
+Route::bind('watchable', function ($id) {
+    switch(app()->request->route('type')) {
+        case 'movies': return App\Models\Movies\Movie::findOrFail($id); break;
+        default: abort(404);
+    }
 });

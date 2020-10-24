@@ -9,15 +9,27 @@ use {{ namespacedParentModel }};
 
 class {{ class }} extends Controller
 {
+    protected $base_view_path = '{{ parentModelVariable }}s.{{ modelVariable }}s';
+
+    public function __construct()
+    {
+        $this->authorizeResource({{ model }}::class, '{{ modelVariable }}');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @param  \{{ namespacedParentModel }}  ${{ parentModelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function index({{ parentModel }} ${{ parentModelVariable }})
+    public function index(Request $request, {{ parentModel }} ${{ parentModelVariable }})
     {
-        //
+        $this->authorize('viewAny', ${{ parentModelVariable }});
+
+        if ($request->wantsJson()) {
+            return ${{ parentModelVariable }}->{{ modelVariable }}s()
+                ->get();
+        }
     }
 
     /**
@@ -28,6 +40,8 @@ class {{ class }} extends Controller
      */
     public function create({{ parentModel }} ${{ parentModelVariable }})
     {
+        $this->authorize('viewAny', ${{ parentModelVariable }});
+
         //
     }
 
@@ -40,7 +54,13 @@ class {{ class }} extends Controller
      */
     public function store(Request $request, {{ parentModel }} ${{ parentModelVariable }})
     {
-        //
+        $this->authorize('viewAny', ${{ parentModelVariable }});
+
+        if ($request->wantsJson()) {
+            return ${{ parentModelVariable }}->{{ modelVariable }}s()->create([
+                //
+            ]);
+        }
     }
 
     /**
@@ -50,9 +70,11 @@ class {{ class }} extends Controller
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function show({{ parentModel }} ${{ parentModelVariable }}, {{ model }} ${{ modelVariable }})
+    public function show(Request $request, {{ parentModel }} ${{ parentModelVariable }}, {{ model }} ${{ modelVariable }})
     {
-        //
+        if ($request->wantsJson()) {
+            return ${{ modelVariable }};
+        }
     }
 
     /**
@@ -77,7 +99,21 @@ class {{ class }} extends Controller
      */
     public function update(Request $request, {{ parentModel }} ${{ parentModelVariable }}, {{ model }} ${{ modelVariable }})
     {
-        //
+        $attributes = $request->validate([
+            //
+        ]);
+
+        ${{ modelVariable }}->update($attributes);
+
+        if ($request->wantsJson()) {
+            return ${{ modelVariable }};
+        }
+
+        return back()
+            ->with('status', [
+                'type' => 'success',
+                'text' => 'Datensatz gespeichert.',
+            ]);
     }
 
     /**
@@ -89,6 +125,27 @@ class {{ class }} extends Controller
      */
     public function destroy({{ parentModel }} ${{ parentModelVariable }}, {{ model }} ${{ modelVariable }})
     {
-        //
+        if ($is_deletable = ${{ modelVariable }}->isDeletable()) {
+            ${{ modelVariable }}->delete();
+            $status = [
+                'type' => 'success',
+                'text' => 'Datensatz gelöscht.',
+            ];
+        }
+        else {
+            $status = [
+                'type' => 'danger',
+                'text' => 'Datensatz kann nicht gelöscht werden.',
+            ];
+        }
+
+        if ($request->wantsJson()) {
+            return [
+                'deleted' => $is_deletable,
+            ];
+        }
+
+        return redirect(route($this->base_view_path . '.index'))
+            ->with('status', $status);
     }
 }
