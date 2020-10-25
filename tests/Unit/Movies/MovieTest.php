@@ -34,4 +34,17 @@ class MovieTest extends TestCase
         $route = strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?');
         $this->assertEquals($route, $model->index_path);
     }
+
+    /**
+     * @test
+     */
+    public function it_set_its_slug()
+    {
+        $model = $this->class_name::factory()->create([
+            'title' => 'New Movie',
+            'year' => 2020
+        ]);
+
+        $this->assertEquals('new-movie-2020', $model->slug);
+    }
 }

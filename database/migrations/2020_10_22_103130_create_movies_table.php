@@ -16,6 +16,7 @@ class CreateMoviesTable extends Migration
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
 
+            $table->string('slug')->index();
             $table->string('title');
             $table->unsignedSmallInteger('year')->nullable();
             $table->string('tagline')->nullable();

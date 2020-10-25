@@ -4,15 +4,17 @@ namespace App\Models\Movies;
 
 use App\Models\User;
 use App\Models\Watched\Watched;
+use App\Traits\HasSlug;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Movie extends Model
 {
-    use HasFactory, HasModelPath;
+    use HasFactory, HasModelPath, HasSlug;
 
     const ROUTE_NAME = 'movies';
     const VIEW_PATH = 'movies';
@@ -30,19 +32,24 @@ class Movie extends Model
     ];
 
     protected $fillable = [
-        'title',
-        'year',
-        'tagline',
+        'homepage',
         'overview',
         'released_at',
         'runtime',
-        'homepage',
         'status',
+        'tagline',
+        'title',
+        'year',
     ];
 
     public function isDeletable() : bool
     {
         return true;
+    }
+
+    public function setSlug() : void
+    {
+        $this->attributes['slug'] = Str::slug($this->title . '-' . $this->year, '-', 'de');
     }
 
     public function watchedBy(User $user, array $attributes = []) : Watched
