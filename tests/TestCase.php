@@ -38,7 +38,7 @@ abstract class TestCase extends BaseTestCase
         return $user;
     }
 
-    public function guestsCanNotAccess(array $actions) : void
+    public function guestsCanNotAccess(array $routes) : void
     {
         $verbs = [
             'index' => 'get',
@@ -50,38 +50,38 @@ abstract class TestCase extends BaseTestCase
             'destroy' => 'delete',
         ];
 
-        foreach ($actions as $action => $parameters) {
-            $this->assertAuthenticationRequired($action, $verbs[$action], $parameters);
+        foreach ($routes as $action => $route) {
+            $this->assertAuthenticationRequired($action, $verbs[$action], $route);
         }
     }
 
-    protected function assertAuthenticationRequired(string $action, string $method = 'get', array $parameters = []) : void
+    protected function assertAuthenticationRequired(string $action, string $method = 'get', string $route = '') : void
     {
-        $this->$method(route($this->base_route_name . '.' . $action, $parameters))
+        $this->$method($route)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertRedirect(basename(route('login')));
 
         $method .= 'Json';
-        $this->$method(route($this->base_route_name . '.' . $action, $parameters))
+        $this->$method($route)
             ->assertUnauthorized();
     }
 
-    public function a_user_can_not_see_models_from_a_different_user(array $parameters)
+    public function a_user_can_not_see_models_from_a_different_user(Model $modelOfADifferentUser)
     {
         $this->signIn();
 
-        $this->a_different_user_gets_a_403('show', 'get', $parameters);
+        $this->a_different_user_gets_a_403('get', $modelOfADifferentUser->path);
 
-        $this->a_different_user_gets_a_403('edit', 'get', $parameters);
+        $this->a_different_user_gets_a_403('get', $modelOfADifferentUser->edit_path);
 
-        $this->a_different_user_gets_a_403('update', 'put', $parameters);
+        $this->a_different_user_gets_a_403('put', $modelOfADifferentUser->path);
 
-        $this->a_different_user_gets_a_403('destroy', 'delete', $parameters);
+        $this->a_different_user_gets_a_403('delete', $modelOfADifferentUser->path);
     }
 
-    protected function a_different_user_gets_a_403(string $route, string $method = 'get', array $parameters = []) : TestResponse
+    protected function a_different_user_gets_a_403(string $method = 'get', string $route) : TestResponse
     {
-        $response = $this->$method(route($this->base_route_name . '.' . $route, $parameters))
+        $response = $this->$method($route)
             ->assertForbidden();
 
         return $response;
@@ -115,15 +115,9 @@ abstract class TestCase extends BaseTestCase
         return $response;
     }
 
-    public function getIndexJsonResponse(array $parameters = []) : TestResponse
-    {
-        return $this->getJsonResponse('index', $parameters);
-    }
-
     public function getShowJsonResponse(array $parameters = [], Model $model) : TestResponse
     {
         $response = $this->getJsonResponse('show', $parameters)
-            ->assertStatus(Response::HTTP_OK)
             ->assertJson([
                 'id' => $model->id,
             ]);
@@ -139,18 +133,18 @@ abstract class TestCase extends BaseTestCase
         return $response;
     }
 
-    public function getCollection(array $parameters = [], int $assert_json_count = 3) : TestResponse
+    public function getCollection(string $route, int $assert_json_count = 3) : TestResponse
     {
-        $response = $this->getJson(route($this->base_route_name . '.index', $parameters))
+        $response = $this->getJson($route)
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonCount($assert_json_count);
 
         return $response;
     }
 
-    public function getPaginatedCollection(array $parameters = [], int $assert_json_count = 3) : TestResponse
+    public function getPaginatedCollection(string $route, int $assert_json_count = 3) : TestResponse
     {
-        $response = $this->json('get', route($this->base_route_name . '.index', $parameters), []);
+        $response = $this->json('get', $route, []);
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
@@ -163,7 +157,7 @@ abstract class TestCase extends BaseTestCase
         return $response;
     }
 
-    public function deleteModel(Model $model, array $parameters) : TestResponse
+    public function deleteModel(Model $model) : TestResponse
     {
         $table = $model->getTable();
 
@@ -172,7 +166,7 @@ abstract class TestCase extends BaseTestCase
         ]);
 
         $this->assertTrue($model->isDeletable());
-        $response = $this->delete(route($this->base_route_name . '.destroy', $parameters))
+        $response = $this->delete($model->path)
             ->assertStatus(Response::HTTP_FOUND);
 
         $this->assertDatabaseMissing($table, [

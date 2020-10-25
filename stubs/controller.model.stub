@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class {{ class }} extends Controller
 {
-    protected $base_view_path = '{{ modelVariable }}s';
+    protected $base_view_path = {{ model }}::VIEW_PATH;
 
     public function __construct()
     {
@@ -55,7 +55,11 @@ class {{ class }} extends Controller
             return ${{ modelVariable }};
         }
 
-        // return redirect(${{ modelVariable }}->path);
+        return redirect(${{ modelVariable }}->edit_path)
+            ->with('status', [
+                'type' => 'success',
+                'text' => 'Datensatz erstellt.',
+            ]);
     }
 
     /**
@@ -140,7 +144,7 @@ class {{ class }} extends Controller
             ];
         }
 
-        return redirect(route($this->base_view_path . '.index'))
+        return redirect(${{ modelVariable }}->index_path)
             ->with('status', $status);
     }
 }

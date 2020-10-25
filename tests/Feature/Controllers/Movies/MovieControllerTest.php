@@ -9,8 +9,8 @@ use Tests\TestCase;
 
 class MovieControllerTest extends TestCase
 {
-    protected $base_route_name = 'movies';
-    protected $base_view_path = 'movies';
+    protected $base_route_name = Movie::ROUTE_NAME;
+    protected $base_view_path = Movie::VIEW_PATH;
     protected $className = Movie::class;
 
     /**
@@ -27,11 +27,11 @@ class MovieControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_get_a_collection_of_models()
+    public function a_user_can_get_a_paginated_collection_of_models()
     {
         $models = Movie::factory()->count(3)->create();
 
-        $this->getPaginatedCollection();
+        $this->getPaginatedCollection($models->first()->index_path);
     }
 
     /**

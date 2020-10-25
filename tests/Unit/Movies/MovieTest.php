@@ -1,12 +1,13 @@
 <?php
 
-namespace {{ namespace }};
+namespace Tests\Unit\Movies;
 
+use App\Models\Movies\Movie;
 use Tests\TestCase;
 
-class {{ class }} extends TestCase
+class MovieTest extends TestCase
 {
-    protected $class_name = {{ model }}::class;
+    protected $class_name = Movie::class;
 
     /**
      * @test
@@ -15,7 +16,7 @@ class {{ class }} extends TestCase
     {
         $model = $this->class_name::factory()->create();
         $route_parameter = [
-            '{{ modelVariable }}' => $model->id,
+            'movie' => $model->id,
         ];
 
         $route = strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?');

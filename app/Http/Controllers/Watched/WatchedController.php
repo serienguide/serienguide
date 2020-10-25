@@ -10,18 +10,18 @@ use Illuminate\Support\Arr;
 
 class WatchedController extends Controller
 {
-    protected $base_view_path = 'watchable.watched';
+    protected $base_view_path = Watched::VIEW_PATH;
 
     /**
      * Display a listing of the resource.
      *
-     * @param  \App\Models\Movies\Movie  $watchable
+     * @param  \App\Models\Movies\Movie  $model
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, string $type, Movie $watchable)
+    public function index(Request $request, string $type, Movie $model)
     {
         if ($request->wantsJson()) {
-            return $watchable->watched()
+            return $model->watched()
                 ->latest()
                 ->paginate();
         }
@@ -30,10 +30,10 @@ class WatchedController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  \App\Models\Movies\Movie  $watchable
+     * @param  \App\Models\Movies\Movie  $model
      * @return \Illuminate\Http\Response
      */
-    public function create(string $type, Movie $watchable)
+    public function create(string $type, Movie $model)
     {
         //
     }
@@ -42,16 +42,16 @@ class WatchedController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Movies\Movie  $watchable
+     * @param  \App\Models\Movies\Movie  $model
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, string $type, Movie $watchable)
+    public function store(Request $request, string $type, Movie $model)
     {
         $attributes = $request->validate([
             'watched_at' => 'sometimes|date',
         ]);
 
-        $watched = $watchable->watchedBy(auth()->user(), $attributes);
+        $watched = $model->watchedBy(auth()->user(), $attributes);
 
         return $watched;
     }
@@ -59,11 +59,11 @@ class WatchedController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Movies\Movie  $watchable
+     * @param  \App\Models\Movies\Movie  $model
      * @param  \App\Models\Watched\Watched  $watched
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, string $type, Movie $watchable, Watched $watched)
+    public function show(Request $request, string $type, Movie $model, Watched $watched)
     {
         $this->authorize('view', $watched);
 
@@ -75,11 +75,11 @@ class WatchedController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Movies\Movie  $watchable
+     * @param  \App\Models\Movies\Movie  $model
      * @param  \App\Models\Watched\Watched  $watched
      * @return \Illuminate\Http\Response
      */
-    public function edit(string $type, Movie $watchable, Watched $watched)
+    public function edit(string $type, Movie $model, Watched $watched)
     {
         $this->authorize('update', $watched);
     }
@@ -88,11 +88,11 @@ class WatchedController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Movies\Movie  $watchable
+     * @param  \App\Models\Movies\Movie  $model
      * @param  \App\Models\Watched\Watched  $watched
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, string $type, Movie $watchable, Watched $watched)
+    public function update(Request $request, string $type, Movie $model, Watched $watched)
     {
         $this->authorize('update', $watched);
 
@@ -118,11 +118,11 @@ class WatchedController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Movies\Movie  $watchable
+     * @param  \App\Models\Movies\Movie  $model
      * @param  \App\Models\Watched\Watched  $watched
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, string $type, Movie $watchable, Watched $watched)
+    public function destroy(Request $request, string $type, Movie $model, Watched $watched)
     {
         $this->authorize('delete', $watched);
 
@@ -149,7 +149,7 @@ class WatchedController extends Controller
             ];
         }
 
-        return redirect(route($this->base_view_path . '.index', ['type' => 'movies', 'watchable' => $watchable->id]))
+        return redirect($model->path)
             ->with('status', $status);
     }
 }

@@ -10,20 +10,8 @@ use Tests\TestCase;
 
 class {{ class }} extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
-    }
-
-    protected $base_route_name = '{{ modelVariable }}s';
-    protected $base_view_path = '{{ modelVariable }}s';
+    protected $base_route_name = {{ model }}::ROUTE_NAME;
+    protected $base_view_path = {{ model }}::VIEW_PATH;
     protected $class_name = {{ model }}::class;
 
     /**
@@ -31,17 +19,18 @@ class {{ class }} extends TestCase
      */
     public function guests_can_not_access_the_following_routes()
     {
-        $id = $this->class_name::factory()->create()->id;
+        $model = $this->class_name::factory()->create();
 
-        $actions = [
-            'index' => [],
-            'store' => [],
-            'show' => ['{{ modelVariable }}' => $id],
-            'edit' => ['{{ modelVariable }}' => $id],
-            'update' => ['{{ modelVariable }}' => $id],
-            'destroy' => ['{{ modelVariable }}' => $id],
+        $routes = [
+            'index' => $model->index_path,
+            'create' => $model->create_path,
+            'store' => $model->index_path,
+            'show' => $model->path,
+            'edit' => $model->edit_path,
+            'update' => $model->path,
+            'destroy' => $model->path,
         ];
-        $this->guestsCanNotAccess($actions);
+        $this->guestsCanNotAccess($routes);
     }
 
     /**
@@ -51,7 +40,8 @@ class {{ class }} extends TestCase
     {
         $modelOfADifferentUser = $this->class_name::factory()->create();
 
-        $this->a_user_can_not_see_models_from_a_different_user(['{{ modelVariable }}' => $modelOfADifferentUser->id]);
+        $this->a_user_can_not_see_models_from_a_different_user($modelOfADifferentUser);
+        $this->a_different_user_gets_a_403('get', $modelOfADifferentUser->index_path);
     }
 
     /**
@@ -74,7 +64,7 @@ class {{ class }} extends TestCase
 
         ]);
 
-        $this->getPaginatedCollection();
+        $this->getPaginatedCollection($models->first()->index_path);
     }
 
     /**
@@ -90,7 +80,7 @@ class {{ class }} extends TestCase
 
         ];
 
-        $this->post(route($this->baseRouteName . '.store'), $data)
+        $this->post($this->class_name::indexPath(), $data)
             ->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas((new $this->class_name)->getTable(), $data);
@@ -105,7 +95,7 @@ class {{ class }} extends TestCase
 
         $model = $this->createModel();
 
-        $this->getShowViewResponse(['{{ modelVariable }}' => $model->id])
+        $this->getShowViewResponse($model->route_parameter)
             ->assertViewIs($this->base_view_path . '.show')
             ->assertViewHas('model');
     }
@@ -117,7 +107,7 @@ class {{ class }} extends TestCase
     {
         $model = $this->createModel();
 
-        $this->getEditViewResponse(['{{ modelVariable }}' => $model->id])
+        $this->getEditViewResponse($model->route_parameter)
             ->assertViewIs($this->base_view_path . '.edit')
             ->assertViewHas('model');
     }
@@ -137,7 +127,7 @@ class {{ class }} extends TestCase
 
         ];
 
-        $response = $this->put(route($this->baseRouteName . '.update', ['{{ modelVariable }}' => $model->id]), $data)
+        $response = $this->put($model->path, $data)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasNoErrors();
 
@@ -155,7 +145,7 @@ class {{ class }} extends TestCase
 
         $model = $this->createModel();
 
-        $this->deleteModel($model, ['{{ modelVariable }}' => $model->id])
+        $this->deleteModel($model)
             ->assertRedirect();
     }
 }

@@ -17,17 +17,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('movies', App\Http\Controllers\Movies\MovieController::class);
+Route::resource(App\Models\Movies\Movie::ROUTE_NAME, App\Http\Controllers\Movies\MovieController::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::resource('{type}/watchable.watched', App\Http\Controllers\Watched\WatchedController::class);
+    Route::resource('{type}/{model}/' . App\Models\Watched\Watched::ROUTE_NAME, App\Http\Controllers\Watched\WatchedController::class);
 });
 
-Route::bind('watchable', function ($id) {
+Route::bind('model', function ($id) {
     switch(app()->request->route('type')) {
         case 'movies': return App\Models\Movies\Movie::findOrFail($id); break;
         default: abort(404);

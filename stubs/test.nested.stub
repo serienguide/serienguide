@@ -12,8 +12,8 @@ use Tests\TestCase;
 
 class {{ class }} extends TestCase
 {
-    protected $base_route_name = '{{ parentModelVariable }}s.{{ modelVariable }}s';
-    protected $base_view_path = '{{ parentModelVariable }}s.{{ modelVariable }}s';
+    protected $base_route_name = {{ model }}::ROUTE_NAME;
+    protected $base_view_path = {{ model }}::VIEW_PATH;
     protected $class_name = {{ model }}::class;
 
     /**
@@ -23,15 +23,16 @@ class {{ class }} extends TestCase
     {
         $model = $this->class_name::factory($this->class_name)->create();
 
-        $actions = [
-            'index' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id],
-            'store' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id],
-            'show' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id],
-            'edit' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id],
-            'update' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id],
-            'destroy' => ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id],
+        $routes = [
+            'index' => $model->index_path,
+            'create' => $model->create_path,
+            'store' => $model->index_path,
+            'show' => $model->path,
+            'edit' => $model->edit_path,
+            'update' => $model->path,
+            'destroy' => $model->path,
         ];
-        $this->guestsCanNotAccess($actions);
+        $this->guestsCanNotAccess($routes);
     }
 
     /**
@@ -41,14 +42,9 @@ class {{ class }} extends TestCase
     {
         $modelOfADifferentUser = $this->class_name::factory()->create();
 
-         $this->a_user_can_not_see_models_from_a_different_user([
-            '{{ parentModelVariable }}' => $modelOfADifferentUser->{{ parentModelVariable }}_id,
-            '{{ modelVariable }}' => $modelOfADifferentUser->id
-        ]);
+        $this->a_user_can_not_see_models_from_a_different_user($modelOfADifferentUser);
 
-        $this->a_different_user_gets_a_403('index', 'get', [
-            '{{ parentModelVariable }}' => $modelOfADifferentUser->{{ parentModelVariable }}_id
-        ]);
+        $this->a_different_user_gets_a_403('get', $modelOfADifferentUser->index_path);
     }
 
     /**
@@ -67,9 +63,7 @@ class {{ class }} extends TestCase
             '{{ parentModelVariable }}_id' => $parent->id,
         ]);
 
-        $this->getCollection([
-            '{{ parentModelVariable }}' => $parent->id,
-        ]);
+        $this->getCollection($models->first()->index_path);
     }
 
     /**
@@ -85,7 +79,11 @@ class {{ class }} extends TestCase
 
         ];
 
-        $this->post(route($this->base_route_name . '.store', ['{{ parentModelVariable }}' => $parent->id]), $data)
+        $attributes = [
+            '{{ parentModelVariable }}' => $parent->id
+        ];
+
+        $this->post($this->class_name::indexPath($attributes), $data)
             ->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas((new $this->class_name)->getTable(), $data);
@@ -100,10 +98,7 @@ class {{ class }} extends TestCase
 
         $model = $this->createModel();
 
-        $response = $this->getShowJsonResponse([
-            '{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id,
-            '{{ modelVariable }}' => $model->id
-        ], $model);
+        $response = $this->getShowJsonResponse($model->route_parameter, $model);
     }
 
     /**
@@ -121,7 +116,7 @@ class {{ class }} extends TestCase
             //
         ];
 
-        $response = $this->put(route($this->base_route_name . '.update', ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id]), $data)
+        $response = $this->put($model->path, $data)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasNoErrors();
 
@@ -139,7 +134,7 @@ class {{ class }} extends TestCase
 
         $model = $this->createModel();
 
-        $this->deleteModel($model, ['{{ parentModelVariable }}' => $model->{{ parentModelVariable }}_id, '{{ modelVariable }}' => $model->id])
+        $this->deleteModel($model)
             ->assertRedirect();
     }
 

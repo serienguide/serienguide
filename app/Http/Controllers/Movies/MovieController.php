@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    protected $base_route_name = 'movies';
+    protected $base_view_path = Movie::VIEW_PATH;
 
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class MovieController extends Controller
                 ->paginate();
         }
 
-        return view($this->base_route_name . '.index');
+        return view($this->base_view_path . '.index');
     }
 
     /**
@@ -58,7 +58,7 @@ class MovieController extends Controller
             return $movie;
         }
 
-        return view($this->base_route_name . '.show')
+        return view($this->base_view_path . '.show')
             ->with('model', $movie);
     }
 

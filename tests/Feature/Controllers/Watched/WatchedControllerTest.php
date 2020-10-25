@@ -12,8 +12,8 @@ use Tests\TestCase;
 
 class WatchedControllerTest extends TestCase
 {
-    protected $base_route_name = 'watchable.watched';
-    protected $base_view_path = 'watchable.watched';
+    protected $base_route_name = Watched::ROUTE_NAME;
+    protected $base_view_path = Watched::VIEW_PATH;
     protected $class_name = Watched::class;
 
     /**
@@ -23,16 +23,16 @@ class WatchedControllerTest extends TestCase
     {
         $model = $this->class_name::factory()->create();
 
-        $actions = [
-            'index' => ['type' => 'movies', 'watchable' => $model->watchable_id,],
-            'create' => ['type' => 'movies', 'watchable' => $model->watchable_id,],
-            'store' => ['type' => 'movies', 'watchable' => $model->watchable_id,],
-            'show' => ['type' => 'movies', 'watchable' => $model->watchable_id, 'watched' => $model->id],
-            'edit' => ['type' => 'movies', 'watchable' => $model->watchable_id, 'watched' => $model->id],
-            'update' => ['type' => 'movies', 'watchable' => $model->watchable_id, 'watched' => $model->id],
-            'destroy' => ['type' => 'movies', 'watchable' => $model->watchable_id, 'watched' => $model->id],
+        $routes = [
+            'index' => $model->index_path,
+            'create' => $model->create_path,
+            'store' => $model->index_path,
+            'show' => $model->path,
+            'edit' => $model->edit_path,
+            'update' => $model->path,
+            'destroy' => $model->path,
         ];
-        $this->guestsCanNotAccess($actions);
+        $this->guestsCanNotAccess($routes);
     }
 
     /**
@@ -42,11 +42,7 @@ class WatchedControllerTest extends TestCase
     {
         $modelOfADifferentUser = $this->class_name::factory()->create();
 
-         $this->a_user_can_not_see_models_from_a_different_user([
-            'type' => 'movies',
-            'watchable' => $modelOfADifferentUser->watchable_id,
-            'watched' => $modelOfADifferentUser->id
-        ]);
+        $this->a_user_can_not_see_models_from_a_different_user($modelOfADifferentUser);
     }
 
     /**
@@ -65,10 +61,7 @@ class WatchedControllerTest extends TestCase
             'watchable_id' => $parent->id,
         ]);
 
-        $this->getPaginatedCollection([
-            'type' => 'movies',
-            'watchable' => $parent->id,
-        ]);
+        $this->getPaginatedCollection($models->first()->index_path);
     }
 
     /**
@@ -86,12 +79,12 @@ class WatchedControllerTest extends TestCase
             //
         ];
 
-        $route_parameter = [
-            'type' => 'movies',
-            'watchable' => $parent->id,
+        $attributes = [
+            'watchable_type' => Movie::class,
+            'watchable_id' => $parent->id,
         ];
 
-        $this->post(route($this->base_route_name . '.store', $route_parameter), $data)
+        $this->post($this->class_name::indexPath($attributes), $data)
             ->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas((new $this->class_name)->getTable(), [
@@ -115,12 +108,12 @@ class WatchedControllerTest extends TestCase
             'watched_at' => '2020-01-01 00:00:00',
         ];
 
-        $route_parameter = [
-            'type' => 'movies',
-            'watchable' => $parent->id,
+        $attributes = [
+            'watchable_type' => Movie::class,
+            'watchable_id' => $parent->id,
         ];
 
-        $this->post(route($this->base_route_name . '.store', $route_parameter), $data)
+        $this->post($this->class_name::indexPath($attributes), $data)
             ->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas((new $this->class_name)->getTable(), [
@@ -145,11 +138,7 @@ class WatchedControllerTest extends TestCase
             'watchable',
         ]);
 
-        $response = $this->getShowJsonResponse([
-            'type' => 'movies',
-            'watchable' => $model->watchable_id,
-            'watched' => $model->id,
-        ], $model);
+        $response = $this->getShowJsonResponse($model->route_parameter, $model);
     }
 
     /**
@@ -171,13 +160,7 @@ class WatchedControllerTest extends TestCase
             'watched_at' => $now,
         ];
 
-        $route_parameter = [
-            'type' => 'movies',
-            'watchable' => $model->watchable_id,
-            'watched' => $model->id
-        ];
-
-        $response = $this->put(route($this->base_route_name . '.update', $route_parameter), $data)
+        $response = $this->put($model->path, $data)
             ->assertStatus(Response::HTTP_FOUND)
             ->assertSessionHasNoErrors();
 
@@ -199,13 +182,7 @@ class WatchedControllerTest extends TestCase
             'user_id' => $this->user->id,
         ]);
 
-        $route_parameter = [
-            'type' => 'movies',
-            'watchable' => $model->watchable_id,
-            'watched' => $model->id
-        ];
-
-        $this->deleteModel($model, $route_parameter)
+        $this->deleteModel($model)
             ->assertRedirect();
     }
 

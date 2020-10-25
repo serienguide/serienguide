@@ -2,12 +2,16 @@
 
 namespace {{ namespace }};
 
+use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class {{ class }} extends Model
 {
-    use HasFactory;
+    use HasFactory, HasModelPath;
+
+    const ROUTE_NAME = '';
+    const VIEW_PATH = '';
 
     protected $appends = [
         //
@@ -28,10 +32,5 @@ class {{ class }} extends Model
     public function isDeletable() : bool
     {
         return true;
-    }
-
-    protected function getBaseRouteAttribute() : string
-    {
-        return '';
     }
 }
