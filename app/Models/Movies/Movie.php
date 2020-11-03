@@ -2,6 +2,7 @@
 
 namespace App\Models\Movies;
 
+use App\Models\Genres\Genre;
 use App\Models\User;
 use App\Models\Watched\Watched;
 use App\Traits\HasSlug;
@@ -9,6 +10,7 @@ use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -58,6 +60,11 @@ class Movie extends Model
             'user_id' => $user->id,
             'watched_at' => Arr::get($attributes, 'watched_at', now()),
         ]);
+    }
+
+    public function genres() : MorphToMany
+    {
+        return $this->morphToMany(Genre::class, 'medium', 'genre_medium');
     }
 
     public function watched() : MorphMany

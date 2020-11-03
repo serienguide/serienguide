@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Movies;
 
+use App\Models\Genres\Genre;
 use App\Models\Movies\Movie;
 use Tests\TestCase;
 
@@ -46,5 +47,24 @@ class MovieTest extends TestCase
         ]);
 
         $this->assertEquals('new-movie-2020', $model->slug);
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_many_genres()
+    {
+        $model = $this->class_name::factory()->create();
+        $genres = Genre::factory()->count(3)->create();
+
+        $this->assertCount(0, $model->genres);
+        $this->assertCount(0, $genres->first()->movies);
+
+        foreach ($genres as $key => $genre) {
+            $model->genres()->attach($genre->id);
+        }
+
+        $this->assertCount(3, $model->refresh()->genres);
+        $this->assertCount(1, $genres->first()->refresh()->movies);
     }
 }

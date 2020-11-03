@@ -1,0 +1,18 @@
+<?php
+
+namespace {{ namespace }};
+
+trait {{ class }}
+{
+    public static function boot{{ class }}()
+    {
+        static::creating(function ($model) {
+            //
+        });
+    }
+
+    public function initialize{{ class }}()
+    {
+        //
+    }
+}

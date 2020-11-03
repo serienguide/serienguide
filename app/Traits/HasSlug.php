@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 trait HasSlug
 {
@@ -20,7 +21,7 @@ trait HasSlug
 
     public function setSlug() : void
     {
-        $this->attributes['slug'] = '';
+        $this->attributes['slug'] = Str::slug($this->name, '-', 'de');
     }
 
     public function scopeSlug(Builder $query, $value) : Builder
