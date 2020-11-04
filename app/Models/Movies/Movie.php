@@ -3,20 +3,21 @@
 namespace App\Models\Movies;
 
 use App\Models\Genres\Genre;
+use App\Models\Keywords\Keyword;
 use App\Models\User;
 use App\Models\Watched\Watched;
 use App\Traits\HasSlug;
+use App\Traits\Media\MorphsToManyGenres;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class Movie extends Model
 {
-    use HasFactory, HasModelPath, HasSlug;
+    use HasFactory, HasModelPath, HasSlug, MorphsToManyGenres;
 
     const ROUTE_NAME = 'movies';
     const VIEW_PATH = 'movies';
@@ -62,9 +63,9 @@ class Movie extends Model
         ]);
     }
 
-    public function genres() : MorphToMany
+    public function keywords() : MorphToMany
     {
-        return $this->morphToMany(Genre::class, 'medium', 'genre_medium');
+        return $this->morphToMany(Keyword::class, 'medium', 'keyword_medium');
     }
 
     public function watched() : MorphMany

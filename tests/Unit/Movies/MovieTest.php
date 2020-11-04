@@ -67,4 +67,23 @@ class MovieTest extends TestCase
         $this->assertCount(3, $model->refresh()->genres);
         $this->assertCount(1, $genres->first()->refresh()->movies);
     }
+
+    /**
+     * @test
+     */
+    public function it_has_many_keywords()
+    {
+        $model = $this->class_name::factory()->create();
+        $keywords = Genre::factory()->count(3)->create();
+
+        $this->assertCount(0, $model->keywords);
+        $this->assertCount(0, $keywords->first()->movies);
+
+        foreach ($keywords as $key => $genre) {
+            $model->keywords()->attach($genre->id);
+        }
+
+        $this->assertCount(3, $model->refresh()->keywords);
+        $this->assertCount(1, $keywords->first()->refresh()->movies);
+    }
 }
