@@ -4,8 +4,10 @@ namespace App\Models\Movies;
 
 use App\Models\Genres\Genre;
 use App\Models\Keywords\Keyword;
+use App\Models\Lists\Item;
 use App\Models\User;
 use App\Models\Watched\Watched;
+use App\Traits\HasManyLists;
 use App\Traits\HasSlug;
 use App\Traits\Media\MorphsToManyGenres;
 use D15r\ModelPath\Traits\HasModelPath;
@@ -17,7 +19,7 @@ use Illuminate\Support\Str;
 
 class Movie extends Model
 {
-    use HasFactory, HasModelPath, HasSlug, MorphsToManyGenres;
+    use HasFactory, HasManyLists, HasModelPath, HasSlug, MorphsToManyGenres;
 
     const ROUTE_NAME = 'movies';
     const VIEW_PATH = 'movies';

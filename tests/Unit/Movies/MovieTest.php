@@ -3,6 +3,7 @@
 namespace Tests\Unit\Movies;
 
 use App\Models\Genres\Genre;
+use App\Models\Lists\Item;
 use App\Models\Movies\Movie;
 use Tests\TestCase;
 
@@ -85,5 +86,22 @@ class MovieTest extends TestCase
 
         $this->assertCount(3, $model->refresh()->keywords);
         $this->assertCount(1, $keywords->first()->refresh()->movies);
+    }
+
+    /**
+     * @test
+     */
+    public function it_morphs_many_list_items()
+    {
+        $model = $this->class_name::factory()->create();
+
+        $this->assertCount(0, $model->list_items);
+
+        $list_items = Item::factory()->count(3)->create([
+            'medium_type' => Movie::class,
+            'medium_id' => $model->id,
+        ]);
+
+        $this->assertCount(3, $model->refresh()->list_items);
     }
 }
