@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -40,6 +42,28 @@ $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
+
+/*
+|--------------------------------------------------------------------------
+| Load Sandbox .env file
+|--------------------------------------------------------------------------
+|
+| If the domain starts with sandbox. we use a different environment file
+|
+*/
+
+if(isset($_SERVER['HTTP_HOST']) && !empty($_SERVER['HTTP_HOST'])){
+    $domain = $_SERVER['HTTP_HOST'];
+    if (Str::startsWith($domain, 'sandbox.')) {
+        $dotenv = Dotenv\Dotenv::createImmutable(base_path(), '.env.sandbox');
+
+        try {
+            $dotenv->load();
+        } catch (\Dotenv\Exception\InvalidPathException $e) {
+            // No custom .env file found for this domain
+        }
+    }
+}
 
 /*
 |--------------------------------------------------------------------------
