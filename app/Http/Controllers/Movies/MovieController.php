@@ -58,6 +58,12 @@ class MovieController extends Controller
             return $movie;
         }
 
+        $movie->load([
+            'watched' => function ($query) {
+                return $query->orderBy('watched_at', 'DESC');
+            },
+        ]);
+
         return view($this->base_view_path . '.show')
             ->with('model', $movie);
     }

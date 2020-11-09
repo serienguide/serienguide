@@ -3,5 +3,5 @@
         Filme
     </x-slot>
 
-    Test
+    @livewire('movies.index')
 </x-app-layout>
