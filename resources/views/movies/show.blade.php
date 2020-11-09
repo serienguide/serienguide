@@ -7,8 +7,10 @@
 
     {{ $model->overview }}
 
-    <div class="mt-3">
-        @livewire('watched.ul', ['model' => $model])
-    </div>
+    @auth
+        <div class="mt-3">
+            @livewire('watched.ul', ['model' => $model])
+        </div>
+    @endauth
 
 </x-app-layout>

@@ -12,7 +12,7 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-                                <a href="{{ App\Models\Movies\Movie::ROUTE_NAME }}" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Filme</a>
+                                <a href="{{ App\Models\Movies\Movie::indexPath() }}" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Filme</a>
                             </div>
                         </div>
                     </div>
