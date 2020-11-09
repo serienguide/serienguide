@@ -11,6 +11,7 @@ use App\Traits\HasManyLists;
 use App\Traits\HasSlug;
 use App\Traits\Media\MorphsToManyGenres;
 use D15r\ModelPath\Traits\HasModelPath;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -73,5 +74,14 @@ class Movie extends Model
     public function watched() : MorphMany
     {
         return $this->morphMany(Watched::class, 'watchable');
+    }
+
+    public function scopeSearch(Builder $query, $value) : Builder
+    {
+        if (empty($value)) {
+            return $query;
+        }
+
+        return $query->where('title', 'LIKE', '%' . $value . '%');
     }
 }
