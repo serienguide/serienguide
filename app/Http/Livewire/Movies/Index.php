@@ -28,10 +28,23 @@ class Index extends Component
     public function render()
     {
         return view('livewire.movies.index', [
-            'items' => Movie::withCount('watched')
-                ->search($this->filter['search'])
-                ->orderBy('title', 'ASC')
-                ->paginate(12),
+            'items' => $this->getItems(),
         ]);
+    }
+
+    protected function getItems()
+    {
+        $query = Movie::search($this->filter['search'])
+            ->orderBy('title', 'ASC');
+
+        if (auth()->check()) {
+            $query->withCount([
+                'watched' => function ($query) {
+                    return $query->where('user_id', auth()->user()->id);
+                }
+            ]);
+        }
+
+        return $query->paginate(12);
     }
 }
