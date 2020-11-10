@@ -6,13 +6,11 @@
         </div>
     </div>
     <div wire:loading.delay class="text-center w-100 p-5">
-        Lade Daten...
+        Lade Daten.
     </div>
     <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-3">
         @forelse ($items as $item)
-            <li class="col-span-1 flex flex-col text-center bg-white rounded-lg shadow">
-                @livewire('media.card', ['model' => $item])
-            </li>
+            @livewire('media.card', ['model' => $item], key('media-card-' . $item->id))
         @empty
             Keine Filme vorhanden
         @endforelse

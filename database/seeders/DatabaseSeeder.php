@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        \App\Models\Movies\Movie::factory()->count(2)->create();
+        $this->call([
+            MovieSeeder::class,
+        ]);
     }
 }

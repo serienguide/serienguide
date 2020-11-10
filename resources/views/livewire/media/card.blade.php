@@ -1,4 +1,4 @@
-<div>
+<li class="col-span-1 flex flex-col justify-between text-center bg-white rounded-lg shadow">
     <h3 class="p-6 text-gray-900 leading-5 font-medium"><a href="{{ $model->path }}">{{ $model->title }}</a></h3>
     @auth
         <div class="text-sm mb-5 text-gray-900">
@@ -12,4 +12,4 @@
             </button>
         </div>
     @endauth
-</div>
+</li>

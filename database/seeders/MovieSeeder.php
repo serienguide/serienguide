@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Movies\Movie;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class MovieSeeder extends Seeder
 {
@@ -14,6 +16,17 @@ class MovieSeeder extends Seeder
      */
     public function run()
     {
-        Movie::factory()->count(1)->create();
+        $json = file_get_contents(database_path('json/movies.json'));
+        $data = json_decode($json, true);
+
+        foreach ($data['results'] as $item) {
+            $released_at = (new Carbon($item['release_date']));
+            Movie::factory()->create([
+                'title' => $item['title'],
+                'overview' => $item['overview'],
+                'year' => $released_at->year,
+                'released_at' => $released_at,
+            ]);
+        }
     }
 }

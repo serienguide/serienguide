@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Movies;
 
 use App\Models\Movies\Movie;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -32,7 +33,7 @@ class Index extends Component
         ]);
     }
 
-    protected function getItems()
+    protected function getItems() : LengthAwarePaginator
     {
         $query = Movie::search($this->filter['search'])
             ->orderBy('title', 'ASC');
