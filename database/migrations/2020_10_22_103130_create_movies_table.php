@@ -18,6 +18,7 @@ class CreateMoviesTable extends Migration
 
             $table->string('slug')->index();
             $table->string('title');
+            $table->string('title_en');
             $table->unsignedSmallInteger('year')->nullable();
             $table->string('tagline')->nullable();
             $table->text('overview')->nullable();
@@ -25,6 +26,8 @@ class CreateMoviesTable extends Migration
             $table->unsignedSmallInteger('runtime')->nullable();
             $table->string('homepage')->nullable();
             $table->unsignedTinyInteger('status')->nullable();
+            $table->unsignedSmallInteger('budget')->nullable();
+            $table->unsignedSmallInteger('revenue')->nullable();
 
             $table->timestamps();
         });
