@@ -5,6 +5,7 @@ namespace App\Models\Movies;
 use App\Models\Genres\Genre;
 use App\Models\Keywords\Keyword;
 use App\Models\Lists\Item;
+use App\Models\Ratings\Rating;
 use App\Models\User;
 use App\Models\Watched\Watched;
 use App\Traits\HasManyLists;
@@ -58,6 +59,16 @@ class Movie extends Model
         $this->attributes['slug'] = Str::slug($this->title . '-' . $this->year, '-', 'de');
     }
 
+    // TODO: Rateable
+    public function rateBy(User $user, array $attributes = []) : Rating
+    {
+        return $this->ratings()->create([
+            'user_id' => $user->id,
+            'rating' => $attributes['rating'],
+        ]);
+    }
+
+    // TODO: Watchable
     public function watchedBy(User $user, array $attributes = []) : Watched
     {
         return $this->watched()->create([
@@ -71,6 +82,13 @@ class Movie extends Model
         return $this->morphToMany(Keyword::class, 'medium', 'keyword_medium');
     }
 
+    // TODO: Rateable
+    public function ratings() : MorphMany
+    {
+        return $this->morphMany(Rating::class, 'medium');
+    }
+
+    // TODO: Watchable
     public function watched() : MorphMany
     {
         return $this->morphMany(Watched::class, 'watchable');

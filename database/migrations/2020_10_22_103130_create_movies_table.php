@@ -26,8 +26,8 @@ class CreateMoviesTable extends Migration
             $table->unsignedSmallInteger('runtime')->nullable();
             $table->string('homepage')->nullable();
             $table->unsignedTinyInteger('status')->nullable();
-            $table->unsignedSmallInteger('budget')->nullable();
-            $table->unsignedSmallInteger('revenue')->nullable();
+            $table->unsignedSmallInteger('budget')->default(0);
+            $table->unsignedSmallInteger('revenue')->default(0);
 
             $table->timestamps();
         });
