@@ -28,6 +28,8 @@ class CreateMoviesTable extends Migration
             $table->unsignedTinyInteger('status')->nullable();
             $table->unsignedSmallInteger('budget')->default(0);
             $table->unsignedSmallInteger('revenue')->default(0);
+            $table->string('poster_path')->nullable();
+            $table->string('backdrop_path')->nullable();
 
             $table->timestamps();
         });

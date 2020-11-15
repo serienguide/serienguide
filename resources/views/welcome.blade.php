@@ -17,5 +17,4 @@
     <p>Anmelden:</p>
     <p>user@example.com</p>
     <p>password</p>
-
 </x-app-layout>

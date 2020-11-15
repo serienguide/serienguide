@@ -15,20 +15,21 @@
             [x-cloak] { display: none; }
         </style>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
         @livewireStyles
 
         <!-- Scripts -->
+        <script src="{{ mix('js/app.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>
+        @stack('scripts')
     </head>
     <body class="font-sans antialiased">
         <x-navigation />
         <header class="bg-white shadow-sm">
             <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-                    <h1 class="text-lg leading-6 font-semibold text-gray-900">
-                        {{ $header }}
-                    </h1>
-                </div>
+                <h1 class="text-lg leading-6 font-semibold text-gray-900">
+                    {{ $header }}
+                </h1>
+            </div>
         </header>
         <main>
             <div class="max-w-7xl mx-auto pb-6 sm:px-6 lg:px-8">
@@ -61,7 +62,6 @@
                 </p>
             </div>
         </footer>
-
 
         @stack('modals')
 

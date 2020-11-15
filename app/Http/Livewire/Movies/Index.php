@@ -39,7 +39,7 @@ class Index extends Component
             ->orderBy('title', 'ASC');
 
         if (auth()->check()) {
-            $query->withCount([
+            $query->with([
                 'watched' => function ($query) {
                     return $query->where('user_id', auth()->user()->id);
                 }

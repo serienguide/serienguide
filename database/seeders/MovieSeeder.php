@@ -23,9 +23,12 @@ class MovieSeeder extends Seeder
             $released_at = (new Carbon($item['release_date']));
             Movie::factory()->create([
                 'title' => $item['title'],
+                'title_en' => $item['title'],
                 'overview' => $item['overview'],
                 'year' => $released_at->year,
                 'released_at' => $released_at,
+                'poster_path' => $item['poster_path'],
+                'backdrop_path' => $item['backdrop_path'],
             ]);
         }
     }
