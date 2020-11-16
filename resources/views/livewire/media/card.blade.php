@@ -1,6 +1,7 @@
 <li class="col-span-1 flex flex-col justify-between bg-white rounded-lg shadow">
     <header class="flex items-center p-3">
         <div class="flex-grow"></div>
+
         <div class="relative inline-block text-left" x-data="{ open: false }">
             <div>
                 <button @click="open = true" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
