@@ -46,6 +46,13 @@ class Index extends Component
             ]);
         }
 
-        return $query->paginate(12);
+        $items = $query->paginate(12);
+        if (auth()->check()) {
+            foreach ($items as $key => &$item) {
+                $item->rating_by_user = $item->ratingByUser(auth()->user()->id);
+            }
+        }
+
+        return $items;
     }
 }

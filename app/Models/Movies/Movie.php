@@ -60,12 +60,22 @@ class Movie extends Model
     }
 
     // TODO: Rateable
-    public function rateBy(User $user, array $attributes = []) : Rating
+    public function rateBy(User $user, array $attributes = [])
     {
-        return $this->ratings()->create([
-            'user_id' => $user->id,
-            'rating' => $attributes['rating'],
-        ]);
+        if ($attributes['rating'] == 0) {
+            $this->ratingByUser($user->id)->delete();
+            return null;
+        }
+
+        $rating = $this->ratingByUser($user->id);
+        if (! is_null($rating)) {
+            $rating->update($attributes);
+            return $rating;
+        }
+
+        $attributes['user_id'] = $user->id;
+
+        return $this->ratings()->create($attributes);
     }
 
     // TODO: Watchable
@@ -86,6 +96,11 @@ class Movie extends Model
     public function ratings() : MorphMany
     {
         return $this->morphMany(Rating::class, 'medium');
+    }
+
+    public function ratingByUser(int $user_id)
+    {
+        return $this->ratings()->where('user_id', $user_id)->first();
     }
 
     // TODO: Watchable

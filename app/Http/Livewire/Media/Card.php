@@ -21,6 +21,11 @@ class Card extends Component
         $this->emit('watched', $watched);
     }
 
+    public function rate(int $rating)
+    {
+        $this->model->rating_by_user = $this->model->rateBy(auth()->user(), ['rating' => $rating]);
+    }
+
     public function watched(Watched $watched)
     {
         $this->loadWatched();
