@@ -14,10 +14,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory()->create([
+        $user = \App\Models\User::factory()->create([
             'email' => 'user@example.com',
             'password' => Hash::make('password'),
         ]);
+
+        $lists = [
+            'Merkzettel',
+            'Meine Serien',
+            'Empfehlungen',
+            'Sammlung',
+        ];
+
+        foreach ($lists as $key => $name) {
+            $user->lists()->create([
+                'name' => $name,
+            ]);
+        }
 
         $this->call([
             MovieSeeder::class,

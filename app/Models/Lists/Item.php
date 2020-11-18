@@ -26,10 +26,30 @@ class Item extends Model
     ];
 
     protected $fillable = [
-        //
+        'list_id',
+        'medium_id',
+        'medium_type',
+        'rank',
     ];
 
     protected $table = 'list_item';
+
+    /**
+     * The booting method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($model)
+        {
+            $model->rank = 0;
+
+            return true;
+        });
+    }
 
     public function isDeletable() : bool
     {

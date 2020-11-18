@@ -5,6 +5,7 @@ namespace App\Models\Movies;
 use App\Models\Genres\Genre;
 use App\Models\Keywords\Keyword;
 use App\Models\Lists\Item;
+use App\Models\Lists\Listing;
 use App\Models\Ratings\Rating;
 use App\Models\User;
 use App\Models\Watched\Watched;
