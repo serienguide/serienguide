@@ -47,6 +47,20 @@ class Card extends Component
 
     public function render()
     {
-        return view('livewire.media.card');
+        return view('livewire.media.card')
+            ->with('button_class', $this->buttonClass());
+    }
+
+    protected function buttonClass() : string
+    {
+        if ($this->model->watched->count() == 0) {
+            return 'text-gray-700 bg-white';
+        }
+
+        if ($this->model->watched->count() % 2 == 0) {
+            return 'bg-green-600 text-white';
+        }
+
+        return 'bg-indigo-600 text-white';
     }
 }
