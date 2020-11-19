@@ -3,6 +3,7 @@
 namespace App\Models\Lists;
 
 use App\Models\Lists\Listing;
+use App\Traits\BelongsToMedium;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Item extends Model
 {
-    use HasFactory;
+    use BelongsToMedium, HasFactory;
 
     protected $appends = [
         //
@@ -59,10 +60,5 @@ class Item extends Model
     public function list() : BelongsTo
     {
         return $this->belongsTo(Listing::class, 'list_id');
-    }
-
-    public function medium() : MorphTo
-    {
-        return $this->morphTo('medium');
     }
 }
