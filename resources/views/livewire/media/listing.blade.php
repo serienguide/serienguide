@@ -11,5 +11,6 @@
                 </label>
             </li>
         @endforeach
+        <li class="text-sm">Neue Liste anlegen</li>
     </ul>
 </div>

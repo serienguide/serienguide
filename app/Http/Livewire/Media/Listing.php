@@ -36,6 +36,15 @@ class Listing extends Component
         $this->lists = $this->getLists();
     }
 
+    public function addList(string $name)
+    {
+        $list = auth()->user->lists()::create([
+            'name' => $name,
+        ]);
+
+        $this->toggle($list->id);
+    }
+
     protected function getLists()
     {
         return auth()->user()->lists()
