@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Watched\Watched;
 use App\Traits\HasManyLists;
 use App\Traits\HasSlug;
+use App\Traits\Media\HasImages;
 use App\Traits\Media\MorphsToManyGenres;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,7 +23,7 @@ use Illuminate\Support\Str;
 
 class Movie extends Model
 {
-    use HasFactory, HasManyLists, HasModelPath, HasSlug, MorphsToManyGenres;
+    use HasFactory, HasImages, HasManyLists, HasModelPath, HasSlug, MorphsToManyGenres;
 
     const ROUTE_NAME = 'movies';
     const VIEW_PATH = 'movies';
@@ -40,8 +41,10 @@ class Movie extends Model
     ];
 
     protected $fillable = [
+        'backdrop_path',
         'homepage',
         'overview',
+        'poster_path',
         'released_at',
         'runtime',
         'status',

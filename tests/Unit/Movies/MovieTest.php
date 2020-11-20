@@ -3,6 +3,7 @@
 namespace Tests\Unit\Movies;
 
 use App\Models\Genres\Genre;
+use App\Models\Images\Image;
 use App\Models\Lists\Item;
 use App\Models\Movies\Movie;
 use Tests\TestCase;
@@ -72,10 +73,27 @@ class MovieTest extends TestCase
     /**
      * @test
      */
+    public function it_has_many_images()
+    {
+        $model = $this->class_name::factory()->create();
+
+        $this->assertCount(0, $model->images);
+
+        $images = Image::factory()->count(3)->create([
+            'medium_id' => $model->id,
+        ]);
+
+        $this->assertCount(3, $model->refresh()->images);
+        $this->assertEquals($model->id, $images->first()->refresh()->medium->id);
+    }
+
+    /**
+     * @test
+     */
     public function it_has_many_keywords()
     {
         $model = $this->class_name::factory()->create();
-        $keywords = Genre::factory()->count(3)->create();
+        $keywords = Keyword::factory()->count(3)->create();
 
         $this->assertCount(0, $model->keywords);
         $this->assertCount(0, $keywords->first()->movies);
