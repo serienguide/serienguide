@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKeywordsTable extends Migration
+class CreateProvidersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateKeywordsTable extends Migration
      */
     public function up()
     {
-        Schema::create('keywords', function (Blueprint $table) {
+        Schema::create('providers', function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
             $table->string('slug');
+            $table->string('logo_path');
 
             $table->timestamps();
         });
@@ -30,6 +31,6 @@ class CreateKeywordsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('keywords');
+        Schema::dropIfExists('providers');
     }
 }

@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Models\Keywords;
+namespace App\Models\Providers;
 
-use App\Models\Movies\Movie;
-use App\Traits\HasSlug;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Keyword extends Model
+class Medium extends Model
 {
-    use HasFactory, HasSlug;
+    use HasFactory, HasModelPath;
 
     const ROUTE_NAME = '';
     const VIEW_PATH = '';
@@ -28,19 +26,11 @@ class Keyword extends Model
     ];
 
     protected $fillable = [
-        'id',
-        'name',
+        //
     ];
-
-    public $incrementing = false;
 
     public function isDeletable() : bool
     {
         return true;
-    }
-
-    public function movies()
-    {
-        return $this->morphedByMany(Movie::class, 'medium', 'keyword_medium');
     }
 }

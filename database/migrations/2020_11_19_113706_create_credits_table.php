@@ -21,6 +21,8 @@ class CreateCreditsTable extends Migration
             $table->string('credit_type');
             $table->string('department');
             $table->string('job');
+            $table->string('character')->nullable();
+            $table->unsignedSmallInteger('order')->nullable();
 
             $table->timestamps();
 

@@ -10,6 +10,7 @@ class ImgTest extends TestCase
 {
     protected $backdrop_path = '';
     protected $poster_path = 'images/5UsK3grJvtQrtzEgqNlDljJW96w.jpg';
+    protected $tmdb_poster_url = 'https://image.tmdb.org/t/p/original/8tZYtuWezp8JbcsvHYO0O46tFbo.jpg';
 
     protected $backdrop;
     protected $poster;
@@ -47,5 +48,14 @@ class ImgTest extends TestCase
         $path = $this->poster->resize(680);
         $this->assertFileExists($path);
         unlink($path);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_created_from_url()
+    {
+        $model = Img::fromUrl($this->tmdb_poster_url);
+        dump($model);
     }
 }

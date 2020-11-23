@@ -4,8 +4,10 @@ namespace Tests\Unit\Movies;
 
 use App\Models\Genres\Genre;
 use App\Models\Images\Image;
+use App\Models\Keywords\Keyword;
 use App\Models\Lists\Item;
 use App\Models\Movies\Movie;
+use App\Models\Providers\Provider;
 use Tests\TestCase;
 
 class MovieTest extends TestCase
@@ -98,12 +100,37 @@ class MovieTest extends TestCase
         $this->assertCount(0, $model->keywords);
         $this->assertCount(0, $keywords->first()->movies);
 
-        foreach ($keywords as $key => $genre) {
-            $model->keywords()->attach($genre->id);
+        foreach ($keywords as $key => $keyword) {
+            $model->keywords()->attach($keyword->id);
         }
 
         $this->assertCount(3, $model->refresh()->keywords);
         $this->assertCount(1, $keywords->first()->refresh()->movies);
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_many_providers()
+    {
+        $model = $this->class_name::factory()->create();
+        $providers = Provider::factory()->count(3)->create();
+
+        $this->assertCount(0, $model->providers);
+        $this->assertCount(0, $providers->first()->movies);
+
+        foreach ($providers as $key => $provider) {
+            $model->providers()->attach($provider->id, [
+                'display_priority' => ($key + 1),
+            ]);
+        }
+
+        $this->assertCount(3, $model->refresh()->providers);
+        $this->assertCount(1, $providers->first()->refresh()->movies);
+
+        foreach ($model->providers as $key => $provider) {
+            $this->assertEquals(($key + 1), $provider->pivot->display_priority);
+        }
     }
 
     /**
@@ -121,5 +148,35 @@ class MovieTest extends TestCase
         ]);
 
         $this->assertCount(3, $model->refresh()->list_items);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_created_from_tmdb()
+    {
+        $tmdb_id = 76341;
+        $model = Movie::createOrUpdateFromTmdb($tmdb_id);
+        $this->assertCount(3, $model->genres);
+        $this->assertCount(11, $model->keywords);
+        $this->assertCount(13, $model->providers);
+        $this->assertCount(179, $model->credits);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_updated_from_tmdb()
+    {
+        $tmdb_id = 76341;
+        $movie = Movie::factory()->create([
+            'tmdb_id' => $tmdb_id,
+        ]);
+        $model = Movie::createOrUpdateFromTmdb($tmdb_id);
+        $this->assertEquals($movie->id, $model->id);
+        $this->assertCount(3, $model->genres);
+        $this->assertCount(11, $model->keywords);
+        $this->assertCount(13, $model->providers);
+        $this->assertCount(179, $model->credits);
     }
 }

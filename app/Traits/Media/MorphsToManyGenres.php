@@ -2,6 +2,7 @@
 
 namespace App\Traits\Media;
 
+use App\Models\Genres\Genre;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait MorphsToManyGenres

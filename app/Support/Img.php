@@ -11,6 +11,14 @@ class Img extends File
 
     public $resource;
 
+    public static function fromUrl(string $url) : self
+    {
+        $path = Storage::path('images/' . basename($url));
+        copy($url, $path);
+
+        return new self($path);
+    }
+
     public function __construct(string $path, bool $checkPath = true)
     {
         parent::__construct($path, $checkPath);

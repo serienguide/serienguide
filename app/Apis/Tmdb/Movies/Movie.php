@@ -11,8 +11,6 @@ class Movie extends Model
 {
     protected $base_url = 'https://api.themoviedb.org/3/';
 
-    // movie/76341?api_key=<<api_key>>
-
     public static function find(int $id) : self
     {
         $response_en = Http::get('/movie/' . $id, [
@@ -20,6 +18,7 @@ class Movie extends Model
         ]);
         $response_de = Http::get('/movie/' . $id, [
             'language' => 'de',
+            'append_to_response' => 'credits,external_ids,watch/providers,keywords',
         ]);
 
         $attributes_en = $response_en->json();
@@ -38,18 +37,27 @@ class Movie extends Model
             $year = null;
         }
 
-        return new static([
-            'budget' => $attributes_de['budget'],
-            'homepage' => $attributes_de['homepage'],
-            'overview' => $attributes_de['overview'] ?: $attributes_en['overview'],
-            'released_at' => $released_at,
-            'revenue' => $attributes_de['revenue'],
-            'runtime' => $attributes_de['runtime'],
-            'status' => $attributes_de['status'],
-            'tagline' => $attributes_de['tagline'] ?: $attributes_en['tagline'],
-            'title' => $attributes_de['title'],
-            'title_en' => $attributes_en['title'],
-            'year' => $year,
+        $attributes = $attributes_de;
+        $attributes['keywords'] = $attributes_de['keywords']['keywords'];
+        $attributes['providers'] = $attributes_de['watch/providers']['results']['DE'] ?? [];
+        $attributes['title_en'] = $attributes_en['title'];
+        $attributes['overview'] = $attributes_de['overview'] ?: $attributes_en['overview'];
+        $attributes['tagline'] = $attributes_de['tagline'] ?: $attributes_en['tagline'];
+        $attributes['released_at'] = $released_at;
+        $attributes['year'] = $year;
+        $attributes['external_ids']['tmdb_id'] = $attributes_de['id'];
+
+        return new static($attributes);
+    }
+
+    public function getWatchProviders(string $language = 'de') : array
+    {
+        $response = Http::get('/movie/' . $this->id . '/watch/providers', [
+            'language' => $language,
         ]);
+
+        $body = $response->json();
+
+        return $body['results'];
     }
 }

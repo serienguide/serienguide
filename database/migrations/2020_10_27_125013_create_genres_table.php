@@ -19,9 +19,6 @@ class CreateGenresTable extends Migration
             $table->string('name');
             $table->string('slug');
 
-            $table->string('type');
-            $table->unsignedMediumInteger('tmdb_id');
-
             $table->timestamps();
         });
     }

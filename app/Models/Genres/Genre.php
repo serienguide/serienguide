@@ -25,8 +25,11 @@ class Genre extends Model
     ];
 
     protected $fillable = [
-        //
+        'name',
+        'id',
     ];
+
+    public $incrementing = false;
 
     public function isDeletable() : bool
     {

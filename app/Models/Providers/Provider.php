@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Models\People;
+namespace App\Models\Providers;
 
-use App\Models\People\Person;
-use App\Traits\BelongsToMedium;
+use App\Models\Movies\Movie;
+use App\Traits\HasSlug;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Credit extends Model
+class Provider extends Model
 {
-    use BelongsToMedium, HasFactory, HasModelPath;
+    use HasFactory, HasModelPath, HasSlug;
 
     const ROUTE_NAME = '';
     const VIEW_PATH = '';
@@ -30,12 +29,8 @@ class Credit extends Model
 
     protected $fillable = [
         'id',
-        'person_id',
-        'medium_type',
-        'medium_id',
-        'credit_type',
-        'department',
-        'job',
+        'name',
+        'logo_path',
     ];
 
     public $incrementing = false;
@@ -45,8 +40,11 @@ class Credit extends Model
         return true;
     }
 
-    public function person() : BelongsTo
+    public function movies()
     {
-        return $this->belongsTo(Person::class, 'person_id');
+        return $this->morphedByMany(Movie::class, 'medium', 'provider_medium')
+            ->withPivot([
+                'display_priority',
+            ]);
     }
 }

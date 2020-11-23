@@ -28,6 +28,7 @@ class Person extends Model
     ];
 
     protected $fillable = [
+        'id',
         'name',
         'birthday_at',
         'deathday_at',
@@ -39,6 +40,8 @@ class Person extends Model
         'backdrop_path',
         'homepage',
     ];
+
+    public $incrementing = false;
 
     public function isDeletable() : bool
     {

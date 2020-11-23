@@ -24,8 +24,7 @@ class GenreFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'type' => Movie::class,
-            'tmdb_id' => $this->faker->randomNumber,
+            'id' => $this->faker->randomNumber,
         ];
     }
 }

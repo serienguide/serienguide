@@ -14,6 +14,16 @@ class ImageTest extends TestCase
     /**
      * @test
      */
+    public function it_gets_the_upload_directory()
+    {
+        $model = $this->create_model_with_image();
+        $this->assertEquals('original', $model->getDirectory());
+        $this->assertEquals('w680', $model->getDirectory(680));
+    }
+
+    /**
+     * @test
+     */
     public function it_can_resize_the_original_image()
     {
         $model = $this->create_model_with_image();

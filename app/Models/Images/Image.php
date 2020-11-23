@@ -83,13 +83,22 @@ class Image extends Model
             return [];
         }
 
+        copy($this->provider_url, $this->temp_path);
+
         $paths = [];
-        $paths[] = $this->upload(0, $disk);
+        if (! Storage::disk($disk)->exists($this->getDirectory() . $this->path)) {
+            $paths[] = $this->upload(0, $disk);
+        }
 
         foreach (self::WIDTHS[$this->type] as $width) {
+            if (Storage::disk($disk)->exists($this->getDirectory($width) . $this->path)) {
+                continue;
+            }
             $path = $this->resize($width);
             $paths[] = $this->upload($width, $disk);
         }
+
+        unlink($this->temp_path);
 
         return $paths;
     }
@@ -101,8 +110,12 @@ class Image extends Model
 
     public function upload(int $width = 0, string $disk = 's3')
     {
-        $folder = $width ? 'w' . $width : 'original';
-        return Storage::disk($disk)->putFileAs($folder, new File($this->temp_path), basename($this->path));
+        return Storage::disk($disk)->putFileAs($this->getDirectory($width), new File($this->temp_path), basename($this->path));
+    }
+
+    public function getDirectory(int $width = 0) : string
+    {
+        return $width ? 'w' . $width : 'original';
     }
 
     public function isDeletable() : bool
@@ -118,6 +131,11 @@ class Image extends Model
     public function getTempPathAttribute() : string
     {
         return Storage::path('images' . $this->path);
+    }
+
+    public function getProviderUrlAttribute() : string
+    {
+        return 'https://image.tmdb.org/t/p/original' . $this->path;
     }
 
     public function getFilenameAttribute() : string

@@ -1,19 +1,18 @@
 <?php
 
-namespace Database\Factories\Keywords;
+namespace Database\Factories\Providers;
 
-use App\Models\Keywords\Keyword;
-use App\Models\Movies\Movie;
+use App\Models\Providers\Provider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class KeywordFactory extends Factory
+class ProviderFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Keyword::class;
+    protected $model = Provider::class;
 
     /**
      * Define the model's default state.
@@ -25,6 +24,7 @@ class KeywordFactory extends Factory
         return [
             'name' => $this->faker->word,
             'id' => $this->faker->randomNumber,
+            'logo_path' => $this->faker->md5 . '.jpg',
         ];
     }
 }
