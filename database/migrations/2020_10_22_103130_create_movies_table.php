@@ -15,7 +15,7 @@ class CreateMoviesTable extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-
+            $table->unsignedBigInteger('collection_id')->nullable();
             $table->unsignedInteger('tmdb_id')->nullable();
 
             $table->string('slug')->index();
@@ -34,6 +34,9 @@ class CreateMoviesTable extends Migration
             $table->string('backdrop_path')->nullable();
 
             $table->timestamps();
+
+            $table->foreign('collection_id')->references('id')->on('movie_collection');
+
         });
     }
 

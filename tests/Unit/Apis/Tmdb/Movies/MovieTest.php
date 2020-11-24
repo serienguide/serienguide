@@ -8,6 +8,7 @@ use Tests\TestCase;
 class MovieTest extends TestCase
 {
     const ID_MAD_MAX = 76341;
+    const ID_TRIBUTE_VON_PANEM = 70160;
 
     protected $class_name = Movie::class;
 
@@ -32,14 +33,23 @@ class MovieTest extends TestCase
     }
 
     /**
-      * @test
-      */
-     public function it_can_get_its_watch_providers()
-     {
+     * @test
+     */
+    public function it_finds_a_movie_with_collection()
+    {
+        $model = Movie::find(self::ID_TRIBUTE_VON_PANEM);
+        dump($model);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_its_watch_providers()
+    {
         $model = new Movie([
             'id' => self::ID_MAD_MAX,
         ]);
         $providers = $model->getWatchProviders();
         $this->assertArrayHasKey('DE', $providers);
-     }
+    }
 }

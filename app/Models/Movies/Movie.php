@@ -7,6 +7,7 @@ use App\Models\Images\Image;
 use App\Models\Keywords\Keyword;
 use App\Models\Lists\Item;
 use App\Models\Lists\Listing;
+use App\Models\Movies\Collection;
 use App\Models\People\Credit;
 use App\Models\People\Person;
 use App\Models\Providers\Provider;
@@ -21,6 +22,7 @@ use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
@@ -48,6 +50,7 @@ class Movie extends Model
     protected $fillable = [
         'backdrop_path',
         'budget',
+        'collection_id',
         'homepage',
         'overview',
         'poster_path',
@@ -62,19 +65,55 @@ class Movie extends Model
 
     public static function createOrUpdateFromTmdb(int $tmdb_id) : self
     {
-        $tmbd_model = \App\Apis\Tmdb\Movies\Movie::find($tmdb_id);
+        $tmdb_model = \App\Apis\Tmdb\Movies\Movie::find($tmdb_id);
         $model = self::updateOrCreate([
-            'tmdb_id' => $tmbd_model->id,
-        ], $tmbd_model->toArray());
+            'tmdb_id' => $tmdb_model->id,
+        ], $tmdb_model->toArray());
 
-        $model->syncGenresFromTmdb($tmbd_model->genres);
-        $model->syncKeywordsFromTmdb($tmbd_model->keywords);
-        $model->syncProvidersFromTmdb($tmbd_model->providers);
-        $model->createImageFromTmdb('poster', $tmbd_model->poster_path);
-        $model->createImageFromTmdb('backdrop', $tmbd_model->backdrop_path);
-        $model->syncCreditsFromTmdb($tmbd_model->credits);
+        $model->syncCollectionFromTmdb($tmdb_model->belongs_to_collection);
+        // $model->syncGenresFromTmdb($tmdb_model->genres);
+        // $model->syncKeywordsFromTmdb($tmdb_model->keywords);
+        // $model->syncProvidersFromTmdb($tmdb_model->providers);
+        // $model->createImageFromTmdb('poster', $tmdb_model->poster_path);
+        // $model->createImageFromTmdb('backdrop', $tmdb_model->backdrop_path);
+        // $model->syncCreditsFromTmdb($tmdb_model->credits);
 
         return $model;
+    }
+
+    protected function syncCollectionFromTmdb($tmdb_collection)
+    {
+        if (is_null($tmdb_collection)) {
+            return;
+        }
+
+        $collection = Collection::firstOrCreate([
+            'id' => $tmdb_collection['id'],
+        ], [
+            'name' => $tmdb_collection['name'],
+        ]);
+
+        if ($tmdb_collection['poster_path']) {
+            Image::createFromTmdb([
+                'type' => 'poster',
+                'path' => $tmdb_collection['poster_path'],
+                'medium_type' => Collection::class,
+                'medium_id' => $collection->id,
+            ]);
+        }
+
+        if ($tmdb_collection['backdrop_path']) {
+            Image::createFromTmdb([
+                'type' => 'backdrop',
+                'path' => $tmdb_collection['backdrop_path'],
+                'medium_type' => Collection::class,
+                'medium_id' => $collection->id,
+            ]);
+        }
+
+        $this->update([
+            'collection_id' => $collection->id,
+        ]);
     }
 
     protected function syncCreditsFromTmdb(array $tmdb_credits)
@@ -207,6 +246,11 @@ class Movie extends Model
             'user_id' => $user->id,
             'watched_at' => Arr::get($attributes, 'watched_at', now()),
         ]);
+    }
+
+    public function collection() : BelongsTo
+    {
+        return $this->belongsTo(Collection::class, 'collection_id');
     }
 
     public function credits() : MorphMany
