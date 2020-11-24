@@ -9,12 +9,13 @@ use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Listing extends Model
 {
     use BelongsToUser, HasFactory, HasModelPath, HasSlug;
 
-    const ROUTE_NAME = 'lists';
+    const ROUTE_NAME = 'users.lists';
     const VIEW_PATH = 'lists';
 
     protected $appends = [
@@ -32,6 +33,7 @@ class Listing extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'description',
     ];
 
     protected $table = 'lists';
@@ -39,6 +41,27 @@ class Listing extends Model
     public function isDeletable() : bool
     {
         return true;
+    }
+
+    public function setSlug() : void
+    {
+        if ($this->id && ! $this->isDirty('name')) {
+            return;
+        }
+
+        $slug = Str::slug($this->name, '-', 'de');
+        if (self::where('id', '!=', $this->id)->where('user_id', $this->user_id)->slug($slug)->exists()) {
+            $slug .= '-' . (self::where('user_id', $this->user_id)->where('name', $this->name)->count());
+        }
+        $this->attributes['slug'] = $slug;
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            'user' => $this->user_id,
+            'list' => $this->id,
+        ];
     }
 
     public function items() : HasMany

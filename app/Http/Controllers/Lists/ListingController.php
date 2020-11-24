@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Lists;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lists\Listing;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ListingController extends Controller
@@ -15,13 +16,16 @@ class ListingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, User $user)
     {
         if ($request->wantsJson()) {
-            //
+            return $user->lists()
+                ->orderBy('name', 'ASC')
+                ->paginate();
         }
 
-        return view($this->base_view_path . '.index');
+        return view($this->base_view_path . '.index')
+            ->with('user', $user);
     }
 
     /**
@@ -40,11 +44,11 @@ class ListingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
-        $list = Listing::create([
-            //
-        ]);
+        $list = $user->lists()->create($request->validate([
+            'name' => 'required|string',
+        ]));
 
         if ($request->wantsJson()) {
             return $list;
@@ -63,7 +67,7 @@ class ListingController extends Controller
      * @param  \App\Models\Lists\Listing  $list
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Listing $list)
+    public function show(Request $request, User $user, Listing $list)
     {
         if ($request->wantsJson()) {
             return $list;
@@ -79,7 +83,7 @@ class ListingController extends Controller
      * @param  \App\Models\Lists\Listing  $list
      * @return \Illuminate\Http\Response
      */
-    public function edit(Listing $list)
+    public function edit(User $user, Listing $list)
     {
         $this->authorize('update', $list);
 
@@ -94,12 +98,13 @@ class ListingController extends Controller
      * @param  \App\Models\Lists\Listing  $list
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Listing $list)
+    public function update(Request $request, User $user, Listing $list)
     {
         $this->authorize('update', $list);
 
         $attributes = $request->validate([
-            //
+            'name' => 'required|string',
+            'description' => 'nullable|string',
         ]);
 
         $list->update($attributes);
@@ -108,7 +113,7 @@ class ListingController extends Controller
             return $list;
         }
 
-        return back()
+        return redirect($list->path)
             ->with('status', [
                 'type' => 'success',
                 'text' => 'Datensatz gespeichert.',
@@ -121,7 +126,7 @@ class ListingController extends Controller
      * @param  \App\Models\Lists\Listing  $list
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Listing $list)
+    public function destroy(Request $request, User $user, Listing $list)
     {
         $this->authorize('delete', $list);
 

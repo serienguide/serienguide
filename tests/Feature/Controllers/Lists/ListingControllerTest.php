@@ -33,32 +33,23 @@ class ListingControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_not_see_things_from_a_different_user()
-    {
-        $modelOfADifferentUser = $this->class_name::factory()->create();
-
-        $this->a_user_can_not_see_models_from_a_different_user($modelOfADifferentUser);
-        $this->a_different_user_gets_a_403('get', $modelOfADifferentUser->index_path);
-    }
-
-    /**
-     * @test
-     */
     public function anyone_can_see_the_index_view()
     {
-        $this->getIndexViewResponse()
+        $this->getIndexViewResponse([
+            'user' => $this->user->id,
+        ])
             ->assertViewIs($this->base_view_path . '.index');
     }
 
     /**
      * @test
      */
-    public function a_user_can_get_a_paginated_collection_of_models()
+    public function anyone_can_get_a_paginated_collection_of_models()
     {
-        $this->signIn();
+        $this->withoutExceptionHandling();
 
         $models = $this->class_name::factory()->count(3)->create([
-
+            'user_id' => $this->user->id,
         ]);
 
         $this->getPaginatedCollection($models->first()->index_path);
@@ -74,11 +65,15 @@ class ListingControllerTest extends TestCase
         $this->signIn();
 
         $data = [
-
+            'name' => 'New Model'
         ];
 
-        $this->post($this->class_name::indexPath(), $data)
-            ->assertStatus(Response::HTTP_CREATED);
+        $attributes = [
+            'user_id' => $this->user->id,
+        ];
+
+        $this->post($this->class_name::indexPath($attributes), $data)
+            ->assertStatus(Response::HTTP_FOUND);
 
         $this->assertDatabaseHas((new $this->class_name)->getTable(), $data);
     }
@@ -86,10 +81,8 @@ class ListingControllerTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_see_the_show_view()
+    public function anyone_can_see_the_show_view()
     {
-        $this->withoutExceptionHandling();
-
         $model = $this->createModel();
 
         $this->getShowViewResponse($model->route_parameter)
@@ -102,7 +95,13 @@ class ListingControllerTest extends TestCase
      */
     public function a_user_can_see_the_edit_view()
     {
-        $model = $this->createModel();
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $model = $this->createModel([
+            'user_id' => $this->user->id
+        ]);
 
         $this->getEditViewResponse($model->route_parameter)
             ->assertViewIs($this->base_view_path . '.edit')
@@ -116,12 +115,15 @@ class ListingControllerTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $model = $this->createModel();
+        $model = $this->createModel([
+            'user_id' => $this->user->id
+        ]);
 
         $this->signIn();
 
         $data = [
-
+            'name' => 'updated list',
+            'description' => 'description',
         ];
 
         $response = $this->put($model->path, $data)
@@ -140,7 +142,9 @@ class ListingControllerTest extends TestCase
     {
         $this->signIn();
 
-        $model = $this->createModel();
+        $model = $this->createModel([
+            'user_id' => $this->user->id
+        ]);
 
         $this->deleteModel($model)
             ->assertRedirect();

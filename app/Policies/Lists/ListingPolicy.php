@@ -2,7 +2,7 @@
 
 namespace App\Policies\Lists;
 
-use App\Models\Models\Lists\Listing;
+use App\Models\Lists\Listing;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

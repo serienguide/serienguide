@@ -28,9 +28,11 @@ class Listing extends Component
         $item = Item::where($attributes)->first();
         if ($item) {
             $item->delete();
+            $this->emitUp('list-item-destroyed');
         }
         else {
             Item::create($attributes);
+            $this->emitUp('list-item-created');
         }
 
         $this->lists = $this->getLists();

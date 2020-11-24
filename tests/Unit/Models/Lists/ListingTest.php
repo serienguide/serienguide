@@ -17,6 +17,7 @@ class ListingTest extends TestCase
     {
         $model = $this->class_name::factory()->create();
         $route_parameter = [
+            'user' => $model->user_id,
             'list' => $model->id,
         ];
 
@@ -64,5 +65,38 @@ class ListingTest extends TestCase
         ]);
 
         $this->assertEquals($this->user->id, $model->user->id);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_unique_slug_per_user()
+    {
+        $model = Listing::factory()->create([
+            'name' => 'New List',
+        ]);
+        $this->assertEquals('new-list', $model->slug);
+
+        $model = $this->user->lists()->create([
+            'name' => 'New List',
+        ]);
+        $this->assertEquals('new-list', $model->slug);
+
+        $model = $this->user->lists()->create([
+            'name' => 'New List',
+        ]);
+        $this->assertEquals('new-list-1', $model->slug);
+        $model_list_1 = $model;
+
+        $model = $this->user->lists()->create([
+            'name' => 'New List',
+        ]);
+        $this->assertEquals('new-list-2', $model->slug);
+
+        $model_list_1->update([
+            'name' => 'New List',
+            'description' => 'test',
+        ]);
+        $this->assertEquals('new-list-1', $model_list_1->refresh()->slug);
     }
 }
