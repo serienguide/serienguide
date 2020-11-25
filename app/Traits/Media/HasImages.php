@@ -20,6 +20,16 @@ trait HasImages
         //
     }
 
+    protected function createImageFromTmdb(string $type, string $path) : Image
+    {
+        return Image::createFromTmdb([
+            'type' => $type,
+            'path' => $path,
+            'medium_type' => self::class,
+            'medium_id' => $this->id,
+        ]);
+    }
+
     public function images() : MorphMany
     {
         return $this->morphMany(Image::class, 'medium');

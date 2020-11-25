@@ -161,7 +161,7 @@ class MovieTest extends TestCase
         $this->assertCount(3, $model->genres);
         $this->assertCount(11, $model->keywords);
         $this->assertCount(13, $model->providers);
-        $this->assertCount(179, $model->credits);
+        $this->assertCount(180, $model->credits);
     }
 
     /**
@@ -169,7 +169,7 @@ class MovieTest extends TestCase
      */
     public function it_can_be_updated_from_tmdb()
     {
-        $tmdb_id = 70160;
+        $tmdb_id = 76341;
         $movie = Movie::factory()->create([
             'tmdb_id' => $tmdb_id,
         ]);
@@ -177,8 +177,8 @@ class MovieTest extends TestCase
         $this->assertNotNull($model->collection_id);
         $this->assertEquals($movie->id, $model->id);
         $this->assertCount(3, $model->genres);
-        $this->assertCount(11, $model->keywords);
+        $this->assertCount(7, $model->keywords);
         $this->assertCount(13, $model->providers);
-        $this->assertCount(179, $model->credits);
+        $this->assertCount(180, $model->credits);
     }
 }
