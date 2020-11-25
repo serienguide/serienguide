@@ -29,7 +29,7 @@ class MovieTest extends TestCase
         $this->assertEquals('Mad Max: Fury Road', $model->title);
         $this->assertEquals('Mad Max: Fury Road', $model->title_en);
         $this->assertEquals(2015, $model->year);
-        dump($model);
+        // dump($model);
     }
 
     /**
@@ -38,7 +38,7 @@ class MovieTest extends TestCase
     public function it_finds_a_movie_with_collection()
     {
         $model = Movie::find(self::ID_TRIBUTE_VON_PANEM);
-        dump($model);
+        // dump($model);
     }
 
     /**
