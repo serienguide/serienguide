@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Console\Commands\Apis\Tmdb\Movies;
+namespace App\Console\Commands\Apis\Tmdb\Changes\Movies;
 
-use App\Models\Movies\Movie;
+use App\Apis\Tmdb\Changes\Change;
 use Illuminate\Console\Command;
 
 class UpdateCommand extends Command
@@ -12,14 +12,14 @@ class UpdateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'apis:tmdb:movies:update {id}';
+    protected $signature = 'apis:tmdb:changes:movies:update';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Updates a movie from tmdb';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -38,8 +38,7 @@ class UpdateCommand extends Command
      */
     public function handle()
     {
-        $model = Movie::findOrFail($this->argument('id'));
-        $model->updateFromTmdb($model->tmdb_id);
+        Change::movies();
 
         return 0;
     }

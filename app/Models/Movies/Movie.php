@@ -44,7 +44,7 @@ class Movie extends Model
     ];
 
     protected $dates = [
-        //
+        'released_at',
     ];
 
     protected $fillable = [
@@ -55,6 +55,7 @@ class Movie extends Model
         'overview',
         'poster_path',
         'released_at',
+        'revenue',
         'runtime',
         'status',
         'tagline',
@@ -70,15 +71,27 @@ class Movie extends Model
             'tmdb_id' => $tmdb_model->id,
         ], $tmdb_model->toArray());
 
-        $model->syncCollectionFromTmdb($tmdb_model->belongs_to_collection);
-        // $model->syncGenresFromTmdb($tmdb_model->genres);
-        // $model->syncKeywordsFromTmdb($tmdb_model->keywords);
-        // $model->syncProvidersFromTmdb($tmdb_model->providers);
-        // $model->createImageFromTmdb('poster', $tmdb_model->poster_path);
-        // $model->createImageFromTmdb('backdrop', $tmdb_model->backdrop_path);
-        // $model->syncCreditsFromTmdb($tmdb_model->credits);
+        $model->syncFromTmdb($tmdb_model);
 
         return $model;
+    }
+
+    public function updateFromTmdb(int $tmdb_id)
+    {
+        $tmdb_model = \App\Apis\Tmdb\Movies\Movie::find($tmdb_id);
+        $this->update($tmdb_model->toArray());
+        $this->syncFromTmdb($tmdb_model);
+    }
+
+    protected function syncFromTmdb($tmdb_model)
+    {
+        $this->syncCollectionFromTmdb($tmdb_model->belongs_to_collection);
+        $this->syncGenresFromTmdb($tmdb_model->genres);
+        $this->syncKeywordsFromTmdb($tmdb_model->keywords);
+        $this->syncProvidersFromTmdb($tmdb_model->providers);
+        $this->createImageFromTmdb('poster', $tmdb_model->poster_path);
+        $this->createImageFromTmdb('backdrop', $tmdb_model->backdrop_path);
+        $this->syncCreditsFromTmdb($tmdb_model->credits);
     }
 
     protected function syncCollectionFromTmdb($tmdb_collection)

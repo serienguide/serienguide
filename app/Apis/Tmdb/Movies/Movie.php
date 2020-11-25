@@ -50,6 +50,13 @@ class Movie extends Model
         return new static($attributes);
     }
 
+    public function changed()
+    {
+        $response = Http::get('/movie/' . $id . '/changes', [
+            'page' => 1,
+        ]);
+    }
+
     public function getWatchProviders(string $language = 'de') : array
     {
         $response = Http::get('/movie/' . $this->id . '/watch/providers', [
