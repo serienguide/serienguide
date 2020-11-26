@@ -59,6 +59,7 @@ class UpdateCommand extends Command
     protected function update(Model $model)
     {
         $this->info('Updating ' . $model->name ?: $model->tmdb_id);
+        $this->line('Memory ' . memory_get_usage());
         $model->updateFromTmdb($model->tmdb_id);
         foreach ($model->seasons as $season) {
             $season->updateFromTmdb();

@@ -18,12 +18,8 @@ class TmdbController extends Controller
     {
         echo 'Updating ' . $show->name;
         $show->updateFromTmdb();
-        foreach ($show->seasons as $season) {
-            $season->updateFromTmdb();
-        }
         echo ' finished';
         $next = Show::where('id', '>', $show->id)->orderBy('id', 'ASC')->first();
-
 
         if (is_null($next)) {
             echo '<h1>Alles Fertig</h1>';
