@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Movie extends Model
@@ -67,6 +68,8 @@ class Movie extends Model
         'budget',
         'collection_id',
         'homepage',
+        'name',
+        'name_en',
         'overview',
         'poster_path',
         'released_at',
@@ -74,9 +77,12 @@ class Movie extends Model
         'runtime',
         'status',
         'tagline',
-        'title',
-        'title_en',
         'year',
+        'imdb_id',
+        'tmdb_id',
+        'facebook',
+        'instagram',
+        'twitter',
     ];
 
     public static function createOrUpdateFromTmdb(int $tmdb_id) : self
@@ -151,7 +157,16 @@ class Movie extends Model
 
     public function setSlug() : void
     {
-        $this->attributes['slug'] = Str::slug($this->title . '-' . $this->year, '-', 'de');
+        if (is_null($this->name)) {
+            return;
+        }
+
+        $this->attributes['slug'] = Str::slug($this->name . '-' . $this->year, '-', 'de');
+    }
+
+    public function getCardImagePathAttribute() : string
+    {
+        return Storage::disk('s3')->url('w680' . $this->poster_path);
     }
 
     public function collection() : BelongsTo
@@ -165,6 +180,6 @@ class Movie extends Model
             return $query;
         }
 
-        return $query->where('title', 'LIKE', '%' . $value . '%');
+        return $query->where('name', 'LIKE', '%' . $value . '%');
     }
 }

@@ -27,6 +27,11 @@ class Img extends File
         $this->setResource();
     }
 
+    public function __destruct()
+    {
+        $this->resource = null;
+    }
+
     protected function setResource()
     {
         switch ($this->imageinfo[2]) {
@@ -50,7 +55,13 @@ class Img extends File
     {
         $path = Storage::path('images/temp/' . $this->getFilename());
         $height = $this->getNewHeight($width);
-        $image = imagecreatetruecolor($width, $height);
+        try {
+            $image = imagecreatetruecolor($width, $height);
+        }
+        catch (\Exception $e) {
+            dump($path, $width, $height);
+            throw $e;
+        }
         ImageCopyResampled($image, $this->resource, 0, 0, 0, 0, $width, $height, $this->imageinfo[0], $this->imageinfo[1]);
         ImageJPEG($image, $path);
         imagedestroy($image);

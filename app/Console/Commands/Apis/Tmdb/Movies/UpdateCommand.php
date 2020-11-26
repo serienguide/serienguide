@@ -38,9 +38,25 @@ class UpdateCommand extends Command
      */
     public function handle()
     {
-        $model = Movie::findOrFail($this->argument('id'));
-        $model->updateFromTmdb($model->tmdb_id);
+        if ($this->argument('id')) {
+            $this->update(Movie::findOrFail($this->argument('id')));
+            return 0;
+        }
+
+        $models = Movie::all();
+        foreach ($models as $key => $model) {
+            $this->update($model);
+        }
+
+        $this->info('');
+        $this->info('Completed');
 
         return 0;
+    }
+
+    protected function update(Model $model)
+    {
+        $this->info('Updating ' . $model->name);
+        $model->updateFromTmdb($model->tmdb_id);
     }
 }

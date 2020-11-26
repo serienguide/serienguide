@@ -7,6 +7,7 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="{{ App\Models\Shows\Show::indexPath() }}" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Serien</a>
                         <a href="{{ App\Models\Movies\Movie::indexPath() }}" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Filme</a>
                     </div>
                 </div>
@@ -97,6 +98,7 @@
         @click.away="open = false"
         class="md:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="{{ App\Models\Shows\Show::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Serien</a>
             <a href="{{ App\Models\Movies\Movie::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Filme</a>
         </div>
 

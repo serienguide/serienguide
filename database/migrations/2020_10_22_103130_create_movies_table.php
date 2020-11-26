@@ -17,21 +17,25 @@ class CreateMoviesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('collection_id')->nullable();
             $table->unsignedInteger('tmdb_id')->nullable();
+            $table->string('imdb_id')->nullable();
 
-            $table->string('slug')->index();
-            $table->string('title');
-            $table->string('title_en');
+            $table->string('slug')->nullable()->index();
+            $table->string('name')->nullable();
+            $table->string('name_en')->nullable();
             $table->unsignedSmallInteger('year')->nullable();
             $table->string('tagline')->nullable();
             $table->text('overview')->nullable();
             $table->date('released_at')->nullable();
-            $table->unsignedSmallInteger('runtime')->nullable();
+            $table->unsignedSmallInteger('runtime')->default(0);
             $table->string('homepage')->nullable();
-            $table->unsignedTinyInteger('status')->nullable();
+            $table->string('status')->nullable();
             $table->unsignedSmallInteger('budget')->default(0);
             $table->unsignedSmallInteger('revenue')->default(0);
             $table->string('poster_path')->nullable();
             $table->string('backdrop_path')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('twitter')->nullable();
 
             $table->timestamps();
 

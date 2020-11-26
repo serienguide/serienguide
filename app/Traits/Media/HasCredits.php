@@ -26,7 +26,7 @@ trait HasCredits
         return $this->morphMany(Credit::class, 'medium');
     }
 
-    protected function syncCreditsFromTmdb(array $tmdb_credits)
+    public function syncCreditsFromTmdb(array $tmdb_credits)
     {
         $credit_ids = [];
         foreach ($tmdb_credits as $type => $types) {
@@ -42,7 +42,7 @@ trait HasCredits
                     'known_for_department' => $tmdb_credit['known_for_department'],
                     'gender' => $tmdb_credit['gender'],
                 ]);
-                $this->credits()->firstOrCreate([
+                $this->credits()->updateOrCreate([
                     'id' => $tmdb_credit['credit_id']
                 ], [
                     'person_id' => $person->id,

@@ -20,7 +20,7 @@ trait HasImages
         //
     }
 
-    protected function createImageFromTmdb(string $type, string $path) : Image
+    public function createImageFromTmdb(string $type, string $path) : Image
     {
         return Image::createFromTmdb([
             'type' => $type,

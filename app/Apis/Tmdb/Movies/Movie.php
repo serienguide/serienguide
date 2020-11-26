@@ -40,12 +40,16 @@ class Movie extends Model
         $attributes = $attributes_de;
         $attributes['keywords'] = $attributes_de['keywords']['keywords'];
         $attributes['providers'] = $attributes_de['watch/providers']['results']['DE'] ?? [];
-        $attributes['title_en'] = $attributes_en['title'];
+        $attributes['name'] = $attributes_de['title'];
+        $attributes['name_en'] = $attributes_en['title'];
         $attributes['overview'] = $attributes_de['overview'] ?: $attributes_en['overview'];
         $attributes['tagline'] = $attributes_de['tagline'] ?: $attributes_en['tagline'];
         $attributes['released_at'] = $released_at;
         $attributes['year'] = $year;
-        $attributes['external_ids']['tmdb_id'] = $attributes_de['id'];
+        $attributes['facebook'] = $attributes_de['external_ids']['facebook_id'];
+        $attributes['instagram'] = $attributes_de['external_ids']['instagram_id'];
+        $attributes['twitter'] = $attributes_de['external_ids']['twitter_id'];
+        $attributes['imdb_id'] = $attributes_de['external_ids']['imdb_id'];
 
         return new static($attributes);
     }

@@ -17,6 +17,7 @@ class Image extends Model
     const WIDTHS = [
         'poster' => [ 48, 118, 680 ],
         'backdrop' => [ 75, 423, 750, 1920 ],
+        'still' => [ 75, 423, 750, 1920 ],
         'profile' => [],
     ];
 

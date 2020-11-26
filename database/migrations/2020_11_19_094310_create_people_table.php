@@ -24,8 +24,7 @@ class CreatePeopleTable extends Migration
             $table->unsignedTinyInteger('gender')->nullable();
             $table->text('biography')->nullable();
             $table->string('place_of_birth')->nullable();
-            $table->string('poster_path')->nullable();
-            $table->string('backdrop_path')->nullable();
+            $table->string('profile_path')->nullable();
             $table->string('homepage')->nullable();
 
             $table->timestamps();

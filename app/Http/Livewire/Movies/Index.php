@@ -36,7 +36,7 @@ class Index extends Component
     protected function getItems() : LengthAwarePaginator
     {
         $query = Movie::search($this->filter['search'])
-            ->orderBy('title', 'ASC');
+            ->orderBy('name', 'ASC');
 
         if (auth()->check()) {
             $query->with([

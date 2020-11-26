@@ -22,8 +22,8 @@ class MovieSeeder extends Seeder
         foreach ($data['results'] as $item) {
             $released_at = (new Carbon($item['release_date']));
             Movie::factory()->create([
-                'title' => $item['title'],
-                'title_en' => $item['title'],
+                'name' => $item['title'],
+                'name_en' => $item['title'],
                 'overview' => $item['overview'],
                 'year' => $released_at->year,
                 'released_at' => $released_at,

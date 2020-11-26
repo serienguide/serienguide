@@ -32,6 +32,7 @@ class Watched extends Model
 
     protected $fillable = [
         'user_id',
+        'show_id',
         'watchable_id',
         'watchable_type',
         'watched_at',

@@ -16,12 +16,14 @@ class CreateWatchedTable extends Migration
         Schema::create('watched', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('show_id')->nullable();
             $table->morphs('watchable');
             $table->dateTime('watched_at');
 
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('show_id')->references('id')->on('shows');
 
         });
     }

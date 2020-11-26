@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Media;
 
+use App\Models\Shows\Show;
 use App\Models\Watched\Watched;
 use Livewire\Component;
 

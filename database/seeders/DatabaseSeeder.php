@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\MovieSeeder;
+use Database\Seeders\ShowSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,6 +36,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MovieSeeder::class,
+            ShowSeeder::class,
         ]);
     }
 }

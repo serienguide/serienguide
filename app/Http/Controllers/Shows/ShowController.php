@@ -10,11 +10,6 @@ class ShowController extends Controller
 {
     protected $base_view_path = Show::VIEW_PATH;
 
-    public function __construct()
-    {
-        $this->authorizeResource(Show::class, 'show');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +18,8 @@ class ShowController extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            //
+            return Show::orderBy('title', 'ASC')
+                ->paginate();
         }
 
         return view($this->base_view_path . '.index');
@@ -47,19 +43,7 @@ class ShowController extends Controller
      */
     public function store(Request $request)
     {
-        $show = Show::create([
-            //
-        ]);
-
-        if ($request->wantsJson()) {
-            return $show;
-        }
-
-        return redirect($show->edit_path)
-            ->with('status', [
-                'type' => 'success',
-                'text' => 'Datensatz erstellt.',
-            ]);
+        //
     }
 
     /**

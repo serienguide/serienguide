@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <a href="{{ $model->index_path }}">Filme</a> > {{ $model->title }}
+        <a href="{{ $model->index_path }}">Filme</a> > {{ $model->name }}
     </x-slot>
 
     {{ $model->overview }}

@@ -29,6 +29,8 @@ class Model
      */
     const UPDATED_AT = 'updated_at';
 
+    protected $base_url = 'https://api.themoviedb.org/3/';
+
     public function __construct(array $attributes = [])
     {
         $this->fill($attributes);
