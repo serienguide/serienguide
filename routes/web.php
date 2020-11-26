@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::get('/shows/{show}/update/tmdb', [ App\Http\Controllers\Shows\Updates\TmdbController::class, 'show' ])->name('shows.update.tmdb');
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('{type}/{model}/' . App\Models\Ratings\Rating::ROUTE_NAME, App\Http\Controllers\Ratings\RatingController::class);
     Route::resource('{type}/{model}/' . App\Models\Watched\Watched::ROUTE_NAME, App\Http\Controllers\Watched\WatchedController::class);

@@ -94,9 +94,9 @@ class Show extends Model
         return $model;
     }
 
-    public function updateFromTmdb(int $tmdb_id)
+    public function updateFromTmdb(int $tmdb_id = 0)
     {
-        $tmdb_model = \App\Apis\Tmdb\Shows\Show::find($tmdb_id);
+        $tmdb_model = \App\Apis\Tmdb\Shows\Show::find($tmdb_id ?: $this->tmdb_id);
         $this->update($tmdb_model->toArray());
         $this->syncFromTmdb($tmdb_model);
     }
@@ -116,7 +116,6 @@ class Show extends Model
     {
         $this->seasons()->delete();
         foreach ($tmdb_seasons as $tmdb_season) {
-
             $season = $this->seasons()->withTrashed()->updateOrCreate([
                 'season_number' => $tmdb_season['season_number'],
             ], $tmdb_season + [

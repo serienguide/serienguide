@@ -84,29 +84,57 @@ class Image extends Model
             return [];
         }
 
-        copy($this->provider_url, $this->temp_path);
+        $size = @getimagesize($this->provider_url);
+        if ($size === false) {
+            return [];
+        }
+
+        $original_width = $size[0];
+        $original_height = $size[1];
+        $type = $size[2];
+
+        switch ($type) {
+            case 1: $original = imagecreatefromgif($this->provider_url); break;
+            case 2: $original = ImageCreateFromJPEG($this->provider_url); break;
+            case 3: $original = imagecreatefrompng($this->provider_url); break;
+            default: $original = ImageCreateFromJPEG($this->provider_url); break;
+        }
+
+        if ($original === false) {
+            return [];
+        }
 
         $paths = [];
         if (! Storage::disk($disk)->exists($this->getDirectory() . $this->path)) {
+            ImageJPEG($original, $this->temp_path);
             $paths[] = $this->upload(0, $disk);
+            unlink($this->temp_path);
         }
 
         foreach (self::WIDTHS[$this->type] as $width) {
             if (Storage::disk($disk)->exists($this->getDirectory($width) . $this->path)) {
                 continue;
             }
-            $path = $this->resize($width);
+
+            if ($original_width > $original_height) {
+                $height = round($width * 0.5625);
+            }
+            else {
+                $height = round($width / 0.68);
+            }
+
+            $neuesBild = imagecreatetruecolor($width, $height);
+            ImageCopyResampled($neuesBild, $original, 0, 0, 0, 0, $width, $height, $original_width, $original_height);
+            ImageJPEG($neuesBild, $this->temp_path);
+            imagedestroy($neuesBild);
+
             $paths[] = $this->upload($width, $disk);
+            unlink($this->temp_path);
         }
 
-        unlink($this->temp_path);
+        imagedestroy($original);
 
         return $paths;
-    }
-
-    public function resize(int $width)
-    {
-        return $this->img->resize($width);
     }
 
     public function upload(int $width = 0, string $disk = 's3')
@@ -122,11 +150,6 @@ class Image extends Model
     public function isDeletable() : bool
     {
         return true;
-    }
-
-    public function getImgAttribute() : Img
-    {
-        return new Img(Storage::path('images' . $this->path));
     }
 
     public function getTempPathAttribute() : string

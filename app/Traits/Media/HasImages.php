@@ -20,8 +20,12 @@ trait HasImages
         //
     }
 
-    public function createImageFromTmdb(string $type, string $path) : Image
+    public function createImageFromTmdb(string $type, $path)
     {
+        if (empty($path)) {
+            return;
+        }
+
         return Image::createFromTmdb([
             'type' => $type,
             'path' => $path,

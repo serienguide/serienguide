@@ -44,10 +44,11 @@ class UpdateCommand extends Command
             return 0;
         }
 
-        $models = Show::all();
-        foreach ($models as $key => $model) {
-            $this->update($model);
-        }
+        Show::latest('id')->chunkById(1, function ($models) {
+            foreach ($models as $key => $model) {
+                $this->update($model);
+            }
+        });
 
         $this->info('');
         $this->info('Completed');
@@ -57,7 +58,7 @@ class UpdateCommand extends Command
 
     protected function update(Model $model)
     {
-        $this->info('Updating ' . $model->name ?? $model->tmdb_id);
+        $this->info('Updating ' . $model->name ?: $model->tmdb_id);
         $model->updateFromTmdb($model->tmdb_id);
         foreach ($model->seasons as $season) {
             $season->updateFromTmdb();
