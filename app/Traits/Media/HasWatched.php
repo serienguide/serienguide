@@ -33,4 +33,9 @@ trait HasWatched
     {
         return $this->morphMany(Watched::class, 'watchable');
     }
+
+    public function watchedByUser(int $user_id)
+    {
+        return $this->watched()->where('user_id', $user_id);
+    }
 }
