@@ -2,35 +2,40 @@
 
 namespace Tests\Unit\Models\Shows\Episodes;
 
+use App\Models\Shows\Episodes\Episode;
+use App\Models\Shows\Seasons\Season;
+use App\Models\Shows\Show;
 use Tests\TestCase;
 
 class EpisodeTest extends TestCase
 {
-    protected $class_name = {{ model }}::class;
+    const ID_PRETTY_LITTLE_LIARS = 31917;
+
+    protected $class_name = Episode::class;
 
     /**
      * @test
      */
-    public function it_has_model_paths()
+    public function it_can_be_updated_from_tmdb()
     {
-        $model = $this->class_name::factory()->create();
-        $route_parameter = [
-            '{{ modelVariable }}' => $model->id,
-        ];
-
-        $route = strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?');
-        $this->assertEquals($route, $this->class_name::indexPath($model->toArray()));
-
-        $route = strtok(route($this->class_name::ROUTE_NAME . '.create', $route_parameter), '?');
-        $this->assertEquals($route, $model->create_path);
-
-        $route = route($this->class_name::ROUTE_NAME . '.show', $route_parameter);
-        $this->assertEquals($route, $model->path);
-
-        $route = route($this->class_name::ROUTE_NAME . '.edit', $route_parameter);
-        $this->assertEquals($route, $model->edit_path);
-
-        $route = strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?');
-        $this->assertEquals($route, $model->index_path);
+        $tmdb_id = self::ID_PRETTY_LITTLE_LIARS;
+        $show = Show::factory()->create([
+            'tmdb_id' => $tmdb_id,
+        ]);
+        $season = Season::factory()->create([
+            'show_id' => $show->id,
+            'season_number' => 1
+        ]);
+        $model = $this->class_name::factory()->create([
+            'season_id' => $season->id,
+            'show_id' => $show->id,
+            'episode_number' => 1,
+        ]);
+        $model->updateFromTmdb();
+        $model = $model->refresh();
+        $this->assertGreaterThan(0, $model->credits()->count());
+        $this->assertCount(1, $model->images);
+        $this->assertNotNull($model->name);
+        $this->assertNotNull($model->tmdb_id);
     }
 }

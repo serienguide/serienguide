@@ -31,6 +31,5 @@ class SeasonTest extends TestCase
         $this->assertCount(1, $model->images);
         $this->assertGreaterThan(0, $model->episodes->first()->credits()->count());
         $this->assertCount(1, $model->episodes->first()->images);
-
     }
 }

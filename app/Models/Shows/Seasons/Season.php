@@ -81,11 +81,6 @@ class Season extends Model
             ], $tmdb_episode + [
                 'deleted_at' => null,
             ]);
-            $episode->createImageFromTmdb('still', $tmdb_episode['still_path']);
-            $episode->syncCreditsFromTmdb([
-                'crew' => $tmdb_episode['crew'],
-                'guest_stars' => $tmdb_episode['guest_stars'],
-            ]);
         }
     }
 }

@@ -64,9 +64,27 @@ class Episode extends Model
         return true;
     }
 
+    public function updateFromTmdb($tmdb_model = null)
+    {
+        if (is_null($tmdb_model)) {
+            $tmdb_model = \App\Apis\Tmdb\Shows\Episodes\Episode::find($this->show->tmdb_id, $this->season->season_number, $this->episode_number);
+        }
+        $this->update($tmdb_model->toArray());
+        $this->syncFromTmdb($tmdb_model);
+    }
+
+    protected function syncFromTmdb($tmdb_model)
+    {
+        $this->createImageFromTmdb('still', $tmdb_model->still_path);
+        $this->syncCreditsFromTmdb([
+            'crew' => $tmdb_model->crew,
+            'guest_stars' => $tmdb_model->guest_stars,
+        ]);
+    }
+
     public function getCardImagePathAttribute() : string
     {
-        return Storage::disk('s3')->url('w423' . $this->still_path);
+        return Storage::disk('s3')->url('w423' . $this->still_path ?: $this->show->backdrop_path);
     }
 
     public function season() : BelongsTo
