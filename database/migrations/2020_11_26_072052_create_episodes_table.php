@@ -30,6 +30,11 @@ class CreateEpisodesTable extends Migration
             $table->date('first_aired_at')->nullable();
             $table->string('still_path')->nullable();
 
+            $table->unsignedMediumInteger('vote_count')->default(0);
+            $table->unsignedDecimal('vote_average', 3, 1)->default(0);
+            $table->unsignedMediumInteger('tmdb_vote_count')->default(0);
+            $table->unsignedDecimal('tmdb_vote_average', 3, 1)->default(0);
+
             $table->timestamps();
             $table->softDeletes();
 

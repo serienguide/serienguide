@@ -24,18 +24,32 @@ trait HasRatings
     {
         if ($attributes['rating'] == 0) {
             $this->ratingByUser($user->id)->delete();
+            $this->cacheRatings();
             return null;
         }
 
         $rating = $this->ratingByUser($user->id);
         if (! is_null($rating)) {
             $rating->update($attributes);
+            $this->cacheRatings();
             return $rating;
         }
 
         $attributes['user_id'] = $user->id;
 
-        return $this->ratings()->create($attributes);
+        $rating = $this->ratings()->create($attributes);
+
+        $this->cacheRatings();
+
+        return $rating;
+    }
+
+    protected function cacheRatings() : void
+    {
+        $this->update([
+            'vote_count' => $this->ratings()->count(),
+            'vote_average' => round($this->ratings()->avg('rating'), 1),
+        ]);
     }
 
     public function ratings() : MorphMany

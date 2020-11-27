@@ -83,6 +83,10 @@ class Movie extends Model
         'facebook',
         'instagram',
         'twitter',
+        'vote_count',
+        'vote_average',
+        'tmdb_vote_count',
+        'tmdb_vote_average',
     ];
 
     public static function createOrUpdateFromTmdb(int $tmdb_id) : self

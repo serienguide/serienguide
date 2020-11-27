@@ -15,6 +15,7 @@ class CreatePeopleTable extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->id();
+            $table->string('imdb_id')->nullable();
 
             $table->string('name');
             $table->string('slug');
@@ -26,6 +27,14 @@ class CreatePeopleTable extends Migration
             $table->string('place_of_birth')->nullable();
             $table->string('profile_path')->nullable();
             $table->string('homepage')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('twitter')->nullable();
+
+            $table->unsignedMediumInteger('vote_count')->default(0);
+            $table->unsignedDecimal('vote_average', 3, 1)->default(0);
+            $table->unsignedMediumInteger('tmdb_vote_count')->default(0);
+            $table->unsignedDecimal('tmdb_vote_average', 3, 1)->default(0);
 
             $table->timestamps();
         });

@@ -39,6 +39,10 @@ class Person extends Model
         'poster_path',
         'backdrop_path',
         'homepage',
+        'vote_count',
+        'vote_average',
+        'tmdb_vote_count',
+        'tmdb_vote_average',
     ];
 
     public $incrementing = false;

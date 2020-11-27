@@ -53,6 +53,10 @@ class Episode extends Model
         'still_path',
         'tmdb_id',
         'tvdb_id',
+        'vote_count',
+        'vote_average',
+        'tmdb_vote_count',
+        'tmdb_vote_average',
     ];
 
     public function isDeletable() : bool

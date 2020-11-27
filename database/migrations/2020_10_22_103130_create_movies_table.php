@@ -37,6 +37,11 @@ class CreateMoviesTable extends Migration
             $table->string('instagram')->nullable();
             $table->string('twitter')->nullable();
 
+            $table->unsignedMediumInteger('vote_count')->default(0);
+            $table->unsignedDecimal('vote_average', 3, 1)->default(0);
+            $table->unsignedMediumInteger('tmdb_vote_count')->default(0);
+            $table->unsignedDecimal('tmdb_vote_average', 3, 1)->default(0);
+
             $table->timestamps();
 
             $table->foreign('collection_id')->references('id')->on('movie_collection');

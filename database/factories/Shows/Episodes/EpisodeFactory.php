@@ -22,7 +22,7 @@ class EpisodeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'episode_number' => $this->faker->numberBetween(1, 25),
         ];
     }
 }
