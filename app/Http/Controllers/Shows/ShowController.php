@@ -54,6 +54,12 @@ class ShowController extends Controller
      */
     public function show(Request $request, Show $show)
     {
+        $show->load([
+            'seasons',
+            'genres',
+            'providers',
+        ]);
+
         if ($request->wantsJson()) {
             return $show;
         }

@@ -31,6 +31,7 @@ class Listing extends Model
     ];
 
     protected $fillable = [
+        'type',
         'user_id',
         'name',
         'description',
@@ -40,7 +41,7 @@ class Listing extends Model
 
     public function isDeletable() : bool
     {
-        return true;
+        return $this->is_custom;
     }
 
     public function setSlug() : void
@@ -54,6 +55,11 @@ class Listing extends Model
             $slug .= '-' . (self::where('user_id', $this->user_id)->where('name', $this->name)->count());
         }
         $this->attributes['slug'] = $slug;
+    }
+
+    public function getIsCustomAttribute() : bool
+    {
+        return is_null($this->type);
     }
 
     public function getRouteParameterAttribute() : array

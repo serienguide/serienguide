@@ -16,7 +16,14 @@ class Ul extends Component
 
     public function mount($model)
     {
-        $this->items = $model->watched;
+        $this->model = $model;
+        $this->loadWatched();
+        $this->items = $this->model->watched;
+    }
+
+    public function load()
+    {
+
     }
 
     public function destroy(int $index)
@@ -37,7 +44,13 @@ class Ul extends Component
 
     public function watched($watched)
     {
-        $this->items = $this->model->load([
+        $this->loadWatched();
+        $this->items = $this->model->watched;
+    }
+
+    protected function loadWatched()
+    {
+        $this->model->load([
             'watched' => function ($query) {
                 return $query->where('user_id', auth()->user()->id);
             }

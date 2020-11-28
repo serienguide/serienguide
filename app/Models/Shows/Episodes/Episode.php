@@ -86,7 +86,8 @@ class Episode extends Model
 
     public function getCardImagePathAttribute() : string
     {
-        return Storage::disk('s3')->url('w423' . $this->still_path ?: $this->show->backdrop_path);
+        $path = $this->still_path ?: $this->show->backdrop_path;
+        return Storage::disk('s3')->url($path ? 'w423' . $path : 'no/750x422.png');
     }
 
     public function season() : BelongsTo

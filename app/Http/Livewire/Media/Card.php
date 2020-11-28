@@ -15,10 +15,16 @@ class Card extends Component
         'unwatched' => 'unwatched',
     ];
 
+    public function mount($model)
+    {
+        $this->model = $model;
+        $this->loadWatchedCount();
+    }
+
     public function watch()
     {
         $watched = $this->model->watchedBy(auth()->user());
-        $this->loadWatched();
+        $this->loadWatchedCount();
         $this->emit('watched', $watched);
     }
 
@@ -29,17 +35,17 @@ class Card extends Component
 
     public function watched(Watched $watched)
     {
-        $this->loadWatched();
+        $this->loadWatchedCount();
     }
 
     public function unwatched()
     {
-        $this->loadWatched();
+        $this->loadWatchedCount();
     }
 
-    protected function loadWatched()
+    protected function loadWatchedCount()
     {
-        $this->model->load([
+        $this->model->loadCount([
             'watched' => function ($query) {
                 return $query->where('user_id', auth()->user()->id);
             }
@@ -54,11 +60,11 @@ class Card extends Component
 
     protected function buttonClass() : string
     {
-        if ($this->model->watched->count() == 0) {
+        if ($this->model->watched_count == 0) {
             return 'text-gray-700 bg-white';
         }
 
-        if ($this->model->watched->count() % 2 == 0) {
+        if ($this->model->watched_count % 2 == 0) {
             return 'bg-green-600 text-white';
         }
 

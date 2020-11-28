@@ -99,7 +99,7 @@
         <h3 class="flex-grow text-gray-900 leading-5 font-medium overflow-hidden whitespace-nowrap"><a href="{{ $model->path }}" title="{{ $model->name }}">{{ $model->name }}</a></h3>
         @auth
         <div class="ml-1">
-            <button wire:click="watch" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md whitespace-no-wrap hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 {{ $button_class }}" title="@if($model->watched->count()) ({{ $model->watched->count() }}) mal gesehen @endif">
+            <button wire:click="watch" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md whitespace-no-wrap hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 {{ $button_class }}" title="@if($model->watched_count) {{ $model->watched_count }} mal gesehen @endif">
                 <i class="fas fa-check"></i>
             </button>
         </div>

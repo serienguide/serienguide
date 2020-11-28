@@ -5,6 +5,11 @@
 
     {{ $model->overview }}
 
+    {{ $model->genres->implode('name', ', ') }}
+
+    @dump($model->credits)
+
+
     @auth
         <div class="mt-3">
             @livewire('watched.ul', ['model' => $model])
