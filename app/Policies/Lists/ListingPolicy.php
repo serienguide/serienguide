@@ -53,7 +53,7 @@ class ListingPolicy
      */
     public function update(User $user, Listing $list)
     {
-        return ($user->id == $list->user_id);
+        return ($user->id == $list->user_id && $list->is_custom);
     }
 
     /**
@@ -65,7 +65,7 @@ class ListingPolicy
      */
     public function delete(User $user, Listing $list)
     {
-        return ($user->id == $list->user_id);
+        return ($user->id == $list->user_id && $list->is_custom);
     }
 
     /**

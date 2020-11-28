@@ -16,10 +16,15 @@ class CreateListsTable extends Migration
         Schema::create('lists', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('type')->nullable();
 
             $table->string('name');
             $table->string('slug');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('is_private')->default(false);
+            $table->string('default_order')->nullable();
+            $table->unsignedSmallInteger('items_count')->default(0);
+            $table->unsignedMediumInteger('runtime')->default(0);
 
             $table->timestamps();
 

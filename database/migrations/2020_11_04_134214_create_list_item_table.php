@@ -18,7 +18,7 @@ class CreateListItemTable extends Migration
 
             $table->unsignedBigInteger('list_id');
             $table->morphs('medium');
-            $table->unsignedMediumInteger('rank');
+            $table->unsignedMediumInteger('rank')->default(0);
 
             $table->foreign('list_id')->references('id')->on('lists');
 

@@ -18,9 +18,9 @@ class CreateCreditsTable extends Migration
 
             $table->unsignedBigInteger('person_id');
             $table->morphs('medium');
-            $table->string('credit_type');
-            $table->string('department');
-            $table->string('job');
+            $table->string('credit_type')->nullable();
+            $table->string('department')->nullable();
+            $table->string('job')->nullable();
             $table->string('character')->nullable();
             $table->unsignedSmallInteger('order')->nullable();
 

@@ -13,3 +13,4 @@ npm-debug.log
 yarn-error.log
 todo.md
 .env.sandbox
+legacy/migrate.sh

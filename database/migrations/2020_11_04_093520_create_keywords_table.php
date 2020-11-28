@@ -17,7 +17,7 @@ class CreateKeywordsTable extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('slug');
+            $table->string('slug')->nullable();
 
             $table->timestamps();
         });

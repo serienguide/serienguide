@@ -26,6 +26,8 @@ class CreatePeopleTable extends Migration
             $table->text('biography')->nullable();
             $table->string('place_of_birth')->nullable();
             $table->string('profile_path')->nullable();
+            $table->string('backdrop_path')->nullable();
+            $table->string('video_url')->nullable();
             $table->string('homepage')->nullable();
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();

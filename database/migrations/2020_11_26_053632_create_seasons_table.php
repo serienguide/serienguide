@@ -20,11 +20,15 @@ class CreateSeasonsTable extends Migration
             $table->unsignedInteger('tmdb_id')->nullable()->index();
             $table->unsignedInteger('tvdb_id')->nullable()->index();
 
-            $table->unsignedSmallInteger('season_number')->index();
+            $table->unsignedMediumInteger('season_number')->index();
             $table->text('overview')->nullable();
             $table->date('first_aired_at')->nullable();
             $table->string('poster_path')->nullable();
+            $table->string('video_url')->nullable();
             $table->unsignedMediumInteger('episode_count')->default(0);
+
+            $table->unsignedMediumInteger('vote_count')->default(0);
+            $table->unsignedDecimal('vote_average', 3, 1)->default(0);
 
             $table->timestamps();
             $table->softDeletes();

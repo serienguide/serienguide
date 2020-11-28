@@ -16,8 +16,9 @@ class CreateMovieCollectionTable extends Migration
         Schema::create('movie_collection', function (Blueprint $table) {
             $table->id();
 
+            $table->string('slug')->nullable()->index();
             $table->string('name');
-            $table->string('slug')->index();
+            $table->text('overview')->nullable();
             $table->string('poster_path')->nullable();
             $table->string('backdrop_path')->nullable();
 

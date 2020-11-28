@@ -29,6 +29,8 @@ class CreateShowsTable extends Migration
             $table->text('overview')->nullable();
             $table->date('first_aired_at')->nullable();
             $table->date('last_aired_at')->nullable();
+            $table->string('air_day')->nullable();
+            $table->time('air_time')->nullable();
             $table->unsignedSmallInteger('year')->nullable();
             $table->unsignedSmallInteger('runtime')->default(0);
             $table->string('homepage')->nullable();
@@ -37,6 +39,7 @@ class CreateShowsTable extends Migration
             $table->boolean('is_anime')->default(false);
             $table->string('poster_path')->nullable();
             $table->string('backdrop_path')->nullable();
+            $table->string('video_url')->nullable();
             $table->unsignedSmallInteger('seasons_count')->default(0);
             $table->unsignedMediumInteger('episodes_count')->default(0);
 
@@ -48,6 +51,8 @@ class CreateShowsTable extends Migration
             $table->unsignedDecimal('vote_average', 3, 1)->default(0);
             $table->unsignedMediumInteger('tmdb_vote_count')->default(0);
             $table->unsignedDecimal('tmdb_vote_average', 3, 1)->default(0);
+            $table->unsignedMediumInteger('tmdb_trending')->default(999999);
+            $table->unsignedDecimal('tmdb_popularity', 10, 6)->default(0);
 
             $table->timestamps();
         });
