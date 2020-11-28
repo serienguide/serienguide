@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Watched\Watched;
 use App\Traits\HasManyLists;
 use App\Traits\HasSlug;
+use App\Traits\Media\HasCard;
 use App\Traits\Media\HasCredits;
 use App\Traits\Media\HasGenres;
 use App\Traits\Media\HasImages;
@@ -27,7 +28,8 @@ use Illuminate\Support\Str;
 
 class Show extends Model
 {
-    use HasCredits,
+    use HasCard,
+        HasCredits,
         HasFactory,
         HasGenres,
         HasImages,
@@ -127,11 +129,6 @@ class Show extends Model
             ]);
             $season->createImageFromTmdb('poster', $tmdb_season['poster_path']);
         }
-    }
-
-    public function getCardImagePathAttribute() : string
-    {
-        return Storage::disk('s3')->url('w680' . $this->poster_path);
     }
 
     public function seasons() : HasMany

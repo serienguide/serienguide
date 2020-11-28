@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\Watched\Watched;
 use App\Traits\HasManyLists;
 use App\Traits\HasSlug;
+use App\Traits\Media\HasCard;
 use App\Traits\Media\HasCredits;
 use App\Traits\Media\HasGenres;
 use App\Traits\Media\HasImages;
@@ -36,7 +37,8 @@ use Illuminate\Support\Str;
 
 class Movie extends Model
 {
-    use HasCredits,
+    use HasCard,
+        HasCredits,
         HasFactory,
         HasGenres,
         HasImages,
@@ -166,11 +168,6 @@ class Movie extends Model
         }
 
         $this->attributes['slug'] = Str::slug($this->name . '-' . $this->year, '-', 'de');
-    }
-
-    public function getCardImagePathAttribute() : string
-    {
-        return Storage::disk('s3')->url('w680' . $this->poster_path);
     }
 
     public function collection() : BelongsTo

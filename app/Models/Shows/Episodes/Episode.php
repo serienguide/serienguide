@@ -4,6 +4,7 @@ namespace App\Models\Shows\Episodes;
 
 use App\Models\Shows\Seasons\Season;
 use App\Models\Shows\Show;
+use App\Traits\Media\HasCard;
 use App\Traits\Media\HasCredits;
 use App\Traits\Media\HasImages;
 use App\Traits\Media\HasRatings;
@@ -17,7 +18,8 @@ use Illuminate\Support\Facades\Storage;
 
 class Episode extends Model
 {
-    use HasCredits,
+    use HasCard,
+        HasCredits,
         HasFactory,
         HasImages,
         HasRatings,
