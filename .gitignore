@@ -14,3 +14,5 @@ yarn-error.log
 todo.md
 .env.sandbox
 legacy/migrate.sh
+legacy/taces2_serienguide.sql
+legacy/local_serienguide.sql
