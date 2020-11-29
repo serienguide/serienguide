@@ -133,12 +133,12 @@ class Show extends Model
 
     public function seasons() : HasMany
     {
-        return $this->hasMany(Season::class, 'show_id');
+        return $this->hasMany(Season::class, 'show_id')->orderBy('season_number', 'ASC');
     }
 
     public function episodes() : HasMany
     {
-        return $this->hasMany(Episode::class, 'show_id');
+        return $this->hasMany(Episode::class, 'show_id')->orderBy('episode_number', 'ASC');
     }
 
     public function watchedBy(User $user, array $attributes = []) : void
