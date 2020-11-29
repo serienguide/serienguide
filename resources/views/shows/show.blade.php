@@ -1,8 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <a href="{{ $model->index_path }}">Serien</a> > {{ $model->name }}
-    </x-slot>
-
+    <x-media.hero :model="$model"/>
     <x-container class="py-4">
         <div class="flex">
             @if ($model->poster_path)

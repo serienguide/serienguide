@@ -87,10 +87,14 @@ class Episode extends Model
         ]);
     }
 
+    public function getBackdropPathAttribute() : string
+    {
+        return $this->still_path ?: $this->show->backdrop_path;
+    }
+
     public function getCardImagePathAttribute() : string
     {
-        $path = $this->still_path ?: $this->show->backdrop_path;
-        return Storage::disk('s3')->url($path ? 'w423' . $path : 'no/750x422.png');
+        return Storage::disk('s3')->url($this->backdrop_path ? 'w423' . $this->backdrop_path : 'no/750x422.png');
     }
 
     public function watchedBy(User $user, array $attributes = []) : Watched

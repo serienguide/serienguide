@@ -1,4 +1,5 @@
 <x-app-layout>
+    <x-media.hero :model="$model"/>
     <section class="py-5">
         <x-container>
             <div class="flex">
