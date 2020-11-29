@@ -12,6 +12,8 @@
             </div>
         @endif
 
+        <x-auth.providers />
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
 

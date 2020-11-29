@@ -6,6 +6,8 @@
 
         <x-jet-validation-errors class="mb-4" />
 
+        <x-auth.providers />
+
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
