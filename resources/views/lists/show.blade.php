@@ -3,9 +3,11 @@
         <a href="{{ $model->index_path }}">Listen</a> > <a href="{{ $model->path }}">{{ $model->name }}</a>
     </x-slot>
 
-    <x-slot name="header_actions">
-        <a href="{{ $model->edit_path }}"><i class="fas fa-edit"></i></a>
-    </x-slot>
+    @can('update', $model)
+        <x-slot name="header_actions">
+            <a href="{{ $model->edit_path }}"><i class="fas fa-edit"></i></a>
+        </x-slot>
+    @endcan
 
     <x-container class="py-4">
         @if ($model->description)
