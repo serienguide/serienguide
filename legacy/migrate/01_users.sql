@@ -22,3 +22,14 @@ INSERT INTO users
     ORDER BY
         id ASC
 );
+
+UPDATE
+    users,
+    legacy_user
+SET
+    users.provider = legacy_user.provider,
+    users.provider_id = legacy_user.social_id
+WHERE
+    legacy_user.id = users.id AND
+    legacy_user.social_id != '0' AND
+    legacy_user.social_id != '';
