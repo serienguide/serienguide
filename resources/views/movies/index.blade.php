@@ -2,6 +2,7 @@
     <x-slot name="header">
         Filme
     </x-slot>
-
-    @livewire('movies.index')
+    <x-container class="py-4">
+        @livewire('movies.index')
+    </x-container>
 </x-app-layout>

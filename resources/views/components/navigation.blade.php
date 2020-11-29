@@ -3,7 +3,9 @@
         <div class="flex items-center justify-between h-16">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <img class="h-8 w-8" src="{{ Storage::disk('s3')->url('icons/favicon-96x96.png') }}" alt="Workflow logo">
+                    <a href="/">
+                        <img class="h-8 w-8" src="{{ Storage::disk('s3')->url('icons/favicon-96x96.png') }}" alt="Workflow logo">
+                    </a>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">

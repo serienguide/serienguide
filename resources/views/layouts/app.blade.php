@@ -52,19 +52,25 @@
     </head>
     <body class="font-sans antialiased">
         <x-navigation />
-        <header class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-                <h1 class="text-lg leading-6 font-semibold text-gray-900">
-                    {{ $header }}
-                </h1>
-            </div>
-        </header>
+        @if (isset($header))
+            <header class="bg-white shadow-sm">
+                <x-container class="py-4">
+                    <div class="flex items-center">
+                        <h1 class="flex-grow text-lg leading-6 font-semibold text-gray-900">
+                            {{ $header }}
+                        </h1>
+                        <div class="flex items-center">
+                            {{ $header_stats ?? '' }}
+                        </div>
+                        <div class="flex items-center">
+                            {{ $header_actions ?? '' }}
+                        </div>
+                    </div>
+                </x-container>
+            </header>
+        @endif
         <main>
-            <div class="max-w-7xl mx-auto pb-6 sm:px-6 lg:px-8">
-                <div class="px-4 py-4 sm:px-0">
-                    {{ $slot }}
-                </div>
-            </div>
+            {{ $slot }}
         </main>
         <footer class="bg-gray-800">
             <div class="max-w-screen-xl mx-auto py-12 px-4 overflow-hidden space-y-8 sm:px-6 lg:px-8">

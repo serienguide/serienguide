@@ -2,6 +2,7 @@
     <x-slot name="header">
         Serien
     </x-slot>
-
-    @livewire('shows.index')
+    <x-container class="py-4">
+        @livewire('shows.index')
+    </x-container>
 </x-app-layout>

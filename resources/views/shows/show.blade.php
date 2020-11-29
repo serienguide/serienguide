@@ -3,10 +3,10 @@
         <a href="{{ $model->index_path }}">Serien</a> > {{ $model->name }}
     </x-slot>
 
-    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div class="flex px-4 py-5 sm:px-6">
+    <x-container class="py-4">
+        <div class="flex">
             @if ($model->poster_path)
-                <div class="px-4 hidden sm:block">
+                <div class="mr-4 hidden sm:block">
                     <img class="max-w-full" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
                 </div>
             @endif
@@ -51,17 +51,14 @@
                         <a href="https://www.themoviedb.org/tv/{{ $model->tmdb_id }}/watch?locale=DE">{{ $model->providers->implode('name', ', ') }}</a>
                     </dd>
                 </div>
-            </div>
-        </dl>
-    </div>
-</div>
+            </dl>
+        </div>
 
-<div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6">
-        @foreach($model->seasons as $season)
-            @livewire('shows.seasons.index', ['season' => $season], key('shows.seasons.index.' . $season->id))
-        @endforeach
-    </div>
-</div>
+        <div>
+            @foreach($model->seasons as $season)
+                @livewire('shows.seasons.index', ['season' => $season], key('shows.seasons.index.' . $season->id))
+            @endforeach
+        </div>
+    </x-container>
 
 </x-app-layout>

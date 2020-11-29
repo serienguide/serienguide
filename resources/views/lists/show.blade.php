@@ -1,13 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center">
-            <div class="flex-grow">
-                <a href="{{ $model->index_path }}">Listen</a> > <a href="{{ $model->path }}">{{ $model->name }}</a>
-            </div>
-            <div>
-                <a href="{{ $model->edit_path }}">Bearbeiten</a>
-            </div>
-        </div>
+        <a href="{{ $model->index_path }}">Listen</a> > <a href="{{ $model->path }}">{{ $model->name }}</a>
+    </x-slot>
+
+    <x-slot name="header_actions">
+        <a href="{{ $model->edit_path }}"><i class="fas fa-edit"></i></a>
     </x-slot>
 
     @if ($model->description)

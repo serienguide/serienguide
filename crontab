@@ -1,0 +1,83 @@
+#Serien
+
+# Set Tmdb Id
+30 23 * * * php ~/html/serienguide/index.php update/tvdbSerie setTmdbId
+MAILTO=""
+
+#Update TVDB
+50 23 * * * php ~/html/serienguide/index.php update/tvdbSerie changed
+MAILTO=""
+
+#Update
+0 */12 * * * php ~/html/serienguide/index.php update/tmdbSerie changed
+MAILTO=""
+
+#show premieres
+0 2 * * * php ~/html/serienguide/index.php cronjobs/showPremieres add
+MAILTO=""
+
+#Trending + Popularity
+0 4 * * * php ~/html/serienguide/index.php update/tmdbSerie trending
+MAILTO=""
+
+# Glotz
+0 1 * * * php ~/html/serienguide/index.php update/glotzSerie changed
+MAILTO=""
+
+#Wertung
+5 0 * * * php ~/html/serienguide/index.php charts wertung_berechnen film
+MAILTO=""
+10 0 * * * php ~/html/serienguide/index.php charts wertung_berechnen serie
+MAILTO=""
+
+#Filme
+
+#Add
+30 */12 * * * php ~/html/serienguide/index.php film insert_many
+MAILTO=""
+
+#Update
+0 4 * * * php ~/html/serienguide/index.php film update_many
+MAILTO=""
+
+#Trending + Popularity
+20 4 * * * php ~/html/serienguide/index.php update/tmdbFilm trending
+MAILTO=""
+
+#Personen
+
+15 4 * * * php ~/html/serienguide/index.php person update_many
+MAILTO=""
+
+35 4 * * * php ~/html/serienguide/index.php person update_many 0
+MAILTO=""
+
+#Triggered Updates
+
+45 * * * * php ~/html/serienguide/index.php update/tmdbSerie triggered
+MAILTO=""
+
+55 * * * * php ~/html/serienguide/index.php update/tvdbSerie triggered
+MAILTO=""
+
+45 * * * * php ~/html/serienguide/index.php update/tmdbFilm triggered
+MAILTO=""
+
+#Add Meine Serien
+10 0 * * * php ~/html/serienguide/index.php cronjob_add_serie_meine_serien
+MAILTO=""
+
+#Check Video
+10 */12 * * * php ~/html/serienguide/index.php welcome check_video
+40 */12 * * * php ~/html/serienguide/index.php welcome check_video
+
+#Sitemap
+30 3 * * * php ~/html/serienguide/index.php sitemap index
+
+#E-Mail inaktiv
+0 19 * * * php ~/html/serienguide/index.php email inaktiv
+55 18 * * * php ~/html/serienguide/index.php email inaktiv_new
+
+# Bnachrichtigungen
+@daily php ~/html/serienguide/index.php cronjobs merkzettel benachrichtigungenZuAusstrahlung
+MAILTO=""
