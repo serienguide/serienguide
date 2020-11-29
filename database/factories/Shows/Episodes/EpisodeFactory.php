@@ -29,6 +29,7 @@ class EpisodeFactory extends Factory
             'episode_number' => $this->faker->numberBetween(1, 25),
             'season_id' => $season->id,
             'show_id' => $season->show_id,
+            'still_path' => $this->faker->md5 . '.jpg',
         ];
     }
 }

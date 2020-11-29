@@ -2,6 +2,7 @@
 
 namespace App\Traits\Media;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 
 trait HasCard
@@ -18,13 +19,13 @@ trait HasCard
         //
     }
 
-    public function getCardImagePathAttribute() : string
-    {
-        return Storage::disk('s3')->url($this->poster_path ? 'w680' . $this->poster_path : 'no/680x1000.png');
-    }
-
     public function getClassNameAttribute() : string
     {
         return strtolower(class_basename($this));
+    }
+
+    public function scopeForCard(Builder $query) : Builder
+    {
+        return $query;
     }
 }

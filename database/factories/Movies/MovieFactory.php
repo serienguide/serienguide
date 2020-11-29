@@ -31,6 +31,8 @@ class MovieFactory extends Factory
             'runtime' => $this->faker->numberBetween(30, 500),
             'homepage' => $this->faker->url,
             'status' => $this->faker->numberBetween(0, 5),
+            'poster_path' => $this->faker->md5 . '.jpg',
+            'backdrop_path' => $this->faker->md5 . '.jpg',
         ];
     }
 }

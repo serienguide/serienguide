@@ -30,6 +30,8 @@ class PersonFactory extends Factory
             'biography' => $this->faker->paragraph,
             'place_of_birth' => $this->faker->city,
             'homepage' => $this->faker->domainName,
+            'profile_path' => $this->faker->md5 . '.jpg',
+            'backdrop_path' => $this->faker->md5 . '.jpg',
         ];
     }
 }

@@ -83,4 +83,9 @@ class Season extends Model
             ]);
         }
     }
+
+    public function getBackdropPathAttribute() : string
+    {
+        return $this->show->backdrop_path;
+    }
 }

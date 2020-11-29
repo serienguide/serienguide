@@ -25,6 +25,7 @@ class SeasonFactory extends Factory
         return [
             'season_number' => $this->faker->numberBetween(1, 10),
             'show_id' => Show::factory(),
+            'poster_path' => $this->faker->md5 . '.jpg',
         ];
     }
 }
