@@ -45,6 +45,10 @@ class Card extends Component
 
     protected function loadWatchedCount()
     {
+        if (! auth()->check()) {
+            return;
+        }
+
         $this->model->loadCount([
             'watched' => function ($query) {
                 return $query->where('user_id', auth()->user()->id);
