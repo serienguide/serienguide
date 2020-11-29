@@ -4,6 +4,8 @@ namespace App\Models\Shows\Episodes;
 
 use App\Models\Shows\Seasons\Season;
 use App\Models\Shows\Show;
+use App\Models\User;
+use App\Models\Watched\Watched;
 use App\Traits\Media\HasCard;
 use App\Traits\Media\HasCredits;
 use App\Traits\Media\HasImages;
@@ -14,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
 class Episode extends Model
@@ -88,6 +91,15 @@ class Episode extends Model
     {
         $path = $this->still_path ?: $this->show->backdrop_path;
         return Storage::disk('s3')->url($path ? 'w423' . $path : 'no/750x422.png');
+    }
+
+    public function watchedBy(User $user, array $attributes = []) : Watched
+    {
+        return $this->watched()->create([
+            'user_id' => $user->id,
+            'watched_at' => Arr::get($attributes, 'watched_at', now()),
+            'show_id' => $this->show_id,
+        ]);
     }
 
     public function season() : BelongsTo
