@@ -32,7 +32,7 @@
             <div class="relative inline-block text-left" x-data="{ open: false }">
                 <div class="px-1">
                     <button @click="open = true" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
-                        <i class="fas fa-star {{ is_null($model->rating_by_user) ? '' : 'text-yellow-400' }}"></i> {{ is_null($model->rating_by_user) ? '' : $model->rating_by_user->rating }}
+                        <i class="fas fa-star {{ is_null($model->rating_by_user) ? '' : 'text-yellow-400' }}"></i>
                     </button>
                 </div>
 
