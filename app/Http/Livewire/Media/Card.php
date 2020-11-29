@@ -9,6 +9,7 @@ use Livewire\Component;
 class Card extends Component
 {
     public $model;
+    public $type = 'poster';
 
     protected $listeners = [
         'watched' => 'watched',

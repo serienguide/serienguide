@@ -92,7 +92,7 @@
     </header>
     <main class="flex-grow">
         <a href="{{ $model->path }}" title="{{ $model->name }}">
-            <img src="{{ $model->card_image_path }}">
+            <img src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}">
         </a>
     </main>
     <footer class="flex items-center p-3">

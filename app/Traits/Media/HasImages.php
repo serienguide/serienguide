@@ -5,6 +5,7 @@ namespace App\Traits\Media;
 use App\Models\Images\Image;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Storage;
 
 trait HasImages
 {
@@ -32,6 +33,16 @@ trait HasImages
             'medium_type' => self::class,
             'medium_id' => $this->id,
         ]);
+    }
+
+    public function getPosterUrlAttribute() : string
+    {
+        return Storage::disk('s3')->url($this->backdrop_path ? 'w680' . $this->poster_path : 'no/680x1000.png');
+    }
+
+    public function getBackdropUrlAttribute() : string
+    {
+        return Storage::disk('s3')->url($this->backdrop_path ? 'w423' . $this->backdrop_path : 'no/750x422.png');
     }
 
     public function images() : MorphMany
