@@ -7,7 +7,7 @@
         <div class="flex px-4 py-5 sm:px-6">
             @if ($model->poster_path)
                 <div class="px-4 hidden sm:block">
-                    <img style="max-width: 100%;" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
+                    <img class="max-w-full" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
                 </div>
             @endif
             <dl class="flex-grow grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
