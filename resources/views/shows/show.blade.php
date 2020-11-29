@@ -4,8 +4,13 @@
     </x-slot>
 
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div class="px-4 py-5 sm:px-6">
-            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+        <div class="flex px-4 py-5 sm:px-6">
+            @if ($model->poster_path)
+                <div class="px-4 hidden sm:block">
+                    <img style="max-width: 100%;" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
+                </div>
+            @endif
+            <dl class="flex-grow grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                 <div class="sm:col-span-2">
                     <dt class="text-sm font-medium text-gray-500">
                         Inhalt
