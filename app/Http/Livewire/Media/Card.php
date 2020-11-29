@@ -65,13 +65,13 @@ class Card extends Component
     protected function buttonClass() : string
     {
         if ($this->model->watched_count == 0) {
-            return 'text-gray-700 bg-white';
+            return 'bg-white text-gray-700 border-gray-300 hover:text-gray-500';
         }
 
         if ($this->model->watched_count % 2 == 0) {
-            return 'bg-green-600 text-white';
+            return 'bg-green-600 text-white border-green-600 hover:bg-green-700';
         }
 
-        return 'bg-indigo-600 text-white';
+        return 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700';
     }
 }

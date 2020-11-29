@@ -8,14 +8,12 @@
         @forelse ($items as $item)
             <li class="py-4 space-x-3">
                 <div class="flex items-center justify-between">
-                    <div class="text-sm leading-5 font-medium text-indigo-600 truncate">
+                    <div class="text-sm leading-5 font-medium text-blue-600 truncate">
                         {{ $item->watched_at->format('d.m.Y H:i') }}
                         <div class="text-sm text-gray-500">Erstellt: {{ $item->created_at->format('d.m.Y H:i') }}</div>
                     </div>
                     <div class="ml-2 flex-shrink-0 flex">
-                        <span wire:click="destroy({{ $loop->index }})" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 cursor-pointer">
-                            löschen
-                        </span>
+                        <i wire:click="destroy({{ $loop->index }})" class="fas fa-trash-alt text-sm text-red-500 hover:text-red-700 cursor-pointer" title="Löschen"></i>
                     </div>
                 </div>
             </li>

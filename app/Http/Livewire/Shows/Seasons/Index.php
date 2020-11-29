@@ -25,6 +25,11 @@ class Index extends Component
 
     public function load()
     {
-        $this->items = $this->season->episodes()->orderBy('episode_number', 'ASC')->get();
+        $this->items = $this->season->episodes()
+            ->with([
+                'season',
+            ])
+            ->orderBy('episode_number', 'ASC')
+            ->get();
     }
 }

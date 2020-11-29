@@ -2,7 +2,7 @@
     <header class="flex items-center justify-center p-3">
         @auth
             <div class="flex-grow"></div>
-            @if(get_class($model) != \App\Models\Shows\Episodes\Episode::class)
+            @if($model->class_name != 'episode')
                 <div class="relative inline-block text-left" x-data="{ open: false }">
                     <div class="px-1">
                         <button @click="open = true" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            @if(get_class($model) != \App\Models\Shows\Show::class)
+            @if($model->class_name != 'show')
                 <div class="relative inline-block text-left" x-data="{ open: false }">
                     <div class="px-1">
                         <button @click="open = true" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
@@ -96,13 +96,24 @@
         </a>
     </main>
     <footer class="flex items-center p-3">
-        <h3 class="flex-grow text-gray-900 leading-5 font-medium overflow-hidden whitespace-nowrap"><a href="{{ $model->path }}" title="{{ $model->name }}">{{ $model->name }}</a></h3>
+        <h3 class="flex-grow text-gray-900 leading-5 font-medium overflow-hidden whitespace-nowrap">
+            @if ($model->class_name == 'episode')
+                <a href="{{ $model->path }}" title="{{ $model->name }}" class="text-center">
+                    <div class="font-bold">{{ $model->season->season_number }}x{{ $model->episode_number }}</div>
+                    <div class="text-gray-500">{{ $model->name }}</div>
+                </a>
+            @else
+                <a href="{{ $model->path }}" title="{{ $model->name }}">
+                    {{ $model->name }}
+                </a>
+            @endif
+        </h3>
         @auth
-        <div class="ml-1">
-            <button wire:click="watch" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md whitespace-no-wrap hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 {{ $button_class }}" title="@if($model->watched_count) {{ $model->watched_count }} mal gesehen @endif">
-                <i class="fas fa-check"></i>
-            </button>
-        </div>
+            <div class="ml-1">
+                <button wire:click="watch" type="button" class="inline-flex items-center px-3 py-3 border border-gray-300 text-sm leading-5 font-medium rounded-full whitespace-no-wrap focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150 {{ $button_class }}" title="@if($model->watched_count) {{ $model->watched_count }} mal gesehen @endif">
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>
         @endauth
     </footer>
 </li>

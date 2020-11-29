@@ -52,7 +52,8 @@ class Ul extends Component
     {
         $this->model->load([
             'watched' => function ($query) {
-                return $query->where('user_id', auth()->user()->id);
+                return $query->where('user_id', auth()->user()->id)
+                    ->orderBy('watched_at', 'DESC');
             }
         ]);
     }
