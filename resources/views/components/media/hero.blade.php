@@ -38,16 +38,23 @@
     </div>
 </section>
 <script type="text/javascript">
-    var nav = document.querySelector('nav#nav');
+    var nav = document.querySelector('nav#nav'),
+        searchbar = document.getElementById('search');
     nav.classList.add("bg-transparent");
     nav.classList.remove("bg-gray-800");
+    searchbar.classList.add("bg-transparent");
+    searchbar.classList.remove("bg-gray-700");
     window.onscroll = function() {
         if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
             nav.classList.add("bg-gray-800");
             nav.classList.remove("bg-transparent");
+            searchbar.classList.add("bg-gray-700");
+            searchbar.classList.remove("bg-transparent");
         } else {
             nav.classList.add("bg-transparent");
             nav.classList.remove("bg-gray-800");
+            searchbar.classList.add("bg-transparent");
+            searchbar.classList.remove("bg-gray-700");
         }
     };
 </script>
