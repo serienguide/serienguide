@@ -51,8 +51,13 @@ class ShowTest extends TestCase
             'name' => 'New Model',
             'year' => 2020
         ]);
-
         $this->assertEquals('new-model-2020', $model->slug);
+
+        $model = $this->class_name::factory()->create([
+            'name' => null,
+            'year' => 2020
+        ]);
+        $this->assertNotNull($model->slug);
     }
 
     /**

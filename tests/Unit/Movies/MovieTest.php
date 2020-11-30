@@ -46,11 +46,16 @@ class MovieTest extends TestCase
     public function it_set_its_slug()
     {
         $model = $this->class_name::factory()->create([
-            'title' => 'New Movie',
+            'name' => 'New Movie',
             'year' => 2020
         ]);
-
         $this->assertEquals('new-movie-2020', $model->slug);
+
+        $model = $this->class_name::factory()->create([
+            'name' => null,
+            'year' => 2020
+        ]);
+        $this->assertNotNull($model->slug);
     }
 
     /**

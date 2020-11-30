@@ -163,12 +163,25 @@ class Movie extends Model
 
     public function setSlug() : void
     {
-        if (is_null($this->name)) {
-            return;
-        }
-
-        $this->attributes['slug'] = Str::slug($this->name . '-' . $this->year, '-', 'de');
+        $this->attributes['slug'] = (is_null($this->name) ? Str::uuid() : Str::slug($this->name . '-' . $this->year, '-', 'de'));
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    // public function getRouteKeyName()
+    // {
+    //     return 'slug';
+    // }
+
+    // public function getRouteParameterAttribute() : array
+    // {
+    //     return [
+    //         Str::singular($this->base_route) => $this->slug
+    //     ];
+    // }
 
     public function collection() : BelongsTo
     {

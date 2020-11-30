@@ -164,11 +164,7 @@ class Show extends Model
 
     public function setSlug() : void
     {
-        if (is_null($this->name)) {
-            return;
-        }
-
-        $this->attributes['slug'] = Str::slug($this->name . ($this->year ? '-' . $this->year : ''), '-', 'de');
+        $this->attributes['slug'] = (is_null($this->name) ? Str::uuid() : Str::slug($this->name . '-' . $this->year, '-', 'de'));
     }
 
     public function scopeSearch(Builder $query, $value) : Builder
