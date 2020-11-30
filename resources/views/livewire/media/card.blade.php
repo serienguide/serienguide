@@ -2,7 +2,7 @@
     <header class="flex items-center justify-center p-3">
         @auth
             <div class="flex-grow"></div>
-            @if($model->class_name != 'episode')
+            @unless($model->is_episode)
                 <div class="relative inline-block text-left" x-data="{ open: false }">
                     <div class="px-1">
                         <button @click="open = true" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endunless
 
             <div class="relative inline-block text-left" x-data="{ open: false }">
                 <div class="px-1">
@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            @if($model->class_name != 'show')
+            @unless($model->is_show)
                 <div class="relative inline-block text-left" x-data="{ open: false }">
                     <div class="px-1">
                         <button @click="open = true" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endunless
         @endauth
 
     </header>
@@ -97,7 +97,7 @@
     </main>
     <footer class="flex items-center p-3">
         <h3 class="flex-grow text-gray-900 leading-5 font-medium overflow-hidden whitespace-nowrap">
-            @if ($model->class_name == 'episode')
+            @if ($model->is_episode)
                 <a href="{{ $model->path }}" title="{{ $model->name }}" class="text-center">
                     <div class="font-bold">{{ $model->season->season_number }}x{{ $model->episode_number }}</div>
                     <div class="text-gray-500">{{ $model->name }}</div>
