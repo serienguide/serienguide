@@ -10,17 +10,26 @@ use Illuminate\Support\Arr;
 
 class Season extends Model
 {
-    public static function find(int $tv_id, int $season_number) : self
+    public static function find(int $tv_id, int $season_number) : array
     {
         $url = '/tv/' . $tv_id . '/season/' . $season_number;
 
         $response_en = Http::get($url , [
             'language' => 'en',
         ]);
+
+        if ($response_en->failed()) {
+            return [];
+        }
+
         $response_de = Http::get($url, [
             'language' => 'de',
             'append_to_response' => 'external_ids',
         ]);
+
+        if ($response_de->failed()) {
+            return [];
+        }
 
         $attributes_en = $response_en->json();
         $attributes_de = $response_de->json();
@@ -85,13 +94,13 @@ class Season extends Model
         $attributes['episode_count'] = count($attributes_en['episodes']);
         $attributes['episodes'] = $episodes;
 
-        return new static($attributes);
+        return $attributes;
     }
 
-    public function changed(int $season_id)
+    public static function changes(int $season_id)
     {
-        $response = Http::get('/tv/season/' . $season_id . '/changes', [
-            'page' => 1,
-        ]);
+        $response = Http::get('/tv/season/' . $season_id . '/changes');
+
+        return $response->json();
     }
 }

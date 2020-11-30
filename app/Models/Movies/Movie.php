@@ -93,32 +93,35 @@ class Movie extends Model
 
     public static function createOrUpdateFromTmdb(int $tmdb_id) : self
     {
-        $tmdb_model = \App\Apis\Tmdb\Movies\Movie::find($tmdb_id);
+        $attributes = \App\Apis\Tmdb\Movies\Movie::find($tmdb_id);
         $model = self::updateOrCreate([
-            'tmdb_id' => $tmdb_model->id,
-        ], $tmdb_model->toArray());
+            'tmdb_id' => $attributes['id'],
+        ], $attributes);
 
-        $model->syncFromTmdb($tmdb_model);
+        $model->syncFromTmdb($attributes);
 
         return $model;
     }
 
-    public function updateFromTmdb(int $tmdb_id)
+    public function updateFromTmdb()
     {
-        $tmdb_model = \App\Apis\Tmdb\Movies\Movie::find($tmdb_id);
-        $this->update($tmdb_model->toArray());
-        $this->syncFromTmdb($tmdb_model);
+        $attributes = \App\Apis\Tmdb\Movies\Movie::find($this->tmdb_id);
+        if (empty($attributes)) {
+            return;
+        }
+        $this->update($attributes);
+        $this->syncFromTmdb($attributes);
     }
 
-    protected function syncFromTmdb($tmdb_model)
+    protected function syncFromTmdb(array $attributes)
     {
-        $this->syncCollectionFromTmdb($tmdb_model->belongs_to_collection);
-        $this->syncGenresFromTmdb($tmdb_model->genres);
-        $this->syncKeywordsFromTmdb($tmdb_model->keywords);
-        $this->syncProvidersFromTmdb($tmdb_model->providers);
-        $this->createImageFromTmdb('poster', $tmdb_model->poster_path);
-        $this->createImageFromTmdb('backdrop', $tmdb_model->backdrop_path);
-        $this->syncCreditsFromTmdb($tmdb_model->credits);
+        $this->syncCollectionFromTmdb($attributes['belongs_to_collection']);
+        $this->syncGenresFromTmdb($attributes['genres']);
+        $this->syncKeywordsFromTmdb($attributes['keywords']);
+        $this->syncProvidersFromTmdb($attributes['providers']);
+        $this->createImageFromTmdb('poster', $attributes['poster_path']);
+        $this->createImageFromTmdb('backdrop', $attributes['backdrop_path']);
+        $this->syncCreditsFromTmdb($attributes['credits']);
     }
 
     protected function syncCollectionFromTmdb($tmdb_collection)
@@ -163,6 +166,10 @@ class Movie extends Model
 
     public function setSlug() : void
     {
+        if (! $this->isDirty('name')) {
+            return;
+        }
+
         $this->attributes['slug'] = (is_null($this->name) ? Str::uuid() : Str::slug($this->name . '-' . $this->year, '-', 'de'));
     }
 

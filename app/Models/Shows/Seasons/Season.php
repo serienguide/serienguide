@@ -58,15 +58,18 @@ class Season extends Model
 
     public function updateFromTmdb()
     {
-        $tmdb_model = \App\Apis\Tmdb\Shows\Seasons\Season::find($this->show->tmdb_id, $this->season_number);
-        $this->update($tmdb_model->toArray());
-        $this->syncFromTmdb($tmdb_model);
+        $attributes = \App\Apis\Tmdb\Shows\Seasons\Season::find($this->show->tmdb_id, $this->season_number);
+        if (empty($attributes)) {
+            return;
+        }
+        $this->update($attributes);
+        $this->syncFromTmdb($attributes);
     }
 
-    protected function syncFromTmdb($tmdb_model)
+    protected function syncFromTmdb($attributes)
     {
-        $this->createImageFromTmdb('poster', $tmdb_model->poster_path);
-        $this->syncEpisodesFromTmdb($tmdb_model->episodes);
+        $this->createImageFromTmdb('poster', $attributes['poster_path']);
+        $this->syncEpisodesFromTmdb($attributes['episodes']);
     }
 
     protected function syncEpisodesFromTmdb($tmdb_episodes)

@@ -6,6 +6,7 @@ use App\Models\Images\Image;
 use App\Models\Keywords\Keyword;
 use App\Models\Lists\Item;
 use App\Models\Providers\Provider;
+use App\Models\Shows\Episodes\Episode;
 use App\Models\Shows\Show;
 use Tests\TestCase;
 
@@ -175,7 +176,7 @@ class ShowTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_updated_from_tmdb()
+    public function it_can_be_created_updated_from_tmdb()
     {
         $tmdb_id = self::ID_GAME_OF_THRONES;
         $show = Show::factory()->create([
@@ -184,8 +185,35 @@ class ShowTest extends TestCase
         $model = Show::createOrUpdateFromTmdb($tmdb_id);
         $this->assertEquals($show->id, $model->id);
         $this->assertCount(4, $model->genres);
-        $this->assertCount(7, $model->keywords);
+        $this->assertCount(6, $model->keywords);
         $this->assertCount(9, $model->providers);
         $this->assertCount(38, $model->credits);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_updated_from_tmdb()
+    {
+        $tmdb_id = self::ID_GAME_OF_THRONES;
+        $model = Show::factory()->create([
+            'tmdb_id' => $tmdb_id,
+        ]);
+        $model->updateFromTmdb();
+        $this->assertCount(4, $model->genres);
+        $this->assertCount(6, $model->keywords);
+        $this->assertCount(9, $model->providers);
+        $this->assertCount(38, $model->credits);
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_the_absolute_numbers_for_episodes()
+    {
+        $episode = Episode::factory()->create();
+        $show = $episode->show;
+        $absolute_numbers = $show->setAbsoluteNumbers();
+        $this->assertEquals(1, $episode->refresh()->absolute_number);
     }
 }

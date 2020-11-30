@@ -60,7 +60,7 @@ class UpdateCommand extends Command
     {
         $this->info('Updating ' . $model->name ?: $model->tmdb_id);
         $this->line('Memory ' . memory_get_usage());
-        $model->updateFromTmdb($model->tmdb_id);
+        $model->updateFromTmdb();
         foreach ($model->seasons as $season) {
             $season->updateFromTmdb();
         }

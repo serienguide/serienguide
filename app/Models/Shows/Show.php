@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -89,33 +90,35 @@ class Show extends Model
 
     public static function createOrUpdateFromTmdb(int $tmdb_id) : self
     {
-        $tmdb_model = \App\Apis\Tmdb\Shows\Show::find($tmdb_id);
-        $attributes = array_filter($tmdb_model->only((new self())->getFillable()));
+        $attributes = \App\Apis\Tmdb\Shows\Show::find($tmdb_id);
         $model = self::updateOrCreate([
-            'tmdb_id' => $tmdb_model->id,
+            'tmdb_id' => $attributes['id'],
         ], $attributes);
 
-        $model->syncFromTmdb($tmdb_model);
+        $model->syncFromTmdb($attributes);
 
         return $model;
     }
 
-    public function updateFromTmdb(int $tmdb_id = 0)
+    public function updateFromTmdb()
     {
-        $tmdb_model = \App\Apis\Tmdb\Shows\Show::find($tmdb_id ?: $this->tmdb_id);
-        $this->update($tmdb_model->toArray());
-        $this->syncFromTmdb($tmdb_model);
+        $attributes = \App\Apis\Tmdb\Shows\Show::find($this->tmdb_id);
+        if (empty($attributes)) {
+            return;
+        }
+        $this->update($attributes);
+        $this->syncFromTmdb($attributes);
     }
 
-    protected function syncFromTmdb($tmdb_model)
+    protected function syncFromTmdb($attributes)
     {
-        $this->syncGenresFromTmdb($tmdb_model->genres);
-        $this->syncKeywordsFromTmdb($tmdb_model->keywords);
-        $this->syncProvidersFromTmdb($tmdb_model->providers);
-        $this->createImageFromTmdb('poster', $tmdb_model->poster_path);
-        $this->createImageFromTmdb('backdrop', $tmdb_model->backdrop_path);
-        $this->syncCreditsFromTmdb($tmdb_model->credits);
-        $this->syncSeasonsFromTmdb($tmdb_model->seasons);
+        $this->syncGenresFromTmdb($attributes['genres']);
+        $this->syncKeywordsFromTmdb($attributes['keywords']);
+        $this->syncProvidersFromTmdb($attributes['providers']);
+        $this->createImageFromTmdb('poster', $attributes['poster_path']);
+        $this->createImageFromTmdb('backdrop', $attributes['backdrop_path']);
+        $this->syncCreditsFromTmdb($attributes['credits']);
+        $this->syncSeasonsFromTmdb($attributes['seasons']);
     }
 
     protected function syncSeasonsFromTmdb($tmdb_seasons)
@@ -128,6 +131,42 @@ class Show extends Model
                 'deleted_at' => null,
             ]);
             $season->createImageFromTmdb('poster', $tmdb_season['poster_path']);
+        }
+    }
+
+    public function setAbsoluteNumbers() : void
+    {
+        $sql = "SELECT
+                    shows.name,
+                    seasons.season_number,
+                    episodes.episode_number,
+                    episodes.id
+                FROM
+                    episodes,
+                    seasons,
+                    shows
+                WHERE
+                    episodes.deleted_at IS NULL AND
+                    seasons.id = episodes.season_id AND
+                    seasons.deleted_at IS NULL AND
+                    shows.id = seasons.show_id AND
+                    shows.id = :show_id AND
+                    seasons.season_number > 0 AND
+                    episodes.episode_number > 0
+                ORDER BY
+                    seasons.season_number ASC,
+                    episodes.episode_number ASC";
+
+        $episodes = DB::select($sql, [
+            'show_id' => $this->id,
+        ]);
+
+        $absolute_number = 0;
+        foreach ($episodes as $key => $episode) {
+            $absolute_number++;
+            Episode::where('id', $episode->id)->update([
+                'absolute_number' => $absolute_number,
+            ]);
         }
     }
 

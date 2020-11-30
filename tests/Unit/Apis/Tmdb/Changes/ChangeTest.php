@@ -24,4 +24,16 @@ class ChangeTest extends TestCase
         $this->objectHasAttribute('adult', $model);
         $this->objectHasAttribute('id', $model);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_get_the_show_changes()
+    {
+        $changes = Change::shows();
+        $this->assertNotEmpty($changes);
+        $this->arrayHasKey('adult', $changes[0]);
+        $this->arrayHasKey('id', $changes[0]);
+
+    }
 }

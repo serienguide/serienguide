@@ -10,17 +10,26 @@ use Illuminate\Support\Arr;
 
 class Episode extends Model
 {
-    public static function find(int $tv_id, int $season_number, int $episode_number) : self
+    public static function find(int $tv_id, int $season_number, int $episode_number) : array
     {
         $url = '/tv/' . $tv_id . '/season/' . $season_number . '/episode/' . $episode_number;
 
         $response_en = Http::get($url , [
             'language' => 'en',
         ]);
+
+        if ($response_en->failed()) {
+            return [];
+        }
+
         $response_de = Http::get($url, [
             'language' => 'de',
             'append_to_response' => 'external_ids',
         ]);
+
+        if ($response_de->failed()) {
+            return [];
+        }
 
         $attributes_en = $response_en->json();
         $attributes_de = $response_de->json();
@@ -35,13 +44,11 @@ class Episode extends Model
         $attributes['tvdb_id'] = $attributes_de['external_ids']['tvdb_id'];
         $attributes['imdb_id'] = $attributes_de['external_ids']['imdb_id'];
 
-        return new static($attributes);
+        return $attributes;
     }
 
-    public function changed(int $episode_id)
+    public function changes(int $episode_id)
     {
-        $response = Http::get('/tv/episode/' . $episode_id . '/changes', [
-            'page' => 1,
-        ]);
+        $response = Http::get('/tv/episode/' . $episode_id . '/changes');
     }
 }

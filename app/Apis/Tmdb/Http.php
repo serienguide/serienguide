@@ -3,6 +3,7 @@
 namespace App\Apis\Tmdb;
 
 use Illuminate\Http\Client\Factory;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http as BaseHttp;
 
 class Http extends Factory
@@ -31,15 +32,19 @@ class Http extends Factory
 
         $status = $response->status();
         switch ($response->status()) {
+            case 404:
+                return $response;
+                break;
             case 429:
                 sleep($response->header('retry-after') ?: 1);
                 return self::get($url, $query);
                 break;
 
             default:
-                # code...
+                $response->throw();
                 break;
         }
+
 
     }
 }

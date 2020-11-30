@@ -10,15 +10,24 @@ use Illuminate\Support\Arr;
 
 class Show extends Model
 {
-    public static function find(int $id) : self
+    public static function find(int $id) : array
     {
         $response_en = Http::get('/tv/' . $id, [
             'language' => 'en',
         ]);
+
+        if ($response_en->failed()) {
+            return [];
+        }
+
         $response_de = Http::get('/tv/' . $id, [
             'language' => 'de',
             'append_to_response' => 'credits,external_ids,watch/providers,keywords',
         ]);
+
+        if ($response_de->failed()) {
+            return [];
+        }
 
         $attributes_en = $response_en->json();
         $attributes_de = $response_de->json();
@@ -104,14 +113,14 @@ class Show extends Model
 
         unset($attributes['watch/providers']);
 
-        return new static($attributes);
+        return $attributes;
     }
 
-    public function changed()
+    public static function changes(int $id)
     {
-        $response = Http::get('/tv/' . $id . '/changes', [
-            'page' => 1,
-        ]);
+        $response = Http::get('/tv/' . $id . '/changes');
+
+        return $response->json();
     }
 
     public function getWatchProviders(string $language = 'de') : array

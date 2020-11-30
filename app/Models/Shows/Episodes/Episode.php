@@ -69,21 +69,24 @@ class Episode extends Model
         return true;
     }
 
-    public function updateFromTmdb($tmdb_model = null)
+    public function updateFromTmdb($attributes = null)
     {
-        if (is_null($tmdb_model)) {
-            $tmdb_model = \App\Apis\Tmdb\Shows\Episodes\Episode::find($this->show->tmdb_id, $this->season->season_number, $this->episode_number);
+        if (is_null($attributes)) {
+            $attributes = \App\Apis\Tmdb\Shows\Episodes\Episode::find($this->show->tmdb_id, $this->season->season_number, $this->episode_number);
         }
-        $this->update($tmdb_model->toArray());
-        $this->syncFromTmdb($tmdb_model);
+        if (empty($attributes)) {
+            return;
+        }
+        $this->update($attributes);
+        $this->syncFromTmdb($attributes);
     }
 
-    protected function syncFromTmdb($tmdb_model)
+    protected function syncFromTmdb($attributes)
     {
-        $this->createImageFromTmdb('still', $tmdb_model->still_path);
+        $this->createImageFromTmdb('still', $attributes['still_path']);
         $this->syncCreditsFromTmdb([
-            'crew' => $tmdb_model->crew,
-            'guest_stars' => $tmdb_model->guest_stars,
+            'crew' => $attributes['crew'],
+            'guest_stars' => $attributes['guest_stars'],
         ]);
     }
 

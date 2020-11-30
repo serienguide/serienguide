@@ -40,10 +40,31 @@ class Change extends Model
         if (is_null($model)) {
             return false;
         }
-        $model->updateFromTmdb($tmdb_id);
+        $model->updateFromTmdb();
 
         return true;
     }
 
+    public static function shows() : array
+    {
+        $page = 1;
+        $total_pages = 1;
+        $results = [];
+        do {
+            $response = Http::get('/tv/changes', [
+                'page' => $page,
+            ]);
+            $data = $response->json();
+            $total_pages = $data['total_pages'];
 
+            foreach ($data['results'] as $key => $attributes) {
+                $results[] = $attributes;
+            }
+
+            $page++;
+        }
+        while ($page < $total_pages);
+
+        return $results;
+    }
 }

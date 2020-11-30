@@ -57,6 +57,6 @@ class UpdateCommand extends Command
     protected function update(Model $model)
     {
         $this->info('Updating ' . $model->name);
-        $model->updateFromTmdb($model->tmdb_id);
+        $model->updateFromTmdb();
     }
 }

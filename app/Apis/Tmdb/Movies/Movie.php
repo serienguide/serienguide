@@ -11,15 +11,24 @@ class Movie extends Model
 {
     protected $base_url = 'https://api.themoviedb.org/3/';
 
-    public static function find(int $id) : self
+    public static function find(int $id) : array
     {
         $response_en = Http::get('/movie/' . $id, [
             'language' => 'en',
         ]);
+
+        if ($response_en->failed()) {
+            return [];
+        }
+
         $response_de = Http::get('/movie/' . $id, [
             'language' => 'de',
             'append_to_response' => 'credits,external_ids,watch/providers,keywords',
         ]);
+
+        if ($response_de->failed()) {
+            return [];
+        }
 
         $attributes_en = $response_en->json();
         $attributes_de = $response_de->json();
@@ -51,7 +60,7 @@ class Movie extends Model
         $attributes['twitter'] = $attributes_de['external_ids']['twitter_id'];
         $attributes['imdb_id'] = $attributes_de['external_ids']['imdb_id'];
 
-        return new static($attributes);
+        return $attributes;
     }
 
     public function changed()
