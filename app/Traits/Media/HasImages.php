@@ -35,6 +35,11 @@ trait HasImages
         ]);
     }
 
+    public function getPosterUrlOriginalAttribute() : string
+    {
+        return Storage::disk('s3')->url($this->poster_path ? 'original' . $this->poster_path : 'no/680x1000.png');
+    }
+
     public function getPosterUrlAttribute() : string
     {
         return Storage::disk('s3')->url($this->poster_path ? 'w680' . $this->poster_path : 'no/680x1000.png');

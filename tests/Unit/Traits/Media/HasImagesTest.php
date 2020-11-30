@@ -29,7 +29,9 @@ class HasImagesTest extends TestCase
         {
             $model = $class_name::factory()->create();
             $this->assertNotNull($model->poster_path);
+            $this->assertNotNull($model->poster_url_original);
             $this->assertNotNull($model->poster_url);
+            $this->assertNotNull($model->poster_url_xs);
             $this->assertNotNull($model->backdrop_path);
             $this->assertNotNull($model->backdrop_url);
         }
