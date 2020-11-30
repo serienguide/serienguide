@@ -6,6 +6,7 @@ use App\Models\Movies\Movie;
 use App\Models\Shows\Episodes\Episode;
 use App\Models\Shows\Show;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 trait HasCard
@@ -47,8 +48,12 @@ trait HasCard
         return $this->isClass(Show::class);
     }
 
-    public function scopeForCard(Builder $query) : Builder
+    public function scopeCardForUser(Builder $query, $user_id) : Builder
     {
-        return $query;
+        if (is_null($user_id)) {
+            return $query;
+        }
+
+        return $query->select('*', DB::raw($user_id . ' AS card_user_id'));
     }
 }

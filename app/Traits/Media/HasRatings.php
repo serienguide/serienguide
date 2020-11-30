@@ -57,6 +57,15 @@ trait HasRatings
         return $this->morphMany(Rating::class, 'medium');
     }
 
+    public function user_ratings() : MorphMany
+    {
+        if (is_null($this->card_user_id)) {
+            return $this->ratings();
+        }
+
+        return $this->ratings()->where('user_id', $this->card_user_id);
+    }
+
     public function ratingByUser(int $user_id)
     {
         return $this->ratings()->where('user_id', $user_id)->first();
