@@ -19,7 +19,7 @@ class UpdateCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Gets all changes from tmdb and updates existing movies';
 
     /**
      * Create a new command instance.

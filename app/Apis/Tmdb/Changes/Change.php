@@ -11,14 +11,13 @@ class Change extends Model
 {
     public static function movies() : void
     {
-        return self::changes('movie', 'updateMovie');
+        self::changes('movie', 'updateMovie');
     }
 
     protected static function changes(string $type, string $method) : void
     {
         $page = 1;
         $total_pages = 1;
-
         do {
             $response = Http::get('/' . $type . '/changes', [
                 'page' => $page,
@@ -27,7 +26,7 @@ class Change extends Model
             $total_pages = $data['total_pages'];
 
             foreach ($data['results'] as $key => $attributes) {
-                $this->$method($attributes['id']);
+                self::$method($attributes['id']);
             }
 
             $page++;
@@ -35,14 +34,15 @@ class Change extends Model
         while ($page < $total_pages);
     }
 
-    protected static function updateMovie(int $tmdb_id)
+    protected static function updateMovie(int $tmdb_id) : bool
     {
         $model = Movie::where('tmdb_id', $tmdb_id)->first();
         if (is_null($model)) {
-            return;
+            return false;
         }
-
         $model->updateFromTmdb($tmdb_id);
+
+        return true;
     }
 
 
