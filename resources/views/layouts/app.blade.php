@@ -52,8 +52,8 @@
     </head>
     <body class="font-sans antialiased">
         <x-navigation />
-        @if (isset($header))
-            <header class="bg-white shadow-sm">
+        @isset ($header)
+            <header class="bg-white shadow-sm pt-16">
                 <x-container class="py-4">
                     <div class="flex items-center">
                         <h1 class="flex-grow text-lg leading-6 font-semibold text-gray-900">
