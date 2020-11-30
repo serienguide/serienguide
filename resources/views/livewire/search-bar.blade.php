@@ -1,4 +1,4 @@
-<div class="flex-grow relative ml-3 md:ml-0">
+<div class="flex-grow relative ml-3">
     <div class="relative w-full">
         <label for="search" class="sr-only">Search</label>
         <div class="relative">
