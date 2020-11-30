@@ -4,7 +4,7 @@
         <x-container class="py-4 whitespace-nowrap">
             <div class="flex items-center text-5xl">
                 <div class="flex items-center overflow-hidden">
-                    @if ($model->class_name == 'episode')
+                    @if ($model->is_episode)
                         <h2 class="text-2xl"><a href="{{ $model->show->path }}">{{ $model->show->name }}</a></h2>
                         <h1 class="">{{ $model->season->season_numer }}x{{ $model->episode_numer }} <span class="hidden sm:block">{{ $model->name }}</span></h1>
                     @else
@@ -26,12 +26,12 @@
                     @endif
                 </div>
                 <div class="ml-2 text-center">
-                    @if ($model->class_name != 'episode')
+                    @unless ($model->is_episode)
                         <div>
                             <div class="text-2xl">{{ $model->list_items()->count() }}</div>
                             <div class="text-xs text-gray-500"><i class="fas fa-list"></i> LISTEN</div>
                         </div>
-                   @endif
+                   @endunless
                 </div>
             </div>
         </x-container>
