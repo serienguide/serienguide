@@ -5,6 +5,7 @@ namespace App\Traits\Media;
 use App\Models\People\Credit;
 use App\Models\People\Person;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 
 trait HasCredits
@@ -21,9 +22,9 @@ trait HasCredits
         //
     }
 
-    public function credits() : MorphMany
+    public function credits() : MorphToMany
     {
-        return $this->morphMany(Credit::class, 'medium');
+        return $this->morphToMany(Credit::class, 'medium', 'credit_medium');
     }
 
     public function syncCreditsFromTmdb(array $tmdb_credits)
@@ -42,7 +43,7 @@ trait HasCredits
                     'known_for_department' => $tmdb_credit['known_for_department'],
                     'gender' => $tmdb_credit['gender'],
                 ]);
-                $this->credits()->updateOrCreate([
+                $credit = Credit::updateOrCreate([
                     'id' => $tmdb_credit['credit_id']
                 ], [
                     'person_id' => $person->id,
@@ -52,7 +53,10 @@ trait HasCredits
                     'character' => Arr::get($tmdb_credit, 'character', ''),
                     'order' => Arr::get($tmdb_credit, 'order', 0),
                 ]);
+                $credit_ids[] = $credit->id;
             }
+
+            $this->credits()->sync($credit_ids);
         }
     }
 }

@@ -182,7 +182,7 @@ class MovieTest extends TestCase
         $this->assertNotNull($model->collection_id);
         $this->assertEquals($movie->id, $model->id);
         $this->assertCount(3, $model->genres);
-        $this->assertCount(7, $model->keywords);
+        $this->assertCount(11, $model->keywords);
         $this->assertCount(13, $model->providers);
         $this->assertCount(180, $model->credits);
     }

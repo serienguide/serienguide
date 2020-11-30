@@ -14,10 +14,9 @@ class CreateCreditsTable extends Migration
     public function up()
     {
         Schema::create('credits', function (Blueprint $table) {
-            $table->string('id');
+            $table->string('id')->primary();
 
             $table->unsignedBigInteger('person_id');
-            $table->morphs('medium');
             $table->string('credit_type')->nullable();
             $table->string('department')->nullable();
             $table->string('job')->nullable();
