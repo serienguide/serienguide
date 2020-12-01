@@ -64,5 +64,7 @@ class UpdateCommand extends Command
         foreach ($model->seasons as $season) {
             $season->updateFromTmdb();
         }
+
+        $model->setAbsoluteNumbers();
     }
 }
