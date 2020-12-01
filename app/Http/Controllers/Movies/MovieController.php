@@ -65,7 +65,7 @@ class MovieController extends Controller
         ]);
 
         $movie->load([
-            // 'actors',
+            'actors',
             'directors',
             'writers'
         ]);

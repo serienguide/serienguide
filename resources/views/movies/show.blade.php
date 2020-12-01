@@ -7,12 +7,12 @@
                 <div class="hidden md:block md:w-1/3 lg:w-1/4">
                     @if ($model->poster_path)
                         <div class="mr-4 hidden sm:block">
-                            <img class="max-w-full" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
+                            <img class="max-w-full rounded-md" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
                         </div>
                     @endif
                 </div>
                 <div class="w-100 md:w-2/3 lg:w-3/4 flex flex-col">
-                    <p class="max-h-36 overflow-auto">
+                    <p class="max-h-24 overflow-auto">
                         {{ ($model->overview ?: 'Momentan gibt es keine Inhaltsangabe. Unterstütze uns indem du <a href="https://www.themoviedb.org/movie/' . $model->tmdb_id . '" target="_blank">hier</a> eine hinzufügst.') }}
                     </p>
 
@@ -46,6 +46,12 @@
                         <div class="flex items-center">
                             <div class="w-1/2 md:w-1/6 font-bold">Autor</div>
                             <div class="w-1/2 md:w-5/6">{{ $model->writers->implode('person.name', ', ') }}</div>
+                        </div>
+                    @endif
+                    @if ($model->actors->count())
+                        <div class="flex items-center">
+                            <div class="w-1/2 md:w-1/6 font-bold self-start">Schauspieler</div>
+                            <div class="w-1/2 md:w-5/6 max-h-16 overflow-auto">{{ $model->actors->implode('person.name', ', ') }}</div>
                         </div>
                     @endif
 
