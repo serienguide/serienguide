@@ -1,9 +1,10 @@
 <li class="col-span-1 flex flex-col justify-between bg-white rounded-lg shadow">
-    <div class="rounded-t-lg h-2 w-full bg-yellow-900" title="{{ $model->vote_average }}/10 {{ $model->vote_count }} Stimmen">
+    <div class="rounded-t-lg h-2 w-full bg-yellow-900" title="{{ number_format($model->vote_average, (in_array($model->vote_average, [0, 10]) ? 0 : 1) , ',', '') }}/10 {{ $model->vote_count }} Stimmen">
         <div class="bg-yellow-400 h-2 text-xs leading-none text-center text-white @if($model->vote_average > 0) rounded-tl-lg @endif @if($model->vote_average == 10) rounded-tr-lg @endif" style="width: {{ $model->vote_average * 10 }}%"></div>
     </div>
-    <header class="flex items-center justify-center px-3 py-1">
-        @auth
+    @auth
+        <header class="flex items-center justify-center px-3 py-1">
+
             <div class="flex-grow"></div>
             @unless($model->is_episode)
                 <div class="relative inline-block text-left" x-data="{ open: false }">
@@ -90,9 +91,9 @@
                     </div>
                 </div>
             @endunless
-        @endauth
 
-    </header>
+        </header>
+    @endauth
     <main class="flex-grow relative">
         <a class="" href="{{ (($model->is_episode && $type == 'poster') ? $model->show->path : $model->path) }}" title="{{ $model->name }}">
             <img src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}">
