@@ -28,7 +28,7 @@ class Card extends Component
     {
         $watched = $this->model->watchedBy(auth()->user());
         $this->loadWatchedCount();
-        $this->emit('watched', $watched);
+        // $this->emit('watched', $watched);
 
         if ($this->load_next) {
             $this->next();

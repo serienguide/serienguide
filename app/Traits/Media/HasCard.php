@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 
 trait HasCard
 {
+    protected $progress;
+
     public static function bootHasCard()
     {
         static::creating(function ($model) {
@@ -46,6 +48,29 @@ trait HasCard
     public function getIsShowAttribute() : bool
     {
         return $this->isClass(Show::class);
+    }
+
+    public function getProgressAttribute() : array
+    {
+        if ($this->progress) {
+            return $this->progress;
+        }
+
+        $watchable_count = ($this->is_show ? $this->episodes_count : 1);
+        if (auth()->check()) {
+            $watched_count = $this->watchedByUser(auth()->user()->id)->distinct()->count('watchable_id');
+            return $this->progress = [
+                'watched_count' => $watched_count,
+                'percent' => min(100, round($watched_count / $watchable_count * 100, 0)),
+                'watchable_count' => ($this->is_show ? $this->episodes_count : 1),
+            ];
+        }
+
+        return $this->progress = [
+            'watched_count' => 0,
+            'percent' => 0,
+            'watchable_count' => $watchable_count,
+        ];
     }
 
     public function scopeCardForUser(Builder $query, $user_id) : Builder
