@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Media;
 
+use App\Models\Shows\Episodes\Episode;
 use App\Models\Shows\Show;
 use App\Models\Watched\Watched;
 use Livewire\Component;
@@ -10,6 +11,7 @@ class Card extends Component
 {
     public $model;
     public $type = 'poster';
+    public $load_next = false;
 
     protected $listeners = [
         'watched' => 'watched',
@@ -27,6 +29,10 @@ class Card extends Component
         $watched = $this->model->watchedBy(auth()->user());
         $this->loadWatchedCount();
         $this->emit('watched', $watched);
+
+        if ($this->load_next) {
+            $this->next();
+        }
     }
 
     public function rate(int $rating)
@@ -55,6 +61,22 @@ class Card extends Component
                 return $query->where('user_id', auth()->user()->id);
             }
         ]);
+    }
+
+    public function next()
+    {
+        if (! $this->model->is_episode) {
+            return;
+        }
+
+        $next_episode = Episode::nextByAbsoluteNumber($this->model->show_id, $this->model->absolute_number)->first();
+
+        if (is_null($next_episode)) {
+            return;
+        }
+
+        $this->model = $next_episode;
+        $this->loadWatchedCount();
     }
 
     public function render()
