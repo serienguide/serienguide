@@ -59,6 +59,10 @@ class Movie extends Model
         $attributes['instagram'] = $attributes_de['external_ids']['instagram_id'];
         $attributes['twitter'] = $attributes_de['external_ids']['twitter_id'];
         $attributes['imdb_id'] = $attributes_de['external_ids']['imdb_id'];
+        $attributes['tmdb_vote_count'] = $attributes_en['vote_count'];
+        $attributes['tmdb_vote_average'] = $attributes_en['vote_average'];
+
+        unset($attributes['vote_count'], $attributes['vote_average']);
 
         return $attributes;
     }
