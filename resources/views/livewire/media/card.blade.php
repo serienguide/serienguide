@@ -97,17 +97,17 @@
                 @if ($model->is_episode)
                     @if ($model->episode_number == 1)
                         @if ($model->season->season_number == 1)
-                            <span class="inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white">
+                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white">
                                 Serienstart
                             </span>
                         @else
-                            <span class="inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white">
+                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white">
                                 Staffelstart
                             </span>
                         @endif
                     @endif
                     @if ($model->first_aired_at)
-                        <div class="flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
+                        <div class="flex items-center mt-1 px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
                             {{ $model->first_aired_at->format('d.m.Y') }}
                         </div>
                     @endif
