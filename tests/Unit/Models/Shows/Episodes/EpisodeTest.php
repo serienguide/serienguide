@@ -38,4 +38,51 @@ class EpisodeTest extends TestCase
         $this->assertNotNull($model->name);
         $this->assertNotNull($model->tmdb_id);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_get_the_next_episode()
+    {
+        $show = Show::factory()->create([
+
+        ]);
+        $season = Season::factory()->create([
+            'show_id' => $show->id,
+            'season_number' => 1
+        ]);
+        $episodes = [];
+        for($i = 1; $i <= 3; $i++) {
+            $episodes[$i] = $this->class_name::factory()->create([
+                'season_id' => $season->id,
+                'show_id' => $show->id,
+                'episode_number' => $i,
+            ]);
+        }
+
+        $show->setAbsoluteNumbers();
+
+        $episode = $episodes[1]->refresh();
+        $this->assertEquals($episode->episode_number, 1);
+        $this->assertEquals($episode->absolute_number, 1);
+
+        $next_episode = Episode::nextByAbsoluteNumber($episode->show_id, $episode->absolute_number)->first();
+        $this->assertEquals($next_episode->episode_number, 2);
+        $this->assertEquals($next_episode->absolute_number, 2);
+
+        $episode = $episodes[2]->refresh();
+        $this->assertEquals($episode->episode_number, 2);
+        $this->assertEquals($episode->absolute_number, 2);
+
+        $next_episode = Episode::nextByAbsoluteNumber($episode->show_id, $episode->absolute_number)->first();
+        $this->assertEquals($next_episode->episode_number, 3);
+        $this->assertEquals($next_episode->absolute_number, 3);
+
+        $episode = $episodes[3]->refresh();
+        $this->assertEquals($episode->episode_number, 3);
+        $this->assertEquals($episode->absolute_number, 3);
+
+        $next_episode = Episode::nextByAbsoluteNumber($episode->show_id, $episode->absolute_number)->first();
+        $this->assertNull($next_episode);
+    }
 }

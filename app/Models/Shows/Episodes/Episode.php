@@ -12,6 +12,7 @@ use App\Traits\Media\HasImages;
 use App\Traits\Media\HasRatings;
 use App\Traits\Media\HasWatched;
 use D15r\ModelPath\Traits\HasModelPath;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -117,5 +118,17 @@ class Episode extends Model
     public function show() : BelongsTo
     {
         return $this->belongsTo(Show::class, 'show_id');
+    }
+
+    public function scopeNextByAbsoluteNumber(Builder $query, int $show_id, int $absolute_number) : Builder
+    {
+        if (! $absolute_number) {
+            return $query;
+        }
+
+        return $query->where('absolute_number', '>', $absolute_number)
+            ->where('show_id', $show_id)
+            ->orderBy('absolute_number', 'ASC')
+            ->take(1);
     }
 }
