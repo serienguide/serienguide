@@ -27,6 +27,21 @@ trait HasCredits
         return $this->morphToMany(Credit::class, 'medium', 'credit_medium');
     }
 
+    public function actors() : MorphToMany
+    {
+        return $this->credits()->with('person')->where('character', '!=', '')->orderBy('order', 'ASC');
+    }
+
+    public function directors() : MorphToMany
+    {
+        return $this->credits()->with('person')->where('department', 'Directing');
+    }
+
+    public function writers() : MorphToMany
+    {
+        return $this->credits()->with('person')->where('department', 'Writing');
+    }
+
     public function syncCreditsFromTmdb(array $tmdb_credits)
     {
         $credit_ids = [];

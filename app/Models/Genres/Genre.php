@@ -35,6 +35,10 @@ class Genre extends Model
     {
         return true;
     }
+    public function getBadgeAttribute() : string
+    {
+        return '<span class="inline-flex items-center mt-1 px-3 py-0.5 rounded-full text-xs font-bold bg-gray-700 text-white">' . $this->name . '</span>';
+    }
 
     public function movies()
     {
