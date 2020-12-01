@@ -134,6 +134,14 @@ class Show extends Model
         }
     }
 
+    public function setCounts() : void
+    {
+        $this->update([
+            'episodes_count' => $this->episodes()->count(),
+            'seasons_count' => $this->seasons()->count(),
+        ]);
+    }
+
     public function setAbsoluteNumbers() : void
     {
         $sql = "SELECT

@@ -85,4 +85,41 @@ class EpisodeTest extends TestCase
         $next_episode = Episode::nextByAbsoluteNumber($episode->show_id, $episode->absolute_number)->first();
         $this->assertNull($next_episode);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_scope_the_next_episodes_to_watch()
+    {
+        $shows = [];
+        $episodes = [];
+        for ($show_number = 1; $show_number <= 3; $show_number++) {
+            $show = Show::factory()->create([
+
+            ]);
+            $season = Season::factory()->create([
+                'show_id' => $show->id,
+                'season_number' => 1
+            ]);
+            $episodes[$show_number] = [];
+            for($i = 1; $i <= 3; $i++) {
+                $episodes[$i] = Episode::factory()->create([
+                    'season_id' => $season->id,
+                    'show_id' => $show->id,
+                    'episode_number' => $i,
+                ]);
+                if ($i == $show_number) {
+                    $episodes[$i]->watchedBy($this->user);
+                }
+            }
+            $show->setAbsoluteNumbers();
+            $shows[] = $show;
+        }
+
+        $next_episodes = Episode::nextEpisodes($this->user->id)->get();
+        $this->assertCount(2, $next_episodes);
+        $this->assertEquals(3, $next_episodes->get(0)->absolute_number);
+        $this->assertEquals(2, $next_episodes->get(1)->absolute_number);
+
+    }
 }

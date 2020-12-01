@@ -4,6 +4,10 @@
     </x-slot>
 
     <x-container class="py-4">
+        @livewire('shows.episodes.next')
+    </x-container>
+
+    <x-container class="py-4">
         <p>angemeldet als {{ Auth::user()->name }}</p>
 
         <p>Die Grundfunktionen stehen.</p>

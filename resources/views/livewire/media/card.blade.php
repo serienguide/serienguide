@@ -91,7 +91,7 @@
 
     </header>
     <main class="flex-grow">
-        <a href="{{ $model->path }}" title="{{ $model->name }}">
+        <a href="{{ (($model->is_episode && $type == 'poster') ? $model->show->path : $model->path) }}" title="{{ $model->name }}">
             <img src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}">
         </a>
     </main>

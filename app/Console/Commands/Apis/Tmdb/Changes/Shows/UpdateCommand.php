@@ -157,6 +157,7 @@ class UpdateCommand extends Command
             }
 
             $show->setAbsoluteNumbers();
+            $show->setCounts();
         }
 
         return 0;

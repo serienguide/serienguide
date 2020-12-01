@@ -131,4 +131,20 @@ class Episode extends Model
             ->orderBy('absolute_number', 'ASC')
             ->take(1);
     }
+
+    public function scopeNextEpisodes(Builder $query, int $user_id) : Builder
+    {
+        return $query->from('watched')->select('next_episodes.*')
+            ->join('episodes', 'episodes.id', '=', 'watched.watchable_id')
+            ->join('episodes AS next_episodes', function ($join) {
+                return $join->on('next_episodes.show_id', '=', 'episodes.show_id')
+                    ->on('next_episodes.absolute_number', '>', 'episodes.absolute_number')
+                    ->take(1)
+                    ->orderBy('episodes.absolute_number');
+            })
+            ->where('watched.user_id', $user_id)
+            ->where('watched.watchable_type', Episode::class)
+            ->groupBy('episodes.show_id')
+            ->orderBy('watched.watched_at', 'DESC');
+    }
 }
