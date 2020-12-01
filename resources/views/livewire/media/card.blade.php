@@ -90,9 +90,35 @@
         @endauth
 
     </header>
-    <main class="flex-grow">
-        <a href="{{ (($model->is_episode && $type == 'poster') ? $model->show->path : $model->path) }}" title="{{ $model->name }}">
+    <main class="flex-grow relative">
+        <a class="" href="{{ (($model->is_episode && $type == 'poster') ? $model->show->path : $model->path) }}" title="{{ $model->name }}">
             <img src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}">
+                <div class="absolute bottom-3 left-3">
+                @if ($model->is_episode)
+                    @if ($model->episode_number == 1)
+                        @if ($model->season->season_number == 1)
+                            <span class="inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white">
+                                Serienstart
+                            </span>
+                        @else
+                            <span class="inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white">
+                                Staffelstart
+                            </span>
+                        @endif
+                    @endif
+                    @if ($model->first_aired_at)
+                        <div class="flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
+                            {{ $model->first_aired_at->format('d.m.Y') }}
+                        </div>
+                    @endif
+                @elseif ($model->is_movie)
+                    @if ($model->released_at)
+                        <div class="flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
+                            {{ $model->released_at->format('d.m.Y') }}
+                        </div>
+                    @endif
+                @endif
+            </div>
         </a>
     </main>
     <footer class="flex items-center p-3">
