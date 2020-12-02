@@ -1,6 +1,9 @@
 <div>
-    <div>
-        {{ $model->id }}
+    <div class="flex items-center mb-3">
+        <div class="flex-grow font-bold">Listen verwalten</div>
+        <div class="hidden">
+            <i class="fas fa-plus text-sm leading-5 text-gray-900 cursor-pointer"></i>
+        </div>
     </div>
     <ul>
         @foreach ($lists as $list)
@@ -11,6 +14,5 @@
                 </label>
             </li>
         @endforeach
-        <li class="text-sm">Neue Liste anlegen</li>
     </ul>
 </div>

@@ -5,6 +5,7 @@
         <x-container class="py-4">
             @auth
                 @livewire('media.buttons.watch', ['model' => $model])
+                <x-media.buttons.listing :model="$model"/>
             @endauth
         </x-container>
     </section>

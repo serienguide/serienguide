@@ -22,7 +22,8 @@
                         x-transition:leave="transition ease-in duration-75"
                         x-transition:leave-start="transform opacity-100 scale-100"
                         x-transition:leave-end="transform opacity-0 scale-95"
-                        class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg z-10">
+                        class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg z-10"
+                        style="min-width: 300px;">
                         <div class="rounded-md bg-white shadow-xs">
                             <div class="p-3" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                 @livewire('media.listing', ['model' => $model])
