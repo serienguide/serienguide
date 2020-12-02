@@ -10,9 +10,21 @@ class Ul extends Component
     public $model;
     public $items;
 
-    protected $listeners = [
-        // 'watched' => 'watched',
-    ];
+    protected function getListeners()
+    {
+        $listeners = [
+            //
+        ];
+
+        if ($this->model->is_episode) {
+            $listeners['watched_episode_' . $this->model->id] = 'watched';
+        }
+        elseif ($this->model->is_movie) {
+            $listeners['watched_movie_' . $this->model->id] = 'watched';
+        }
+
+        return $listeners;
+    }
 
     public function mount($model)
     {
@@ -42,7 +54,7 @@ class Ul extends Component
         $this->emitUp('watched', $watched);
     }
 
-    public function watched($watched)
+    public function watched()
     {
         $this->loadWatched();
         $this->items = $this->model->watched;

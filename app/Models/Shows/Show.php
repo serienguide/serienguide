@@ -191,6 +191,19 @@ class Show extends Model
         return $this->attributes['last_watched'] = $this->watched()->where('user_id', auth()->user()->id)->latest('watched_at')->orderBy('id', 'DESC')->first();
     }
 
+    public function getCurrentSeasonNumberAttribute()
+    {
+        if (Arr::has($this->attributes, 'current_season_number')) {
+            return $this->attributes['current_season_number'];
+        }
+
+        if (! auth()->check() || is_null($this->last_watched)) {
+            return $this->attributes['current_season_number'] = 1;
+        }
+
+        return $this->attributes['current_season_number'] = ($this->next_episode_to_watch ? $this->next_episode_to_watch->season->season_number : $this->last_watched->watchable->season->season_number);
+    }
+
     public function getNextEpisodeToWatchAttribute()
     {
         if (Arr::has($this->attributes, 'next_episode_to_watch')) {

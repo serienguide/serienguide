@@ -23,7 +23,7 @@
     <x-container class="py-4">
         <div>
             @foreach($model->seasons as $season)
-                @livewire('shows.seasons.index', ['season' => $season], key('shows.seasons.index.' . $season->id))
+                @livewire('shows.seasons.index', ['season' => $season, 'isCurrent' => ($season->season_number == $model->current_season_number)], key('shows.seasons.index.' . $season->id))
             @endforeach
         </div>
     </x-container>

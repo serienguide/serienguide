@@ -9,11 +9,21 @@ class Index extends Component
 {
     public $season;
     public $items;
+    public $isCurrent = false;
 
     public function mount(Season $season)
     {
         $this->season = $season;
-        if ($season->season_number == 1) {
+        if ($this->isCurrent) {
+            $this->load();
+        }
+    }
+
+    public function watch()
+    {
+        $watched = $this->season->watchedBy(auth()->user());
+        $this->emit('watched_season_' . $this->season->id);
+        if (is_null($this->items)) {
             $this->load();
         }
     }

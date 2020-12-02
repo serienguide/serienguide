@@ -4,18 +4,24 @@ namespace App\Models\Shows\Seasons;
 
 use App\Models\Shows\Episodes\Episode;
 use App\Models\Shows\Show;
+use App\Models\User;
+use App\Models\Watched\Watched;
 use App\Traits\Media\HasImages;
+use App\Traits\Media\HasWatched;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class Season extends Model
 {
     use HasFactory,
         HasImages,
+        HasWatched,
         SoftDeletes;
 
     protected $appends = [
@@ -46,6 +52,29 @@ class Season extends Model
         return true;
     }
 
+    public function getProgressAttribute() : array
+    {
+        if (Arr::has($this->attributes, 'progress')) {
+            return $this->attributes['progress'];
+        }
+
+        $watchable_count = $this->episode_count;
+        if (auth()->check()) {
+            $watched_count = $this->watchedByUser(auth()->user()->id)->distinct()->count('watchable_id');
+            return $this->attributes['progress'] = [
+                'watched_count' => $watched_count,
+                'percent' => min(100, ($watchable_count ? round($watched_count / $watchable_count * 100, 0) : 0)),
+                'watchable_count' => $watchable_count,
+            ];
+        }
+
+        return $this->attributes['progress'] = [
+            'watched_count' => 0,
+            'percent' => 0,
+            'watchable_count' => $watchable_count,
+        ];
+    }
+
     public function show() : BelongsTo
     {
         return $this->belongsTo(Show::class, 'show_id');
@@ -54,6 +83,25 @@ class Season extends Model
     public function episodes() : HasMany
     {
         return $this->hasMany(Episode::class, 'season_id')->orderBy('episode_number', 'ASC');
+    }
+
+    public function watchedBy(User $user, array $attributes = []) : void
+    {
+        foreach ($this->episodes as $episode) {
+            $episode->watched()->create([
+                'user_id' => $user->id,
+                'watched_at' => Arr::get($attributes, 'watched_at', now()),
+                'show_id' => $this->show_id,
+            ]);
+        }
+    }
+
+    public function watched() : HasMany
+    {
+        return $this->hasMany(Watched::class, 'show_id', 'show_id')
+            ->join('episodes', 'episodes.id', '=', 'watched.watchable_id')
+            ->where('watchable_type', Episode::class)
+            ->where('episodes.season_id', $this->id);
     }
 
     public function updateFromTmdb()

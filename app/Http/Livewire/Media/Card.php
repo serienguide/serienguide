@@ -13,14 +13,24 @@ class Card extends Component
     public $type = 'poster';
     public $load_next = false;
 
-    protected $listeners = [
-        'watched' => 'watched',
-        'unwatched' => 'unwatched',
-    ];
+    protected function getListeners()
+    {
+        $listeners = [
+            'watched' => 'watched',
+            'unwatched' => 'unwatched',
+        ];
+        if ($this->model->is_episode) {
+            $listeners['watched_episode_' . $this->model->id] = 'watched';
+            $listeners['watched_season_' . $this->model->season->id] = 'watched';
+        }
 
-    public function mount($model)
+        return $listeners;
+    }
+
+    public function mount($model, $watched = null)
     {
         $this->model = $model;
+        $this->watched = $watched;
         $this->loadWatchedCount();
     }
 
@@ -28,11 +38,19 @@ class Card extends Component
     {
         $watched = $this->model->watchedBy(auth()->user());
         $this->loadWatchedCount();
-        // $this->emit('watched', $watched);
+
+        if ($this->model->is_episode) {
+            $this->emit('watched_episode_' . $this->model->id);
+        }
+        elseif ($this->model->is_movie) {
+            $this->emit('watched_movie_' . $this->model->id);
+        }
 
         if ($this->load_next) {
             $this->next();
+            return;
         }
+
     }
 
     public function rate(int $rating)
@@ -42,6 +60,10 @@ class Card extends Component
 
     public function watched(Watched $watched)
     {
+        if ($this->load_next) {
+            $this->next();
+            return;
+        }
         $this->loadWatchedCount();
     }
 
