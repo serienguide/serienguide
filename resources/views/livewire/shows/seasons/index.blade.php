@@ -10,7 +10,7 @@
                     <i class="fa fa-spinner fa-spin text-gray-400"></i>
                 </div>
             </div>
-            <div class="text-sm">{{ $season->episode_count }} Folgen</div>
+            <div class="text-sm">@auth {{ $season->progress['watched_count'] }}/@endauth{{ $season->episode_count }} Folgen</div>
         </div>
         @auth
             <div>
