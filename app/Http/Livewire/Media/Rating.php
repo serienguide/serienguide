@@ -13,7 +13,9 @@ class Rating extends Component
     public function mount(Model $model)
     {
         $this->model = $model;
-        $this->user_rating = $this->model->user_ratings()->first();
+        if (auth()->check()) {
+            $this->user_rating = $this->model->user_ratings()->first();
+        }
     }
 
     public function rate(int $rating)

@@ -67,10 +67,10 @@ class MovieController extends Controller
         $movie->load([
             'actors',
             'directors',
-            'writers'
+            'genres',
+            'providers',
+            'writers',
         ]);
-
-        $movie->append('progress');
 
         return view($this->base_view_path . '.show')
             ->with('model', $movie);

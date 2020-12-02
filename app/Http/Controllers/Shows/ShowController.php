@@ -54,15 +54,20 @@ class ShowController extends Controller
      */
     public function show(Request $request, Show $show)
     {
-        $show->load([
-            'seasons',
-            'genres',
-            'providers',
-        ]);
-
         if ($request->wantsJson()) {
             return $show;
         }
+
+        $show->load([
+            'actors',
+            'directors',
+            'genres',
+            'providers',
+            'seasons',
+            'writers',
+        ]);
+
+        $show->append('progress');
 
         return view($this->base_view_path . '.show')
             ->with('model', $show);

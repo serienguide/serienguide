@@ -7,12 +7,18 @@
         <div class="flex items-center h-1/2">
             <div class="inline-flex items-center justify-between" role="menu" aria-orientation="vertical" aria-labelledby="options-menu" x-data="{ rating: {{ is_null($user_rating) ? 0 : $user_rating->rating }}, hovered: {{ is_null($user_rating) ? 0 : $user_rating->rating }} }" @mouseleave="hovered = rating > 0 ? rating : 0">
                 <span class="font-bold mr-3">Deine Bewertung:</span>
-                @if (! is_null($user_rating))
-                    <i wire:click="rate(0)" class="fas fa-trash-alt px-1 cursor-pointer text-red-500" @mouseenter="hovered = 0"></i>
-                @endif
-                @for ($i = 1; $i <= 10; $i++)
-                    <i wire:click="rate({{ $i }})" data-rating="{{ $i }}" class="fas fa-star pl-1 cursor-pointer" :class="{ 'text-yellow-400': hovered >= {{ $i }}}" @mouseenter="hovered = {{ $i }}"></i>
-                @endfor
+                @auth
+                    @if (! is_null($user_rating))
+                        <i wire:click="rate(0)" class="fas fa-trash-alt px-1 cursor-pointer text-red-500" @mouseenter="hovered = 0"></i>
+                    @endif
+                    @for ($i = 1; $i <= 10; $i++)
+                        <i wire:click="rate({{ $i }})" data-rating="{{ $i }}" class="fas fa-star pl-1 cursor-pointer" :class="{ 'text-yellow-400': hovered >= {{ $i }}}" @mouseenter="hovered = {{ $i }}"></i>
+                    @endfor
+                @else
+                    @for ($i = 1; $i <= 10; $i++)
+                        <i data-rating="{{ $i }}" class="fas fa-star pl-1 cursor-pointer" :class="{ 'text-yellow-400': hovered >= {{ $i }}}" @mouseenter="hovered = {{ $i }}"></i>
+                    @endfor
+                @endauth
                 <span class="ml-3 font-bold" x-text="hovered"></span>/10
             </div>
         </div>
