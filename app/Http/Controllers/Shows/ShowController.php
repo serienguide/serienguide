@@ -67,7 +67,12 @@ class ShowController extends Controller
             'writers',
         ]);
 
-        $show->append('progress');
+        $show->append([
+            'last_watched',
+            'last_aired_episodes',
+            'next_episode_to_watch',
+            'progress',
+        ]);
 
         return view($this->base_view_path . '.show')
             ->with('model', $show);

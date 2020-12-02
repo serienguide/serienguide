@@ -7,7 +7,9 @@ use App\Models\Keywords\Keyword;
 use App\Models\Lists\Item;
 use App\Models\Providers\Provider;
 use App\Models\Shows\Episodes\Episode;
+use App\Models\Shows\Seasons\Season;
 use App\Models\Shows\Show;
+use App\Models\Watched\Watched;
 use Tests\TestCase;
 
 class ShowTest extends TestCase
@@ -215,5 +217,84 @@ class ShowTest extends TestCase
         $show = $episode->show;
         $absolute_numbers = $show->setAbsoluteNumbers();
         $this->assertEquals(1, $episode->refresh()->absolute_number);
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_last_watched_by_a_user()
+    {
+        $episodes_count = 3;
+
+        $show = Show::factory()->create([
+
+        ]);
+        $season = Season::factory()->create([
+            'show_id' => $show->id,
+            'season_number' => 1
+        ]);
+        $episodes = [];
+        for($i = 1; $i <= $episodes_count; $i++) {
+            $episodes[$i] = Episode::factory()->create([
+                'season_id' => $season->id,
+                'show_id' => $show->id,
+                'episode_number' => $i,
+            ]);
+        }
+        $show->setAbsoluteNumbers();
+        $show->SetCounts();
+
+        $this->assertNull($show->last_watched);
+
+        $this->signIn();
+
+        $this->assertNull($show->refresh()->last_watched);
+
+        foreach ($episodes as $key => $episode) {
+            $episode->watchedBy($this->user);
+            $this->assertEquals($episode->id, $show->refresh()->last_watched->watchable_id);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_the_next_episode_to_watch()
+    {
+        $episodes_count = 3;
+
+        $show = Show::factory()->create([
+
+        ]);
+        $season = Season::factory()->create([
+            'show_id' => $show->id,
+            'season_number' => 1
+        ]);
+        $episodes = [];
+        for($i = 1; $i <= $episodes_count; $i++) {
+            $episodes[$i] = Episode::factory()->create([
+                'season_id' => $season->id,
+                'show_id' => $show->id,
+                'episode_number' => $i,
+            ]);
+        }
+        $show->setAbsoluteNumbers();
+        $show->SetCounts();
+
+        $this->assertNull($show->next_episode_to_watch);
+
+        $this->signIn();
+
+        $this->assertEquals($episodes[1]->id, $show->refresh()->next_episode_to_watch->id);
+
+        $episodes[1]->watchedBy($this->user);
+        $this->assertEquals($episodes[2]->id, $show->refresh()->next_episode_to_watch->id);
+
+        $episodes[2]->watchedBy($this->user);
+        $this->assertEquals($episodes[3]->id, $show->refresh()->next_episode_to_watch->id);
+
+        $episodes[3]->watchedBy($this->user);
+        $this->assertNull($show->next_episode_to_watch);
+
     }
 }

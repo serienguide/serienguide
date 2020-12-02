@@ -178,6 +178,49 @@ class Show extends Model
         }
     }
 
+    public function getLastWatchedAttribute()
+    {
+        if (Arr::has($this->attributes, 'last_watched')) {
+            return $this->attributes['last_watched'];
+        }
+
+        if (! auth()->check()) {
+            return null;
+        }
+
+        return $this->attributes['last_watched'] = $this->watched()->where('user_id', auth()->user()->id)->latest('watched_at')->orderBy('id', 'DESC')->first();
+    }
+
+    public function getNextEpisodeToWatchAttribute()
+    {
+        if (Arr::has($this->attributes, 'next_episode_to_watch')) {
+            return $this->attributes['next_episode_to_watch'];
+        }
+
+        if (! auth()->check()) {
+            return null;
+        }
+
+        $absolute_number = is_null($this->last_watched) ? 0 : $this->last_watched->watchable->absolute_number;
+
+        return $this->attributes['next_episode_to_watch'] = Episode::nextByAbsoluteNumber($this->id, $absolute_number)->first();
+    }
+
+    public function getLastAiredEpisodesAttribute()
+    {
+        if (Arr::has($this->attributes, 'last_aired_episodes')) {
+            return $this->attributes['last_aired_episodes'];
+        }
+
+        return $this->attributes['last_aired_episodes'] = $this->episodes()
+            ->whereNotNull('first_aired_at')
+            ->where('first_aired_at', '<=', today()->format('Y-m-d'))
+            ->orderBy(DB::raw('IFNULL(first_aired_en_at, first_aired_de_at)'), 'DESC')
+            ->orderBy('absolute_number', 'DESC')
+            ->take(is_null($this->next_episode_to_watch) ? 4 : 3)
+            ->get();
+    }
+
     public function seasons() : HasMany
     {
         return $this->hasMany(Season::class, 'show_id')->orderBy('season_number', 'ASC');
@@ -185,7 +228,7 @@ class Show extends Model
 
     public function episodes() : HasMany
     {
-        return $this->hasMany(Episode::class, 'show_id')->orderBy('episode_number', 'ASC');
+        return $this->hasMany(Episode::class, 'show_id');
     }
 
     public function watchedBy(User $user, array $attributes = []) : void

@@ -4,7 +4,6 @@
     </div>
     @auth
         <header class="flex items-center justify-center px-3 py-1">
-
             <div class="flex-grow"></div>
             @unless($model->is_episode)
                 <div class="relative inline-block text-left" x-data="{ open: false }">

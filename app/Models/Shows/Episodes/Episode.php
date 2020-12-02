@@ -122,7 +122,7 @@ class Episode extends Model
 
     public function scopeNextByAbsoluteNumber(Builder $query, int $show_id, int $absolute_number) : Builder
     {
-        if (! $absolute_number) {
+        if (is_null($absolute_number)) {
             return $query;
         }
 

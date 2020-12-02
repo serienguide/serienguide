@@ -18,7 +18,8 @@
         x-transition:enter-end="transform opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-75"
         x-transition:leave-start="transform opacity-100 scale-100"
-        x-transition:leave-end="transform opacity-0 scale-95" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-3">
+        x-transition:leave-end="transform opacity-0 scale-95"
+        class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-3">
         @if ($items)
             @foreach ($items as $item)
                 @livewire('media.card', ['model' => $item, 'type' => 'backdrop', 'load_next' => false], key('media-card-' . $item->id))
