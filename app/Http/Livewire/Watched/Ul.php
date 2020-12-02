@@ -18,6 +18,8 @@ class Ul extends Component
 
         if ($this->model->is_episode) {
             $listeners['watched_episode_' . $this->model->id] = 'watched';
+            $listeners['watched_season_' . $this->model->season_id] = 'watched';
+            $listeners['watched_show_' . $this->model->show_id] = 'watched';
         }
         elseif ($this->model->is_movie) {
             $listeners['watched_movie_' . $this->model->id] = 'watched';
@@ -44,7 +46,13 @@ class Ul extends Component
         $item = $items->first();
         $item->delete();
 
-        $this->emitUp('unwatched');
+        if ($this->model->is_episode) {
+            $this->emit('unwatched_episode_' . $this->model->id);
+            $this->emit('unwatched_episode_season_' . $this->model->season_id);
+        }
+        elseif ($this->model->is_movie) {
+            $this->emit('unwatched_movie_' . $this->model->id);
+        }
     }
 
     public function watch()
@@ -52,6 +60,13 @@ class Ul extends Component
         $watched = $this->model->watchedBy(auth()->user());
         $this->items[-1] = $watched;
         $this->emitUp('watched', $watched);
+
+        if ($this->model->is_episode) {
+            $this->emit('watched_episode_' . $this->model->id);
+        }
+        elseif ($this->model->is_movie) {
+            $this->emit('watched_movie_' . $this->model->id);
+        }
     }
 
     public function watched()

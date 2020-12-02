@@ -1,6 +1,6 @@
 <li class="col-span-1 flex flex-col justify-between bg-white rounded-lg shadow">
     <div class="rounded-t-lg h-2 w-full bg-yellow-900" title="{{ number_format($model->vote_average, (in_array($model->vote_average, [0, 10]) ? 0 : 1) , ',', '') }}/10 {{ $model->vote_count }} Stimmen">
-        <div class="bg-yellow-400 h-2 text-xs leading-none text-center text-white @if($model->vote_average > 0) rounded-tl-lg @endif @if($model->vote_average == 10) rounded-tr-lg @endif" style="width: {{ $model->vote_average * 10 }}%"></div>
+        <div class="bg-yellow-400 h-2 text-xs leading-none text-center text-white transition-all @if($model->vote_average > 0) rounded-tl-lg @endif @if($model->vote_average == 10) rounded-tr-lg @endif" style="width: {{ $model->vote_average * 10 }}%"></div>
     </div>
     @auth
         <header class="flex items-center justify-center px-3 py-1">
@@ -146,6 +146,6 @@
         @endauth
     </footer>
     <div class="rounded-b-lg h-2 w-full bg-blue-900" title="{{ $model->progress['watched_count'] }}/{{ $model->progress['watchable_count'] }} {{ $model->progress['percent'] }}%">
-        <div class="bg-blue-500 h-2 text-xs leading-none text-center text-white @if($model->progress['percent'] > 0) rounded-bl-lg @endif @if($model->progress['percent'] == 100) rounded-br-lg @endif" style="width: {{ $model->progress['percent'] }}%"></div>
+        <div class="bg-blue-500 h-2 text-xs leading-none text-center text-white transition-all duration-500 @if($model->progress['percent'] > 0) rounded-bl-lg @endif @if($model->progress['percent'] == 100) rounded-br-lg @endif" style="width: {{ $model->progress['percent'] }}%"></div>
     </div>
 </li>

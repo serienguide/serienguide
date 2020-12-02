@@ -1,25 +1,19 @@
 <?php
 
-namespace App\Http\Livewire\Media;
+namespace App\Http\Livewire\Media\Buttons;
 
-use App\Models\Shows\Episodes\Episode;
-use App\Models\Shows\Show;
-use App\Models\Watched\Watched;
-use Illuminate\Support\Arr;
 use Livewire\Component;
 
-class Card extends Component
+class Watch extends Component
 {
     public $model;
-    public $type = 'poster';
-    public $load_next = false;
-
-    public $original_listeners = [];
-    public $original_model_id = 0;
 
     protected function getListeners()
     {
-        $listeners = [];
+        $listeners = [
+            //
+        ];
+
         if ($this->model->is_episode) {
             $listeners['watched_episode_' . $this->model->id] = 'watched';
             $listeners['watched_season_' . $this->model->season_id] = 'watched';
@@ -29,6 +23,7 @@ class Card extends Component
         }
 
         if ($this->model->is_movie) {
+            $listeners['watched_movie_' . $this->model->id] = 'watched';
             $listeners['unwatched_movie_' . $this->model->id] = 'unwatched';
         }
 
@@ -39,39 +34,28 @@ class Card extends Component
     {
         $this->model = $model;
         $this->loadWatchedCount();
-
-        $this->original_listeners = $this->getListeners();
-        $this->original_model_id = $this->model->id;
     }
 
     public function watch()
     {
         $watched = $this->model->watchedBy(auth()->user());
+        $this->loadWatchedCount();
 
         if ($this->model->is_episode) {
             $this->emit('watched_episode_' . $this->model->id);
             $this->emit('watched_episode_season_' . $this->model->season_id);
             $this->emit('watched_episode_show_' . $this->model->show_id);
-            if ($this->original_model_id != $this->model->id) {
-                $this->watched();
-            }
         }
         elseif ($this->model->is_movie) {
             $this->emit('watched_movie_' . $this->model->id);
         }
-    }
-
-    public function rate(int $rating)
-    {
-        $this->model->rating_by_user = $this->model->rateBy(auth()->user(), ['rating' => $rating]);
+        elseif ($this->model->is_show) {
+            $this->emit('watched_show_' . $this->model->id);
+        }
     }
 
     public function watched()
     {
-        if ($this->load_next) {
-            $this->next();
-            return;
-        }
         $this->loadWatchedCount();
     }
 
@@ -93,26 +77,6 @@ class Card extends Component
         ]);
     }
 
-    public function next()
-    {
-        if (! $this->model->is_episode) {
-            return;
-        }
-
-        $next_episode = Episode::nextByAbsoluteNumber($this->model->show_id, $this->model->absolute_number)->first();
-        if (is_null($next_episode)) {
-            return;
-        }
-
-        $this->model = $next_episode;
-    }
-
-    public function render()
-    {
-        return view('livewire.media.card')
-            ->with('button_class', $this->buttonClass());
-    }
-
     protected function buttonClass() : string
     {
         if ($this->model->watched_count == 0) {
@@ -126,14 +90,9 @@ class Card extends Component
         return 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700';
     }
 
-    public function fireEvent($event, $params)
+    public function render()
     {
-        $eventsAndHandlers = $this->getEventsAndHandlers();
-        if (! Arr::has($eventsAndHandlers, $event)) {
-            return;
-        }
-        $method = $eventsAndHandlers[$event];
-
-        $this->callMethod($method, $params);
+        return view('livewire.media.buttons.watch')
+            ->with('button_class', $this->buttonClass());
     }
 }

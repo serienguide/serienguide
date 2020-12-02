@@ -11,6 +11,20 @@ class Index extends Component
     public $items;
     public $isCurrent = false;
 
+    protected function getListeners()
+    {
+        $listeners = [
+            //
+        ];
+
+        $listeners['watched_episode_season_' . $this->season->id] = 'watched';
+        $listeners['watched_show_' . $this->season->show_id] = 'watched';
+
+        $listeners['unwatched_episode_season_' . $this->season->id] = 'watched';
+
+        return $listeners;
+    }
+
     public function mount(Season $season)
     {
         $this->season = $season;
@@ -26,6 +40,11 @@ class Index extends Component
         if (is_null($this->items)) {
             $this->load();
         }
+    }
+
+    public function watched()
+    {
+        $this->season->append('progress');
     }
 
     public function render()

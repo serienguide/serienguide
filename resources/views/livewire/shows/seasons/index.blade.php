@@ -4,7 +4,12 @@
             <img @if(is_null($items)) wire:click="load" @endif @click="open = !open;" src="{{ Storage::disk('s3')->url('w118' . $season->poster_path) }}" class="mr-1 cursor-pointer">
         @endif
         <div @if(is_null($items)) wire:click="load" @endif @click="open = !open;" class="cursor-pointer flex-grow">
-            <h3>Staffel {{ $season->season_number }}</h3>
+            <div class="flex">
+                <h3>Staffel {{ $season->season_number }}</h3>
+                <div wire:loading.delay class="ml-2 pointer-events-none">
+                    <i class="fa fa-spinner fa-spin text-gray-400"></i>
+                </div>
+            </div>
             <div class="text-sm">{{ $season->episode_count }} Folgen</div>
         </div>
         @auth
@@ -16,10 +21,7 @@
         @endauth
     </div>
     <div class="my-3 rounded h-2 w-full bg-blue-900" title="{{ $season->progress['watched_count'] }}/{{ $season->progress['watchable_count'] }} {{ $season->progress['percent'] }}%">
-        <div class="bg-blue-500 h-2 text-xs leading-none text-center text-white @if ($season->progress['percent'] > 0) rounded-l @endif @if ($season->progress['percent'] == 100) rounded-r @endif" style="width: {{ $season->progress['percent'] }}%"></div>
-    </div>
-    <div wire:loading.delay class="text-center w-100 p-5">
-        Lade Daten.
+        <div class="bg-blue-500 h-2 text-xs leading-none text-center text-white transition-all duration-500 @if ($season->progress['percent'] > 0) rounded-l @endif @if ($season->progress['percent'] == 100) rounded-r @endif" style="width: {{ $season->progress['percent'] }}%"></div>
     </div>
     <ul x-show="open"
         x-cloak
