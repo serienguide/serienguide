@@ -12,6 +12,10 @@
 
     <x-media.about :model="$model"/>
 
+    @guest
+        <section class="bg-gray-700 mt-8"></section>
+    @endguest
+
     @auth
         <x-container class="py-4">
             <div class="">
