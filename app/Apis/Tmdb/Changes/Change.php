@@ -4,6 +4,7 @@ namespace App\Apis\Tmdb\Changes;
 
 use App\Apis\Model;
 use App\Apis\Tmdb\Http;
+use App\Apis\Tmdb\Person;
 use App\Models\Movies\Movie;
 use Carbon\Carbon;
 
@@ -11,10 +12,15 @@ class Change extends Model
 {
     public static function movies() : void
     {
-        self::changes('movie', 'updateMovie');
+        self::changes('movie');
     }
 
-    protected static function changes(string $type, string $method) : void
+    public static function people() : void
+    {
+        self::changes('person');
+    }
+
+    protected static function changes(string $type) : void
     {
         $page = 1;
         $total_pages = 1;
@@ -24,25 +30,23 @@ class Change extends Model
             ]);
             $data = $response->json();
             $total_pages = $data['total_pages'];
-
             foreach ($data['results'] as $key => $attributes) {
-                self::$method($attributes['id']);
+                $tmdb_id = $attributes['id'];
+                if ($type == 'person') {
+                    $model = Person::where('id', $tmdb_id)->first();
+                }
+                elseif ($type == 'movie') {
+                    $model = Movie::where('tmdb_id', $tmdb_id)->first();
+                }
+                if (is_null($model)) {
+                    continue;
+                }
+                $model->updateFromTmdb();
             }
 
             $page++;
         }
         while ($page < $total_pages);
-    }
-
-    protected static function updateMovie(int $tmdb_id) : bool
-    {
-        $model = Movie::where('tmdb_id', $tmdb_id)->first();
-        if (is_null($model)) {
-            return false;
-        }
-        $model->updateFromTmdb();
-
-        return true;
     }
 
     public static function shows() : array

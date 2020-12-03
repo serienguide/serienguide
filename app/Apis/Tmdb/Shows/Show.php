@@ -110,7 +110,11 @@ class Show extends Model
         $attributes['episodes_count'] = max($attributes_en['number_of_episodes'], $attributes_de['number_of_episodes']);
         $attributes['runtime'] = (empty($attributes_de['episode_run_time']) ? 0 : round(array_sum($attributes_de['episode_run_time']) / count($attributes_de['episode_run_time'])));
         $attributes['seasons'] = $seasons;
+        $attributes['tmdb_vote_count'] = $attributes_en['vote_count'];
+        $attributes['tmdb_vote_average'] = $attributes_en['vote_average'];
+        $attributes['tmdb_popularity'] = $attributes_de['popularity'];
 
+        unset($attributes['vote_count'], $attributes['vote_average']);
         unset($attributes['watch/providers']);
 
         return $attributes;

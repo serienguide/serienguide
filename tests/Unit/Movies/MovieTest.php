@@ -180,6 +180,7 @@ class MovieTest extends TestCase
         ]);
         $model = Movie::createOrUpdateFromTmdb($tmdb_id);
         $this->assertNotNull($model->collection_id);
+        $this->assertGreaterThan(0, $model->tmdb_popularity);
         $this->assertEquals($movie->id, $model->id);
         $this->assertCount(3, $model->genres);
         $this->assertCount(11, $model->keywords);

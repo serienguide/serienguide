@@ -37,6 +37,8 @@ class CreatePeopleTable extends Migration
             $table->unsignedDecimal('vote_average', 3, 1)->default(0);
             $table->unsignedMediumInteger('tmdb_vote_count')->default(0);
             $table->unsignedDecimal('tmdb_vote_average', 3, 1)->default(0);
+            $table->unsignedMediumInteger('tmdb_trending')->default(999999);
+            $table->unsignedDecimal('tmdb_popularity', 10, 6)->default(0);
 
             $table->timestamps();
         });

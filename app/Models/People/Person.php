@@ -47,6 +47,8 @@ class Person extends Model
         'vote_average',
         'tmdb_vote_count',
         'tmdb_vote_average',
+        'tmdb_trending',
+        'tmdb_popularity',
     ];
 
     public $incrementing = false;
@@ -54,6 +56,23 @@ class Person extends Model
     public function isDeletable() : bool
     {
         return true;
+    }
+
+    public function updateFromTmdb($attributes = null)
+    {
+        if (is_null($attributes)) {
+            $attributes = \App\Apis\Tmdb\Person::find($this->id);
+        }
+        if (empty($attributes)) {
+            return;
+        }
+        $this->update($attributes);
+        $this->syncFromTmdb($attributes);
+    }
+
+    protected function syncFromTmdb($attributes)
+    {
+        // $this->createImageFromTmdb('still', $attributes['profile_path']);
     }
 
     public function getPosterPathAttribute() : string

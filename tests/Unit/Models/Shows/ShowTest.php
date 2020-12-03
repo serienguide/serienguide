@@ -202,6 +202,7 @@ class ShowTest extends TestCase
             'tmdb_id' => $tmdb_id,
         ]);
         $model->updateFromTmdb();
+        $this->assertGreaterThan(0, $model->tmdb_popularity);
         $this->assertCount(4, $model->genres);
         $this->assertCount(6, $model->keywords);
         $this->assertCount(9, $model->providers);

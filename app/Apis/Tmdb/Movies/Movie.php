@@ -61,6 +61,7 @@ class Movie extends Model
         $attributes['imdb_id'] = $attributes_de['external_ids']['imdb_id'];
         $attributes['tmdb_vote_count'] = $attributes_en['vote_count'];
         $attributes['tmdb_vote_average'] = $attributes_en['vote_average'];
+        $attributes['tmdb_popularity'] = $attributes_de['popularity'];
 
         unset($attributes['vote_count'], $attributes['vote_average']);
 
