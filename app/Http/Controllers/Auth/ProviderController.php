@@ -28,27 +28,32 @@ class ProviderController extends Controller
     {
         $provider_user = Socialite::driver($provider)->user();
 
-        $user = User::firstWhere([
-            'email' => $provider_user->getEmail(),
-            'provider' => null,
-            'provider_id' => null,
-        ]);
+        $user = User::whereHas('oauth_providers', function ($query) use ($provider, $provider_user) {
+            $query->where('provider_type', $provider)
+                ->where('provider_id', $provider_user->getId());
+        })->first();
+
+        if (is_null($user) && $provider_user->getEmail()) {
+            $user = User::where('email', $provider_user->getEmail())->first();
+        }
 
         if (is_null($user)) {
-            $user = User::firstOrCreate([
-                'provider' => $provider,
-                'provider_id' => $provider_user->getId(),
-            ], [
+            $user = User::create([
                 'email' => $provider_user->getEmail(),
                 'name' => $provider_user->getName(),
             ]);
         }
-        else {
-            $user->update([
-                'provider' => $provider,
-                'provider_id' => $provider_user->getId(),
-            ]);
-        }
+
+        $user->oauth_providers()->updateOrCreate([
+            'provider_type' => $provider,
+            'provider_id' => $provider_user->getId(),
+        ], [
+            'token' => $provider_user->token,
+            'token_secret' => null, // only available on OAuth1: $provider_user->tokenSecret,
+            'refresh_token' => $provider_user->refreshToken, // only available on OAuth2
+            'expires_in' => $provider_user->expiresIn, // only available on OAuth2
+            'expires_at' => ($provider_user->expiresIn ? now()->addSeconds($provider_user->expiresIn) : null), // only available on OAuth2
+        ]);
 
         auth()->login($user, true);
 

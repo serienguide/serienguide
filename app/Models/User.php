@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Auth\OauthProvider;
 use App\Models\Lists\Listing;
 use App\Traits\HasSlug;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -87,5 +88,10 @@ class User extends Authenticatable
     public function lists() : HasMany
     {
         return $this->hasMany(Listing::class, 'user_id');
+    }
+
+    public function oauth_providers() : HasMany
+    {
+        return $this->hasMany(OauthProvider::class, 'user_id');
     }
 }
