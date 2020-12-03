@@ -2,11 +2,12 @@
 
 namespace Tests\Unit\Models\Auth;
 
+use App\Models\Auth\OauthProvider;
 use Tests\TestCase;
 
 class OauthProviderTest extends TestCase
 {
-    protected $class_name = {{ model }}::class;
+    protected $class_name = OauthProvider::class;
 
     /**
      * @test
@@ -15,7 +16,7 @@ class OauthProviderTest extends TestCase
     {
         $model = $this->class_name::factory()->create();
         $route_parameter = [
-            '{{ modelVariable }}' => $model->id,
+            'provider' => $model->id,
         ];
 
         $route = strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?');

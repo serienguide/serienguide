@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auth\OauthProvider;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
@@ -28,20 +29,25 @@ class ProviderController extends Controller
     {
         $provider_user = Socialite::driver($provider)->user();
 
-        $user = User::whereHas('oauth_providers', function ($query) use ($provider, $provider_user) {
-            $query->where('provider_type', $provider)
-                ->where('provider_id', $provider_user->getId());
-        })->first();
-
-        if (is_null($user) && $provider_user->getEmail()) {
-            $user = User::where('email', $provider_user->getEmail())->first();
+        if (auth()->check()) {
+            $user = auth()->user();
         }
+        else {
+            $user = User::whereHas('oauth_providers', function ($query) use ($provider, $provider_user) {
+                $query->where('provider_type', $provider)
+                    ->where('provider_id', $provider_user->getId());
+            })->first();
 
-        if (is_null($user)) {
-            $user = User::create([
-                'email' => $provider_user->getEmail(),
-                'name' => $provider_user->getName(),
-            ]);
+            if (is_null($user) && $provider_user->getEmail()) {
+                $user = User::where('email', $provider_user->getEmail())->first();
+            }
+
+            if (is_null($user)) {
+                $user = User::create([
+                    'email' => $provider_user->getEmail(),
+                    'name' => $provider_user->getName(),
+                ]);
+            }
         }
 
         $user->oauth_providers()->updateOrCreate([
@@ -54,6 +60,10 @@ class ProviderController extends Controller
             'expires_in' => $provider_user->expiresIn, // only available on OAuth2
             'expires_at' => ($provider_user->expiresIn ? now()->addSeconds($provider_user->expiresIn) : null), // only available on OAuth2
         ]);
+
+        if (auth()->check()) {
+            return redirect(OauthProvider::indexPath());
+        }
 
         auth()->login($user, true);
 

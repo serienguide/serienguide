@@ -3,6 +3,7 @@
 namespace Database\Factories\Auth;
 
 use App\Models\Auth\OauthProvider;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OauthProviderFactory extends Factory
@@ -22,7 +23,9 @@ class OauthProviderFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'provider_type' => 'facebook',
+            'provider_id' => $this->faker->numberBetween(1000000, 9999999),
         ];
     }
 }

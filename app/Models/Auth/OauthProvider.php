@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 class OauthProvider extends Model
 {
     use BelongsToUser,
-        HasFactory;
+        HasFactory,
+        HasModelPath;
 
-    const ROUTE_NAME = '';
-    const VIEW_PATH = '';
+    const ROUTE_NAME = 'providers';
+    const VIEW_PATH = 'auth.providers';
 
     protected $appends = [
         //

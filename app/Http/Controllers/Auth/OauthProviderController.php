@@ -12,7 +12,7 @@ class OauthProviderController extends Controller
 
     public function __construct()
     {
-        $this->authorizeResource(OauthProvider::class, 'oauthProvider');
+        $this->authorizeResource(OauthProvider::class, 'provider');
     }
 
     /**
@@ -26,106 +26,20 @@ class OauthProviderController extends Controller
             //
         }
 
-        return view($this->base_view_path . '.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $oauthProvider = OauthProvider::create([
-            //
-        ]);
-
-        if ($request->wantsJson()) {
-            return $oauthProvider;
-        }
-
-        return redirect($oauthProvider->edit_path)
-            ->with('status', [
-                'type' => 'success',
-                'text' => 'Datensatz erstellt.',
-            ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Auth\OauthProvider  $oauthProvider
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, OauthProvider $oauthProvider)
-    {
-        if ($request->wantsJson()) {
-            return $oauthProvider;
-        }
-
-        return view($this->base_view_path . '.show')
-            ->with('model', $oauthProvider);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Auth\OauthProvider  $oauthProvider
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(OauthProvider $oauthProvider)
-    {
-        return view($this->base_view_path . '.edit')
-            ->with('model', $oauthProvider);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Auth\OauthProvider  $oauthProvider
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, OauthProvider $oauthProvider)
-    {
-        $attributes = $request->validate([
-            //
-        ]);
-
-        $oauthProvider->update($attributes);
-
-        if ($request->wantsJson()) {
-            return $oauthProvider;
-        }
-
-        return back()
-            ->with('status', [
-                'type' => 'success',
-                'text' => 'Datensatz gespeichert.',
-            ]);
+        return view($this->base_view_path . '.index')
+            ->with('oauth_providers', auth()->user()->oauth_providers);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Auth\OauthProvider  $oauthProvider
+     * @param  \App\Models\Auth\OauthProvider  $provider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, OauthProvider $oauthProvider)
+    public function destroy(Request $request, OauthProvider $provider)
     {
-        if ($is_deletable = $oauthProvider->isDeletable()) {
-            $oauthProvider->delete();
+        if ($is_deletable = $provider->isDeletable()) {
+            $provider->delete();
             $status = [
                 'type' => 'success',
                 'text' => 'Datensatz gelöscht.',
@@ -144,7 +58,7 @@ class OauthProviderController extends Controller
             ];
         }
 
-        return redirect($oauthProvider->index_path)
+        return redirect($provider->index_path)
             ->with('status', $status);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Policies\Auth;
 
-use App\Models\Models\Auth\OauthProvider;
+use App\Models\Auth\OauthProvider;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class OauthProviderPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Auth\OauthProvider  $oauthProvider
+     * @param  \App\Models\Models\Auth\OauthProvider  $provider
      * @return mixed
      */
-    public function view(User $user, OauthProvider $oauthProvider)
+    public function view(User $user, OauthProvider $provider)
     {
-        return ($user->id == $oauthProvider->user_id);
+        return ($user->id == $provider->user_id);
     }
 
     /**
@@ -48,34 +48,34 @@ class OauthProviderPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Auth\OauthProvider  $oauthProvider
+     * @param  \App\Models\Models\Auth\OauthProvider  $provider
      * @return mixed
      */
-    public function update(User $user, OauthProvider $oauthProvider)
+    public function update(User $user, OauthProvider $provider)
     {
-        return ($user->id == $oauthProvider->user_id);
+        return ($user->id == $provider->user_id);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Auth\OauthProvider  $oauthProvider
+     * @param  \App\Models\Models\Auth\OauthProvider  $provider
      * @return mixed
      */
-    public function delete(User $user, OauthProvider $oauthProvider)
+    public function delete(User $user, OauthProvider $provider)
     {
-        return ($user->id == $oauthProvider->user_id);
+        return ($user->id == $provider->user_id);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Auth\OauthProvider  $oauthProvider
+     * @param  \App\Models\Models\Auth\OauthProvider  $provider
      * @return mixed
      */
-    public function restore(User $user, OauthProvider $oauthProvider)
+    public function restore(User $user, OauthProvider $provider)
     {
         //
     }
@@ -84,10 +84,10 @@ class OauthProviderPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Models\Auth\OauthProvider  $oauthProvider
+     * @param  \App\Models\Models\Auth\OauthProvider  $provider
      * @return mixed
      */
-    public function forceDelete(User $user, OauthProvider $oauthProvider)
+    public function forceDelete(User $user, OauthProvider $provider)
     {
         //
     }
