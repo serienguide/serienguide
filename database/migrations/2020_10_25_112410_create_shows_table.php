@@ -18,7 +18,6 @@ class CreateShowsTable extends Migration
 
             $table->unsignedInteger('tmdb_id')->nullable()->index();
             $table->unsignedInteger('tvdb_id')->nullable()->index();
-            $table->unsignedInteger('guidebox_id')->nullable()->index();
             $table->string('imdb_id')->nullable();
 
             $table->string('slug')->nullable()->index();

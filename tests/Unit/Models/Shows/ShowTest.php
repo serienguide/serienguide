@@ -297,4 +297,19 @@ class ShowTest extends TestCase
         $this->assertNull($show->next_episode_to_watch);
 
     }
+
+    /**
+     * @test
+     */
+    public function it_can_be_updated_from_glotz()
+    {
+        // L.A.’s Finest
+        $tvdb_id = 357527;
+        $model = Show::factory()->create([
+            'tvdb_id' => $tvdb_id,
+        ]);
+        $model->updateFromGlotz();
+        $this->assertEquals('Donnerstag', $model->air_day);
+        $this->assertEquals('20:15', $model->air_time);
+    }
 }

@@ -59,6 +59,8 @@ class Show extends Model
     ];
 
     protected $fillable = [
+        'air_day',
+        'air_time',
         'backdrop_path',
         'episodes_count',
         'facebook',
@@ -132,6 +134,24 @@ class Show extends Model
             ]);
             $season->createImageFromTmdb('poster', $tmdb_season['poster_path']);
         }
+    }
+
+    public function updateFromGlotz()
+    {
+        if (empty($this->tvdb_id)) {
+            return;
+        }
+
+        $glotz_show = \App\Apis\Glotz\Show::find($this->tvdb_id);
+
+        if (empty($glotz_show)) {
+            return;
+        }
+
+        $this->update([
+            'air_day' => ($glotz_show['airs_day'] ?: null),
+            'air_time' => ($glotz_show['airs_time'] == '00:00:00' ? null : $glotz_show['airs_time']),
+        ]);
     }
 
     public function setCounts() : void
