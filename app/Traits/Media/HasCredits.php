@@ -55,7 +55,7 @@ trait HasCredits
                 ], [
                     'name' => $tmdb_credit['name'],
                     'profile_path' => $tmdb_credit['profile_path'],
-                    'known_for_department' => $tmdb_credit['known_for_department'],
+                    'known_for_department' => Arr::get($tmdb_credit, 'known_for_department', ''),
                     'gender' => $tmdb_credit['gender'],
                 ]);
                 $credit = Credit::updateOrCreate([
