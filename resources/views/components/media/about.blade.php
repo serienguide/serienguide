@@ -33,7 +33,7 @@
                     </div>
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/6 font-bold"></div>
-                        <div class="w-1/2 md:w-5/6">@if ($model->air_day) {{ strtolower($model->air_day) }}s @endif @if($model->air_time != '00:00:00') um {{ (new DateTime($model->air_time))->format('H:i') }} @endif</div>
+                        <div class="w-1/2 md:w-5/6">@if ($model->air_day) {{ strtolower($model->air_day) }}s @endif @if($model->air_time && $model->air_time != '00:00:00') um {{ (new DateTime($model->air_time))->format('H:i') }} Uhr @endif</div>
                     </div>
                 @endif
                 <div class="flex items-center">
