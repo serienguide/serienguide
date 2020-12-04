@@ -22,6 +22,7 @@ class CreateOauthProvidersTable extends Migration
             $table->string('refresh_token')->nullable();
             $table->unsignedInteger('expires_in')->nullable();
             $table->dateTime('expires_at')->nullable();
+            $table->dateTime('synced_at')->nullable();
 
             $table->timestamps();
 
