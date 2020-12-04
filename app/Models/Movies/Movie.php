@@ -166,13 +166,23 @@ class Movie extends Model
         return true;
     }
 
-    public function setSlug() : void
+    public function setSlug(bool $force = false) : void
     {
-        if (! $this->isDirty('name')) {
+        if (! $this->isDirty('name') && ! $this->isDirty('year') && $force === false) {
             return;
         }
 
-        $this->attributes['slug'] = (is_null($this->name) ? Str::uuid() : Str::slug($this->name . '-' . $this->year, '-', 'de'));
+        if (empty($this->name)) {
+            $this->attributes['slug'] = Str::uuid();
+            return;
+        }
+
+        $slug = Str::slug($this->name . ' ' . $this->year, '-', 'de');
+        if (self::where('id', '!=', $this->id)->slug($slug)->exists()) {
+            $slug .= '-' . ((self::where('name', $this->name)->where('year', $this->year)->count()) + 1);
+        }
+
+        $this->attributes['slug'] = $slug;
     }
 
     /**
@@ -180,17 +190,17 @@ class Movie extends Model
      *
      * @return string
      */
-    // public function getRouteKeyName()
-    // {
-    //     return 'slug';
-    // }
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
-    // public function getRouteParameterAttribute() : array
-    // {
-    //     return [
-    //         Str::singular($this->base_route) => $this->slug
-    //     ];
-    // }
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            Str::singular($this->base_route) => $this->slug
+        ];
+    }
 
     public function collection() : BelongsTo
     {

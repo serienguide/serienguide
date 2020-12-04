@@ -17,8 +17,8 @@ class CreatePeopleTable extends Migration
             $table->id();
             $table->string('imdb_id')->nullable();
 
-            $table->string('name');
-            $table->string('slug');
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
             $table->date('birthday_at')->nullable();
             $table->date('deathday_at')->nullable();
             $table->string('known_for_department')->nullable();

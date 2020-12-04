@@ -7,6 +7,7 @@ use App\Traits\Media\HasImages;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Person extends Model
 {
@@ -73,6 +74,37 @@ class Person extends Model
     protected function syncFromTmdb($attributes)
     {
         // $this->createImageFromTmdb('still', $attributes['profile_path']);
+    }
+
+    public function setSlug(bool $force = false) : void
+    {
+        if (! $this->isDirty('name') && $force === false) {
+            return;
+        }
+
+        if (empty($this->name)) {
+            $this->attributes['slug'] = Str::uuid();
+            return;
+        }
+
+        $slug = Str::slug($this->name, '-', 'de');
+        if (self::where('id', '!=', $this->id)->slug($slug)->exists()) {
+            $slug .= '-' . ((self::where('name', $this->name)->count()) + 1);
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            Str::singular($this->base_route) => $this->slug
+        ];
     }
 
     public function getPosterPathAttribute() : string

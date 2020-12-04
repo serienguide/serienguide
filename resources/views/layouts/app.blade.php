@@ -50,7 +50,7 @@
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>
         @stack('scripts')
     </head>
-    <body class="font-sans antialiased test">
+    <body class="font-sans antialiased">
         <x-navigation />
         @isset ($header)
             <header class="bg-white shadow-sm pt-16">
