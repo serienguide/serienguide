@@ -4,7 +4,7 @@
         <i wire:loading.delay class="fa fa-spinner fa-spin text-grey"></i>
     </div>
     @if (isset($items))
-        <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mb-3">
+        <ul class="grid grid-rows-1 grid-cols-6-3/4 sm:grid-cols-6-1/3 md:grid-cols-6-1/4 lg:grid-cols-6 xl:grid-cols-6 gap-6 overflow-auto mb-3">
             @foreach ($items as $item)
                 @livewire('media.card', ['model' => $item, 'load_next' => true ], key('next-episodes-' . $item->id . '-' . time()))
             @endforeach
