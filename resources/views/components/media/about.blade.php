@@ -20,12 +20,12 @@
                 @if ($model->is_movie)
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/6 font-bold">Release</div>
-                        <div class="w-1/2 md:w-5/6">{{ $model->released_at->format('d.m.Y') }}</div>
+                        <div class="w-1/2 md:w-5/6">{{ is_null($model->released_at) ? 'TBA' : $model->released_at->format('d.m.Y') }}</div>
                     </div>
                 @elseif ($model->is_show)
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/6 font-bold">Ausstrahlung</div>
-                        <div class="w-1/2 md:w-5/6">{{ $model->first_aired_at->format('d.m.Y') }} bis {{ is_null($model->last_aired_at) ? 'jetzt' : $model->last_aired_at->format('d.m.Y') }} @if ($model->status == 'Canceled') (Abgesetzt) @elseif ($model->status == 'Ended') (Beendet) @endif</div>
+                        <div class="w-1/2 md:w-5/6">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }} bis {{ is_null($model->last_aired_at) ? 'jetzt' : $model->last_aired_at->format('d.m.Y') }} @if ($model->status == 'Canceled') (Abgesetzt) @elseif ($model->status == 'Ended') (Beendet) @endif</div>
                     </div>
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/6 font-bold"></div>
