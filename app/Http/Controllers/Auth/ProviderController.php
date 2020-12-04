@@ -28,14 +28,15 @@ class ProviderController extends Controller
     public function handleProviderCallback(string $provider)
     {
         $provider_user = Socialite::driver($provider)->user();
+        $provider_id = $provider_user->getId() ?? $provider_user->getNickname();
 
         if (auth()->check()) {
             $user = auth()->user();
         }
         else {
-            $user = User::whereHas('oauth_providers', function ($query) use ($provider, $provider_user) {
+            $user = User::whereHas('oauth_providers', function ($query) use ($provider, $provider_id) {
                 $query->where('provider_type', $provider)
-                    ->where('provider_id', $provider_user->getId());
+                    ->where('provider_id', $provider_id);
             })->first();
 
             if (is_null($user) && $provider_user->getEmail()) {
@@ -52,7 +53,7 @@ class ProviderController extends Controller
 
         $user->oauth_providers()->updateOrCreate([
             'provider_type' => $provider,
-            'provider_id' => $provider_user->getId(),
+            'provider_id' => $provider_id,
         ], [
             'token' => $provider_user->token,
             'token_secret' => null, // only available on OAuth1: $provider_user->tokenSecret,

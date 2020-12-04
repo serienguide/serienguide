@@ -14,27 +14,44 @@
                     </svg>
                 </a>
             </div>
-            @if (false)
-                <div>
-                    <a href="{{ route('login.provider.redirect', [ 'provider' => 'trakt' ]) }}" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <span class="sr-only">Mit Trakt verbinden</span>
-                        Trakt.tv
-                    </a>
-                </div>
-            @endif
+            <div>
+                <a href="{{ route('login.provider.redirect', [ 'provider' => 'trakt' ]) }}" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    <span class="sr-only">Mit Trakt verbinden</span>
+                    Trakt.tv
+                </a>
+            </div>
         </div>
         @if ($oauth_providers->count())
-            <table class="min-w-full divide-y divide-gray-200">
+            <table class="min-w-full divide-y divide-gray-200 table-fixed">
                 <thead>
                     <tr>
                         <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Anbieter</th>
-                        <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right">Aktion</th>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gültig bis</th>
+                        <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Zuletzt synchronisiert</th>
+                        <th width="75" colspan="2" scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-right">Aktion</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach ($oauth_providers as $oauth_provider)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $oauth_provider->provider_type }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $oauth_provider->expires_at->format('d.m.Y') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                @if ($oauth_provider->provider_type == 'trakt')
+                                    <a href="{{ route('apis.trakt.watched_history.show', ['provider' => $oauth_provider]) }}" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Synchronisieren {{ ($oauth_provider->synced_at) ? '(' . $oauth_provider->synced_at->format('d.m.Y') . ')' : '' }}</a>
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                @if ($oauth_provider->provider_type == 'trakt')
+                                    <i title="Token erneuern" class="fas fa-sync cursor-pointer text-sm text-blue-600 hover:text-blue-900" onclick="document.getElementById('refresh_{{ $oauth_provider->id }}').submit();"></i>
+                                    <form method="POST" action="{{ $oauth_provider->path }}" id="refresh_{{ $oauth_provider->id }}">
+                                        @csrf
+                                        @method('PUT')
+                                    </form>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <i class="fas fa-trash-alt cursor-pointer text-sm text-red-600 hover:text-red-900" onclick="document.getElementById('destroy_{{ $oauth_provider->id }}').submit();"></i>
                                 <form method="POST" action="{{ $oauth_provider->path }}" id="destroy_{{ $oauth_provider->id }}">

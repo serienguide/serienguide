@@ -34,4 +34,16 @@ class OauthProviderTest extends TestCase
         $route = strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?');
         $this->assertEquals($route, $model->index_path);
     }
+
+    /**
+     * @test
+     */
+    public function it_knows_its_routes()
+    {
+        $model = $this->class_name::factory()->create([
+
+        ]);
+        $this->assertEquals(url('login/facebook'), $model->redirect_route);
+        $this->assertEquals(url('login/facebook/callback'), $model->callback_route);
+    }
 }

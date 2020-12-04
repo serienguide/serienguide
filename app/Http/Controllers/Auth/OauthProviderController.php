@@ -31,6 +31,38 @@ class OauthProviderController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Lists\Listing  $list
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, OauthProvider $provider)
+    {
+        $is_refreshed = $provider->refresh();
+
+        if ($request->wantsJson()) {
+            return $provider;
+        }
+
+        if ($is_refreshed) {
+            $status = [
+                'type' => 'success',
+                'text' => 'Datensatz gespeichert.',
+            ];
+        }
+        else {
+            $status = [
+                'type' => 'error',
+                'text' => 'Datensatz konnt nicht gespeichert.',
+            ];
+        }
+
+        return redirect($provider->index_path)
+            ->with('status', $status);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Auth\OauthProvider  $provider
