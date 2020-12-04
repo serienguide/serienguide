@@ -63,6 +63,9 @@ class UpdateCommand extends Command
         $model->updateFromTmdb();
         foreach ($model->seasons as $season) {
             $season->updateFromTmdb();
+            foreach ($season->episodes as $key => $episode) {
+                $episode->updateFromTmdb();
+            }
         }
 
         $model->setAbsoluteNumbers();
