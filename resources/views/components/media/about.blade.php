@@ -10,7 +10,11 @@
             </div>
             <div class="w-100 md:w-2/3 lg:w-3/4 flex flex-col">
                 <p class="max-h-24 overflow-auto">
-                    {{ ($model->overview ?: 'Momentan gibt es keine Inhaltsangabe. Unterstütze uns indem du <a href="https://www.themoviedb.org/movie/' . $model->tmdb_id . '" target="_blank">hier</a> eine hinzufügst.') }}
+                    @if ($model->overview)
+                        {{ $model->overview }}
+                    @else
+                        'Momentan gibt es keine Inhaltsangabe. Unterstütze uns indem du <a href="https://www.themoviedb.org/movie/{{ $model->tmdb_id }}" target="_blank">hier</a> eine hinzufügst.
+                    @endif
                 </p>
 
                 @if ($model->genres->count())
