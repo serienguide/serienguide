@@ -91,12 +91,12 @@ class Episode extends Model
         ]);
     }
 
-    public function getPosterPathAttribute() : string
+    public function getPosterPathAttribute()
     {
         return $this->show->poster_path;
     }
 
-    public function getBackdropPathAttribute() : string
+    public function getBackdropPathAttribute()
     {
         return $this->still_path ?: $this->show->backdrop_path;
     }
