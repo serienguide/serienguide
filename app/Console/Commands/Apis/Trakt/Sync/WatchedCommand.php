@@ -9,6 +9,7 @@ use App\Models\Shows\Show;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 
 class WatchedCommand extends Command
 {
@@ -79,6 +80,12 @@ class WatchedCommand extends Command
                 'imdb_id' => $trakt_watched['movie']['ids']['imdb'],
             ]);
 
+            if ($movie->wasRecentlyCreated) {
+                Artisan::queue('apis:tmdb:movies:update', [
+                    'id' => $movie->id
+                ]);
+            }
+
             $watched_count = $movie->watchedByUser($user->id)->count();
             $not_watched_count = $trakt_watched['plays'] - $watched_count;
             if ($watched_count >= $trakt_watched['plays']) {
@@ -111,6 +118,11 @@ class WatchedCommand extends Command
         $trakt_watched_episodes = Trakt::watched('shows');
         foreach ($trakt_watched_episodes as $trakt_watched) {
             $show = $this->findShow($trakt_watched['show']);
+            if ($show->wasRecentlyCreated && $show->tmdb_id) {
+                Artisan::queue('apis:tmdb:shows:update', [
+                    'id' => $show->id
+                ]);
+            }
             foreach ($trakt_watched['seasons'] as $trakt_season) {
                 $season = $show->seasons()->updateOrCreate([
                     'season_number' => $trakt_season['number'],
