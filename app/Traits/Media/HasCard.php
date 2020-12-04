@@ -61,7 +61,7 @@ trait HasCard
             $watched_count = $this->watchedByUser(auth()->user()->id)->distinct()->count('watchable_id');
             return $this->progress = [
                 'watched_count' => $watched_count,
-                'percent' => min(100, round($watched_count / $watchable_count * 100, 0)),
+                'percent' => ($watchable_count == 0 ? 0 : min(100, round($watched_count / $watchable_count * 100, 0))),
                 'watchable_count' => ($this->is_show ? $this->episodes_count : 1),
             ];
         }
