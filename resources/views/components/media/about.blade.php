@@ -28,44 +28,44 @@
                     </div>
                 @elseif ($model->is_show)
                     <div class="flex items-center">
-                        <div class="w-1/2 md:w-1/6 font-bold">Ausstrahlung</div>
-                        <div class="w-1/2 md:w-5/6">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }} bis {{ is_null($model->last_aired_at) ? 'jetzt' : $model->last_aired_at->format('d.m.Y') }} @if ($model->status == 'Canceled') (Abgesetzt) @elseif ($model->status == 'Ended') (Beendet) @endif</div>
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Ausstrahlung</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }} bis {{ is_null($model->last_aired_at) ? 'jetzt' : $model->last_aired_at->format('d.m.Y') }} @if ($model->status == 'Canceled') (Abgesetzt) @elseif ($model->status == 'Ended') (Beendet) @endif</div>
                     </div>
                     <div class="flex items-center">
-                        <div class="w-1/2 md:w-1/6 font-bold"></div>
-                        <div class="w-1/2 md:w-5/6">@if ($model->air_day) {{ strtolower($model->air_day) }}s @endif @if($model->air_time && $model->air_time != '00:00:00') um {{ (new DateTime($model->air_time))->format('H:i') }} Uhr @endif</div>
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold"></div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">@if ($model->air_day) {{ strtolower($model->air_day) }}s @endif @if($model->air_time && $model->air_time != '00:00:00') um {{ (new DateTime($model->air_time))->format('H:i') }} Uhr @endif</div>
                     </div>
                 @endif
                 <div class="flex items-center">
-                    <div class="w-1/2 md:w-1/6 font-bold">Dauer</div>
-                    <div class="w-1/2 md:w-5/6">{{ $model->runtime }} Minuten</div>
+                    <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Dauer</div>
+                    <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ $model->runtime }} Minuten</div>
                 </div>
                 @if ($model->is_movie)
                     <div class="flex items-center">
-                        <div class="w-1/2 md:w-1/6 font-bold">Budget</div>
-                        <div class="w-1/2 md:w-5/6">${{ number_format($model->budget, 0, ',', '.') }}</div>
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Budget</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">${{ number_format($model->budget, 0, ',', '.') }}</div>
                     </div>
                     <div class="flex items-center">
-                        <div class="w-1/2 md:w-1/6 font-bold">Eingespielt</div>
-                        <div class="w-1/2 md:w-5/6">${{ number_format($model->revenue, 0, ',', '.') }}</div>
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Eingespielt</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">${{ number_format($model->revenue, 0, ',', '.') }}</div>
                     </div>
                 @endif
                 @if ($model->directors->count())
                     <div class="flex items-center">
-                        <div class="w-1/2 md:w-1/6 font-bold">Regisseur</div>
-                        <div class="w-1/2 md:w-5/6">{{ $model->directors->implode('person.name', ', ') }}</div>
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Regisseur</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ $model->directors->implode('person.name', ', ') }}</div>
                     </div>
                 @endif
                 @if ($model->writers->count())
                     <div class="flex items-center">
-                        <div class="w-1/2 md:w-1/6 font-bold">Autor</div>
-                        <div class="w-1/2 md:w-5/6">{{ $model->writers->implode('person.name', ', ') }}</div>
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Autor</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ $model->writers->implode('person.name', ', ') }}</div>
                     </div>
                 @endif
                 @if ($model->actors->count())
                     <div class="flex items-center">
-                        <div class="w-1/2 md:w-1/6 font-bold self-start">Schauspieler</div>
-                        <div class="w-1/2 md:w-5/6 max-h-16 overflow-auto">{{ $model->actors->implode('person.name', ', ') }}</div>
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold self-start">Schauspieler</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6 max-h-16 overflow-auto">{{ $model->actors->implode('person.name', ', ') }}</div>
                     </div>
                 @endif
 
