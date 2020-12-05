@@ -130,7 +130,7 @@
             @if ($model->is_episode)
                 <a href="{{ $model->path }}" title="{{ $model->name }}" class="text-center">
                     <div class="font-bold">{{ $model->season->season_number }}x{{ $model->episode_number }}</div>
-                    <div class="text-gray-500">{{ $model->name }}</div>
+                    <div class="text-gray-400">{{ $model->name }}</div>
                 </a>
             @else
                 <a href="{{ $model->path }}" title="{{ $model->name }}">

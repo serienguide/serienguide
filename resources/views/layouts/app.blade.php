@@ -42,7 +42,7 @@
         <style>
             [x-cloak] { display: none; }
         </style>
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         @livewireStyles
 
         <!-- Scripts -->
