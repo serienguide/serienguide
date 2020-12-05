@@ -3,8 +3,8 @@
         Impressum & Datenschutz
     </x-slot>
     <x-container class="py-4">
-        <div class="flex">
-            <div class="flex-grow text-md">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="text-md">
                 <h2 class="font-bold">Impressum</h2>
                 <p>Angaben gemäß § 5 TMG:<br/><br/></p>
                 <p>
@@ -25,7 +25,7 @@
                 </p>
                 <p class="mt-5">Quelle: <a class="text-blue-500 hover:text-blue-600" rel="nofollow" href="http://www.e-recht24.de/impressum-generator.html">http://www.e-recht24.de</a></p>
             </div>
-            <div class="flex-grow">
+            <div class="">
                 <h2 class="font-bold">Kontakt</h2>
                 <x-contactform/>
             </div>
