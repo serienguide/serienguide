@@ -3,7 +3,7 @@
 
     <section>
         <x-container class="py-4">
-
+            <x-media.buttons.tmdb_edit :model="$model"/>
         </x-container>
     </section>
 

@@ -9,11 +9,14 @@
                 @endif
             </div>
             <div class="w-100 md:w-2/3 lg:w-3/4 flex flex-col">
-                <p class="max-h-24 overflow-auto">
+                <p class="h-24 overflow-auto">
                     @if ($model->overview)
                         {{ $model->overview }}
                     @else
-                        'Momentan gibt es keine Inhaltsangabe. Unterstütze uns indem du <a href="https://www.themoviedb.org/movie/{{ $model->tmdb_id }}" target="_blank">hier</a> eine hinzufügst.
+                        Momentan gibt es keine Inhaltsangabe.
+                        @if ($model->tmdb_path)
+                            Unterstütze uns indem du <a class="text-blue-500 hover:text-blue-600" href="{{ $model->tmdb_path }}" target="_blank">hier</a> eine hinzufügst.
+                        @endif
                     @endif
                 </p>
 
@@ -32,6 +35,15 @@
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Ausstrahlung</div>
                         <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }} bis {{ is_null($model->last_aired_at) ? 'jetzt' : $model->last_aired_at->format('d.m.Y') }} @if ($model->status == 'Canceled') (Abgesetzt) @elseif ($model->status == 'Ended') (Beendet) @endif</div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold"></div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">@if ($model->air_day) {{ strtolower($model->air_day) }}s @endif @if($model->air_time && $model->air_time != '00:00:00') um {{ (new DateTime($model->air_time))->format('H:i') }} Uhr @endif</div>
+                    </div>
+                @elseif ($model->is_episode)
+                    <div class="flex items-center">
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Ausstrahlung</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }}</div>
                     </div>
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold"></div>
@@ -73,7 +85,7 @@
                     @if ($model->actors->count())
                         <div class="flex items-center">
                             <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold self-start">Schauspieler</div>
-                            <div class="w-1/2 md:w-3/4 lg:w-5/6 max-h-16 overflow-auto">{{ $model->actors->implode('person.name', ', ') }}</div>
+                            <div class="w-1/2 md:w-3/4 lg:w-5/6 max-h-16 overflow-auto">{{ $model->actors->implode('character_with_person_name', ', ') }}</div>
                         </div>
                     @endif
                 @endunless

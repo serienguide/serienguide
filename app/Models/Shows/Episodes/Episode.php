@@ -27,12 +27,12 @@ class Episode extends Model
         HasFactory,
         HasImages,
         HasRatings,
-        // HasModelPath,
+        HasModelPath,
         HasWatched,
         SoftDeletes;
 
-    const ROUTE_NAME = '';
-    const VIEW_PATH = '';
+    const ROUTE_NAME = 'shows.episodes';
+    const VIEW_PATH = 'shows.episodes';
 
     protected $appends = [
         //
@@ -99,6 +99,44 @@ class Episode extends Model
     public function getBackdropPathAttribute()
     {
         return $this->still_path ?: $this->show->backdrop_path;
+    }
+
+    public function getRuntimeAttribute()
+    {
+        return $this->show->runtime;
+    }
+
+    public function getcreatePathAttribute()
+    {
+        return '';
+    }
+
+    public function getTmdbPathAttribute()
+    {
+        if (empty($this->show->tmdb_id)) {
+            return null;
+        }
+
+        return 'https://www.themoviedb.org/tv/' . $this->show->tmdb_id . '/season/' . $this->season->season_number . '/episode/' . $this->episode_number;
+    }
+
+    public function getEditPathAttribute()
+    {
+        return '';
+    }
+
+    public function getIndexPathAttribute()
+    {
+        return $this->show->path;
+    }
+
+    public function getRouteParameterAttribute() : array
+    {
+        return [
+            'show' => $this->show->slug,
+            'season_number' => $this->season->season_number,
+            'episode_number' => $this->episode_number,
+        ];
     }
 
     public function watchedBy(User $user, array $attributes = []) : Watched

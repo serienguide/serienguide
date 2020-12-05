@@ -1,15 +1,30 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Film
-        </h2>
-    </x-slot>
+    <x-media.hero :model="$model"/>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                Test
+    <section>
+        <x-container class="py-4">
+            @auth
+                <div class="inline-block px-1">
+                    @livewire('media.buttons.watch', ['model' => $model])
+                </div>
+                <x-media.buttons.tmdb_update :model="$model"/>
+                <x-media.buttons.tmdb_edit :model="$model"/>
+            @endauth
+        </x-container>
+    </section>
+
+    <x-media.about :model="$model"/>
+
+    @guest
+        <section class="bg-gray-700 mt-8"></section>
+    @endguest
+
+    @auth
+        <x-container class="py-4">
+            <div class="">
+                @livewire('watched.ul', ['model' => $model])
             </div>
-        </div>
-    </div>
+        </x-container>
+    @endauth
+
 </x-app-layout>

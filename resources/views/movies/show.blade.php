@@ -9,6 +9,7 @@
                 </div>
                 <x-media.buttons.listing :model="$model"/>
                 <x-media.buttons.tmdb_update :model="$model"/>
+                <x-media.buttons.tmdb_edit :model="$model"/>
             @endauth
         </x-container>
     </section>

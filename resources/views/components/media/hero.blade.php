@@ -5,8 +5,10 @@
             <div class="flex items-center text-5xl">
                 <div class="flex items-center overflow-hidden">
                     @if ($model->is_episode)
-                        <h2 class="text-2xl"><a href="{{ $model->show->path }}">{{ $model->show->name }}</a></h2>
-                        <h1 class="">{{ $model->season->season_numer }}x{{ $model->episode_numer }} <span class="hidden sm:block">{{ $model->name }}</span></h1>
+                        <div>
+                            <h2 class="text-2xl"><a href="{{ $model->show->path }}">{{ $model->show->name }}</a></h2>
+                            <h1 class="">{{ $model->season->season_number }}x{{ $model->episode_number }} {{ $model->name }}</h1>
+                        </div>
                     @else
                         <h1 class="">{{ $model->name }}</h1>
                     @endif

@@ -316,6 +316,15 @@ class Show extends Model
             ->get();
     }
 
+    public function getTmdbPathAttribute()
+    {
+        if (empty($this->tmdb_id)) {
+            return null;
+        }
+
+        return 'https://www.themoviedb.org/tv/' . $this->tmdb_id;
+    }
+
     public function seasons() : HasMany
     {
         return $this->hasMany(Season::class, 'show_id')->orderBy('season_number', 'ASC');

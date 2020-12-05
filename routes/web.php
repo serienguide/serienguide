@@ -22,6 +22,8 @@ Route::resource(App\Models\Movies\Collection::ROUTE_NAME, App\Http\Controllers\M
 Route::resource(App\Models\People\Person::ROUTE_NAME, App\Http\Controllers\People\PersonController::class);
 Route::resource(App\Models\Shows\Show::ROUTE_NAME, App\Http\Controllers\Shows\ShowController::class);
 
+Route::get('/shows/{show}/{season_number}/{episode_number}', [ App\Http\Controllers\Shows\Episodes\EpisodeController::class, 'show' ])->name('shows.episodes.show');
+
 Route::get('login/{provider}', [App\Http\Controllers\Auth\ProviderController::class, 'redirectToProvider'])->name('login.provider.redirect');
 Route::get('login/{provider}/callback', [App\Http\Controllers\Auth\ProviderController::class, 'handleProviderCallback'])->name('login.provider.callback');
 
@@ -54,6 +56,7 @@ Route::resource(App\Models\Lists\Listing::ROUTE_NAME, App\Http\Controllers\Lists
 
 Route::bind('model', function ($id) {
     switch(app()->request->route('medium_type')) {
+        case 'episodes': return App\Models\Shows\Episodes\Episode::findOrFail($id); break;
         case 'movies': return App\Models\Movies\Movie::findOrFail($id); break;
         case 'people': return App\Models\People\Person::findOrFail($id); break;
         case 'shows': return App\Models\Shows\Show::findOrFail($id); break;

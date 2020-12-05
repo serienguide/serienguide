@@ -45,6 +45,11 @@ class Credit extends Model
         return true;
     }
 
+    public function getCharacterWithPersonNameAttribute()
+    {
+        return $this->character . ' (' . $this->person->name . ')';
+    }
+
     public function person() : BelongsTo
     {
         return $this->belongsTo(Person::class, 'person_id');

@@ -107,6 +107,15 @@ class Person extends Model
         ];
     }
 
+    public function getTmdbPathAttribute()
+    {
+        if (empty($this->id)) {
+            return null;
+        }
+
+        return 'https://www.themoviedb.org/person/' . $this->id;
+    }
+
     public function getPosterPathAttribute() : string
     {
         return $this->profile_path;

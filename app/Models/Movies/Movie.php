@@ -202,6 +202,15 @@ class Movie extends Model
         ];
     }
 
+    public function getTmdbPathAttribute()
+    {
+        if (empty($this->tmdb_id)) {
+            return null;
+        }
+
+        return 'https://www.themoviedb.org/movie/' . $this->tmdb_id;
+    }
+
     public function collection() : BelongsTo
     {
         return $this->belongsTo(Collection::class, 'collection_id');

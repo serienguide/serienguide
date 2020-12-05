@@ -95,7 +95,7 @@
         </header>
     @endauth
     <main class="flex-grow relative">
-        <a class="" href="{{ (($model->is_episode && $type == 'poster') ? $model->show->path : $model->path) }}" title="{{ $model->name }}">
+        <a class="" href="{{ (($model->is_episode) ? $model->show->path : $model->path) }}" title="{{ $model->name }}">
             <img src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}">
                 <div class="absolute bottom-3 left-3">
                 @if ($model->is_episode)

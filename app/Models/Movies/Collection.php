@@ -171,6 +171,15 @@ class Collection extends Model
         ];
     }
 
+    public function getTmdbPathAttribute()
+    {
+        if (empty($this->id)) {
+            return null;
+        }
+
+        return 'https://www.themoviedb.org/collection/' . $this->id;
+    }
+
     public function movies() : HasMany
     {
         return $this->hasMany(Movie::class, 'collection_id');
