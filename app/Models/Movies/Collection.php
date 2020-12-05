@@ -117,6 +117,7 @@ class Collection extends Model
             ->where('watchable_type', Movie::class)
             ->whereIn('watchable_id', $this->movies->pluck('id'))
             ->latest()
+            ->orderBy('id', 'DESC')
             ->first();
     }
 
@@ -146,6 +147,10 @@ class Collection extends Model
                 'unwatched_count' => $unwatched_count,
                 'watched_runtime' => $watched_runtime,
                 'unwatched_runtime' => $unwatched_runtime,
+                'labels' => [
+                    'singlar' => 'Film',
+                    'plural' => 'Filme',
+                ],
             ];
         }
 
@@ -156,6 +161,10 @@ class Collection extends Model
             'unwatched_count' => $watchable_count,
             'watched_runtime' => 0,
             'unwatched_runtime' => $unwatched_runtime,
+            'labels' => [
+                'singlar' => 'Film',
+                'plural' => 'Filme',
+            ],
         ];
     }
 

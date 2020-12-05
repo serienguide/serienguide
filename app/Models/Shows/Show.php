@@ -210,7 +210,64 @@ class Show extends Model
             return null;
         }
 
-        return $this->attributes['last_watched'] = $this->watched()->where('user_id', auth()->user()->id)->latest('watched_at')->orderBy('id', 'DESC')->first();
+        return $this->attributes['last_watched'] = $this->watched()
+            ->with('watchable.season')
+            ->where('user_id', auth()->user()->id)
+            ->latest('watched_at')
+            ->orderBy('id', 'DESC')
+            ->first();
+    }
+
+    public function getProgressAttribute() : array
+    {
+        if ($this->progress) {
+            return $this->progress;
+        }
+
+        $watchable_count = $this->episodes->count();
+        $unwatched_runtime = $watchable_count * $this->runtime;
+        if (auth()->check()) {
+            $this->episodes->loadCount([
+                'watched' => function ($query) {
+                    return $query->where('user_id', auth()->user()->id);
+                }
+            ]);
+            $watched_models = $this->episodes->filter(function ($episode) {
+                return $episode->watched_count > 0;
+            });
+            $unwatched_models = $this->episodes->filter(function ($episode) {
+                return $episode->watched_count == 0;
+            });
+            $watched_count = $watched_models->count();
+            $watched_runtime = $watched_count * $this->runtime;
+            $unwatched_count = $unwatched_models->count();
+            $unwatched_runtime = $unwatched_count * $this->runtime;
+            return $this->progress = [
+                'watched_count' => $watched_count,
+                'percent' => ($watchable_count == 0 ? 0 : min(100, round($watched_count / $watchable_count * 100, 0))),
+                'watchable_count' => $watchable_count,
+                'unwatched_count' => $unwatched_count,
+                'watched_runtime' => $watched_runtime,
+                'unwatched_runtime' => $unwatched_runtime,
+                'labels' => [
+                    'singlar' => 'Folge',
+                    'plural' => 'Folgen',
+                ],
+            ];
+        }
+
+        return $this->progress = [
+            'watched_count' => 0,
+            'percent' => 0,
+            'watchable_count' => $watchable_count,
+            'unwatched_count' => $watchable_count,
+            'watched_runtime' => 0,
+            'unwatched_runtime' => $unwatched_runtime,
+            'labels' => [
+                'singlar' => 'Folge',
+                'plural' => 'Folgen',
+            ],
+        ];
     }
 
     public function getCurrentSeasonNumberAttribute()
