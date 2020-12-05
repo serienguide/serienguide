@@ -128,7 +128,8 @@ class Collection extends Model
         }
 
         $watchable_count = $this->movies->count();
-        $unwatched_runtime = $this->movies->sum('runtime');
+        $watchable_runtime = $this->movies->sum('runtime');
+        $unwatched_runtime = $watchable_runtime;
         if (auth()->check()) {
             $watched_models = $this->movies->filter(function ($movie) {
                 return $movie->watched_count > 0;
@@ -144,11 +145,12 @@ class Collection extends Model
                 'watched_count' => $watched_count,
                 'percent' => ($watchable_count == 0 ? 0 : min(100, round($watched_count / $watchable_count * 100, 0))),
                 'watchable_count' => $watchable_count,
+                'watchable_runtime' => $watchable_runtime,
                 'unwatched_count' => $unwatched_count,
                 'watched_runtime' => $watched_runtime,
                 'unwatched_runtime' => $unwatched_runtime,
                 'labels' => [
-                    'singlar' => 'Film',
+                    'singular' => 'Film',
                     'plural' => 'Filme',
                 ],
             ];
@@ -158,11 +160,12 @@ class Collection extends Model
             'watched_count' => 0,
             'percent' => 0,
             'watchable_count' => $watchable_count,
-            'unwatched_count' => $watchable_count,
+            'watchable_runtime' => $watchable_runtime,
             'watched_runtime' => 0,
+            'unwatched_count' => $watchable_count,
             'unwatched_runtime' => $unwatched_runtime,
             'labels' => [
-                'singlar' => 'Film',
+                'singular' => 'Film',
                 'plural' => 'Filme',
             ],
         ];

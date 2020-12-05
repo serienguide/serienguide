@@ -45,7 +45,7 @@
                 @endif
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Dauer</div>
-                        <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ $model->runtime }} Minuten</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ $model->runtime }} Minuten @if ($model->is_show || $model->is_collection) ({{ round($model->progress['watchable_runtime'] / 60, 0) }}h {{ $model->progress['watchable_runtime'] % 60 }}m) @endif</div>
                     </div>
                 @if ($model->is_movie || $model->is_collection)
                     <div class="flex items-center">
@@ -82,7 +82,16 @@
                         <div class="bg-blue-500 h-4 text-xs leading-none text-center text-white @if ($model->progress['percent'] > 0) rounded-l @endif @if ($model->progress['percent'] == 100) rounded-r @endif" style="width: {{ $model->progress['percent'] }}%"></div>
                     </div>
                         <div>
-                            <span class="font-bold">{{ $model->progress['watched_count'] }}</span> von <span class="font-bold">{{ $model->progress['watchable_count'] }}</span> (<span class="font-bold">{{ round($model->progress['watched_runtime'] / 60, 0) }}h {{ $model->progress['watched_runtime'] % 60 }}m</span>) {{ $model->progress['labels']['plural'] }} gesehen. Es {{ ($model->progress['unwatched_count'] == 1 ? ' ist' : 'sind') }} noch <span class="font-bold">{{ $model->progress['unwatched_count'] }}</span> {{ ($model->progress['unwatched_count'] == 1 ? $model->progress['labels']['singular'] : $model->progress['labels']['plural']) }} übrig (<span class="font-bold">{{ round($model->progress['unwatched_runtime'] / 60, 0) }}h {{ $model->progress['unwatched_runtime'] % 60 }}m</span>).
+                            <span class="font-bold">{{ $model->progress['watched_count'] }}</span>
+                            von <span class="font-bold">{{ $model->progress['watchable_count'] }}</span>
+                            (<span class="font-bold">{{ round($model->progress['watched_runtime'] / 60, 0) }}h
+                            {{ $model->progress['watched_runtime'] % 60 }}m</span>)
+                            {{ $model->progress['labels']['plural'] }} gesehen.
+                            Es {{ ($model->progress['unwatched_count'] == 1 ? ' ist' : 'sind') }}
+                            noch <span class="font-bold">{{ $model->progress['unwatched_count'] }}</span>
+                            {{ ($model->progress['unwatched_count'] == 1 ? $model->progress['labels']['singular'] : $model->progress['labels']['plural']) }}
+                            übrig (
+                            <span class="font-bold">{{ round($model->progress['unwatched_runtime'] / 60, 0) }}h {{ $model->progress['unwatched_runtime'] % 60 }}m</span>).
                         </div>
                         @if ($model->last_watched)
                             <div>

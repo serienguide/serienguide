@@ -225,7 +225,8 @@ class Show extends Model
         }
 
         $watchable_count = $this->episodes->count();
-        $unwatched_runtime = $watchable_count * $this->runtime;
+        $watchable_runtime = $watchable_count * $this->runtime;
+        $unwatched_runtime = $watchable_runtime;
         if (auth()->check()) {
             $this->episodes->loadCount([
                 'watched' => function ($query) {
@@ -246,11 +247,12 @@ class Show extends Model
                 'watched_count' => $watched_count,
                 'percent' => ($watchable_count == 0 ? 0 : min(100, round($watched_count / $watchable_count * 100, 0))),
                 'watchable_count' => $watchable_count,
+                'watchable_runtime' => $watchable_runtime,
                 'unwatched_count' => $unwatched_count,
                 'watched_runtime' => $watched_runtime,
                 'unwatched_runtime' => $unwatched_runtime,
                 'labels' => [
-                    'singlar' => 'Folge',
+                    'singular' => 'Folge',
                     'plural' => 'Folgen',
                 ],
             ];
@@ -260,11 +262,12 @@ class Show extends Model
             'watched_count' => 0,
             'percent' => 0,
             'watchable_count' => $watchable_count,
-            'unwatched_count' => $watchable_count,
+            'watchable_runtime' => $watchable_runtime,
             'watched_runtime' => 0,
+            'unwatched_count' => $watchable_count,
             'unwatched_runtime' => $unwatched_runtime,
             'labels' => [
-                'singlar' => 'Folge',
+                'singular' => 'Folge',
                 'plural' => 'Folgen',
             ],
         ];
