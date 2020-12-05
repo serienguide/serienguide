@@ -90,8 +90,8 @@
                             Es {{ ($model->progress['unwatched_count'] == 1 ? ' ist' : 'sind') }}
                             noch <span class="font-bold">{{ $model->progress['unwatched_count'] }}</span>
                             {{ ($model->progress['unwatched_count'] == 1 ? $model->progress['labels']['singular'] : $model->progress['labels']['plural']) }}
-                            übrig (
-                            <span class="font-bold">{{ round($model->progress['unwatched_runtime'] / 60, 0) }}h {{ $model->progress['unwatched_runtime'] % 60 }}m</span>).
+                            übrig
+                            (<span class="font-bold">{{ round($model->progress['unwatched_runtime'] / 60, 0) }}h {{ $model->progress['unwatched_runtime'] % 60 }}m</span>).
                         </div>
                         @if ($model->last_watched)
                             <div>
