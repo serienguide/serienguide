@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/contact', [App\Http\Controllers\ContactformController::class, 'store'])->name('contactform.store');
+Route::post('/contact', [App\Http\Controllers\ContactformController::class, 'store'])->middleware(['honey', 'honey-recaptcha'])->name('contactform.store');
 
 Route::resource(App\Models\Movies\Movie::ROUTE_NAME, App\Http\Controllers\Movies\MovieController::class);
 Route::resource(App\Models\Movies\Collection::ROUTE_NAME, App\Http\Controllers\Movies\CollectionController::class);
