@@ -173,6 +173,7 @@
                 </div>
             </div>
         </footer>
+        <x-notification :show="(session()->has('status') ? 'true' : 'false')" :message="(session()->has('status') ? session('status')['text'] : '')" />
         @stack('modals')
 
         @livewireScripts

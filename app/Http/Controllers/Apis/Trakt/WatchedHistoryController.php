@@ -37,14 +37,22 @@ class WatchedHistoryController extends Controller
         $last_watched = max($last_watched_episodes, $last_watched_movies);
 
         if ($last_watched < $provider->synced_at) {
-            return redirect($provider->index_path);
+            return redirect($provider->index_path)
+                ->with('status', [
+                    'type' => 'success',
+                    'text' => 'Es ist bereits alles auf dem aktuellen Stand.'
+                ]);
         }
 
         Artisan::queue('apis:trakt:sync:watched', [
             'provider' => $provider->id
         ]);
 
-        return redirect($provider->index_path);
+        return redirect($provider->index_path)
+            ->with('status', [
+                'type' => 'success',
+                'text' => 'Filme & Folgen werden im Hintergrund aktualisiert.'
+            ]);
     }
 
 }

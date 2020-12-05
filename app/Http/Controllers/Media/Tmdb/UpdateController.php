@@ -12,13 +12,21 @@ class UpdateController extends Controller
     public function show(Request $request, string $medium_type, Model $model) {
 
         if ($model->updated_at->diffInHours() < 1) {
-            return back();
+            return back()
+                ->with('status', [
+                    'type' => 'success',
+                    'text' => 'Update wurde erst kürzlich ausgeführt.'
+                ]);
         }
 
         Artisan::queue('apis:tmdb:' . $medium_type . ':update', [
             'id' => $model->id,
         ]);
 
-        return back();
+        return back()
+            ->with('status', [
+                'type' => 'success',
+                'text' => 'Update wird im Hintergrund durchgeführt.'
+            ]);
     }
 }
