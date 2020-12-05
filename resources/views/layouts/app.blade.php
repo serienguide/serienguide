@@ -121,7 +121,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                        <a href="{{ route('legal.impressum.index') }}" class="text-base text-gray-300 hover:text-white">
                                             Kontakt
                                         </a>
                                     </li>
@@ -131,22 +131,12 @@
                         <div class="md:grid md:grid-cols-2 md:gap-8">
                             <div>
                                 <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
-                                    Rechtliches
+
                                 </h3>
                                 <ul class="mt-4 space-y-4">
                                     <li>
                                         <a href="#" class="text-base text-gray-300 hover:text-white">
-                                            <!-- Impressum -->
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-base text-gray-300 hover:text-white">
-                                            <!-- Disclaimer -->
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="text-base text-gray-300 hover:text-white">
-                                            <!-- Datenschutz -->
+
                                         </a>
                                     </li>
                                 </ul>
@@ -171,10 +161,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-center">
-                    <p class="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
+                <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
+                    <p class="mt-8 text-base text-gray-400 md:mt-0">
                         &copy; {{ date('Y') }} serienguide. All rights reserved.
                     </p>
+                    <div>
+                        <a href="{{ route('legal.impressum.index') }}" class="text-base text-gray-300 hover:text-white">
+                             Impressum & Datenschutz
+                        </a>
+                    </div>
                 </div>
             </div>
         </footer>
