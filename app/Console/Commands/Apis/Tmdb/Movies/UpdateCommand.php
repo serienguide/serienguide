@@ -4,6 +4,7 @@ namespace App\Console\Commands\Apis\Tmdb\Movies;
 
 use App\Models\Movies\Movie;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 
 class UpdateCommand extends Command
 {

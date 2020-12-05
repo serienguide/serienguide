@@ -32,8 +32,8 @@ Route::get('/shows/{show}/update/tmdb', [ App\Http\Controllers\Shows\Updates\Tmd
 Route::get('/seasons/{season}/update/tmdb', [ App\Http\Controllers\Shows\Seasons\Updates\TmdbController::class, 'show' ])->name('seasons.update.tmdb');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::resource('{type}/{model}/' . App\Models\Ratings\Rating::ROUTE_NAME, App\Http\Controllers\Ratings\RatingController::class);
-    Route::resource('{type}/{model}/' . App\Models\Watched\Watched::ROUTE_NAME, App\Http\Controllers\Watched\WatchedController::class);
+    // Route::resource('{medium_type}/{model}/' . App\Models\Ratings\Rating::ROUTE_NAME, App\Http\Controllers\Ratings\RatingController::class);
+    // Route::resource('{medium_type}/{model}/' . App\Models\Watched\Watched::ROUTE_NAME, App\Http\Controllers\Watched\WatchedController::class);
     Route::resource(App\Models\Lists\Listing::ROUTE_NAME, App\Http\Controllers\Lists\ListingController::class)->except([
         'index',
         'show',
@@ -41,6 +41,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('/auth/' . App\Models\Auth\OauthProvider::ROUTE_NAME, App\Http\Controllers\Auth\OauthProviderController::class);
 
     Route::get('/apis/trakt/watched_history/{provider}', [ App\Http\Controllers\Apis\Trakt\WatchedHistoryController::class, 'show' ])->name('apis.trakt.watched_history.show');
+
+    Route::get('{medium_type}/{model}/tmdb/update', [ App\Http\Controllers\Media\Tmdb\UpdateController::class, 'show' ]);
 
 });
 
@@ -50,8 +52,10 @@ Route::resource(App\Models\Lists\Listing::ROUTE_NAME, App\Http\Controllers\Lists
 ]);
 
 Route::bind('model', function ($id) {
-    switch(app()->request->route('type')) {
+    switch(app()->request->route('medium_type')) {
         case 'movies': return App\Models\Movies\Movie::findOrFail($id); break;
+        case 'people': return App\Models\People\Person::findOrFail($id); break;
+        case 'shows': return App\Models\Shows\Show::findOrFail($id); break;
         default: abort(404);
     }
 });

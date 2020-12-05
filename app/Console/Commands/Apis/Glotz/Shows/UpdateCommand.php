@@ -46,7 +46,6 @@ class UpdateCommand extends Command
                 continue;
             }
 
-            dump($show->id, $show->air_time, $show->air_day);
             $show->updateFromGlotz();
         }
 

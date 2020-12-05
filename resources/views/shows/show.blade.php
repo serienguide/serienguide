@@ -6,6 +6,7 @@
             @auth
                 @livewire('media.buttons.watch', ['model' => $model])
                 <x-media.buttons.listing :model="$model"/>
+                <x-media.buttons.tmdb_update :model="$model"/>
             @endauth
         </x-container>
     </section>
