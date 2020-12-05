@@ -72,31 +72,112 @@
         <main>
             {{ $slot }}
         </main>
-        <footer class="bg-gray-800">
-            <div class="max-w-screen-xl mx-auto py-12 px-4 overflow-hidden space-y-8 sm:px-6 lg:px-8">
-                <nav class="-mx-5 -my-2 flex flex-wrap justify-center w-100">
-                    <div class="px-5 py-2">
-                        <a href="#" class="text-base leading-6 text-gray-300 hover:text-white">
-                            About
-                        </a>
+        <footer class="bg-gray-800" aria-labelledby="footerHeading">
+            <h2 id="footerHeading" class="sr-only">Footer</h2>
+            <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+                <div class="xl:grid xl:grid-cols-2 xl:gap-8">
+                    <div class="grid grid-cols-2 gap-8 xl:col-span-2">
+                        <div class="md:grid md:grid-cols-2 md:gap-8">
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                                    Importieren
+                                </h3>
+                                <ul class="mt-4 space-y-4">
+                                    <li>
+                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                            <!-- Serien -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                            <!-- Filme -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                            Page rendered in: <span class="font-bold">{{ round((microtime(true) - LARAVEL_START), 4) }}</span> seconds
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mt-12 md:mt-0">
+                                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                                    Allgemein
+                                </h3>
+                                <ul class="mt-4 space-y-4">
+                                    <li>
+                                        <a href="https://github.com/serienguide/serienguide" target="_blank" class="text-base text-gray-300 hover:text-white">
+                                            Github
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://github.com/serienguide/serienguide/issues" target="_blank" class="text-base text-gray-300 hover:text-white">
+                                            Feedback
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                            <!-- API -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                            Kontakt
+                                        </a>
+                                    </li>
+                                </ul>
+                                </div>
+                        </div>
+                        <div class="md:grid md:grid-cols-2 md:gap-8">
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                                    Rechtliches
+                                </h3>
+                                <ul class="mt-4 space-y-4">
+                                    <li>
+                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                            <!-- Impressum -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                            <!-- Disclaimer -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="text-base text-gray-300 hover:text-white">
+                                            <!-- Datenschutz -->
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mt-12 md:mt-0">
+                                <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">
+                                    Unterstützt von
+                                </h3>
+                                <ul class="mt-4 space-y-4">
+                                    <li>
+                                        <a href="https://www.themoviedb.org/" target="_blank" class="text-base text-gray-300 hover:text-white">
+                                            <img src="{{ Storage::disk('s3')->url('tmdb_logo.png') }}" style="max-width: 100px; border: 0;">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://thetvdb.com/" target="_blank" class="text-base text-gray-300 hover:text-white">
+                                            <img src="{{ Storage::disk('s3')->url('tvdb_logo.png') }}" style="max-width: 100px; border: 0;">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="px-5 py-2">
-                        <a href="#" class="text-base leading-6 text-gray-300 hover:text-white">
-                            API
-                        </a>
-                    </div>
-                    <div class="px-5 py-2">
-                        <a href="https://github.com/serienguide/serienguide" target="_blank" class="text-base leading-6 text-gray-300 hover:text-white">
-                            Github
-                        </a>
-                    </div>
-                </nav>
-                <p class="mt-8 text-center text-base leading-6 text-gray-400">
-                    &copy; 2020 serienguide. All rights reserved.
-                </p>
+                </div>
+                <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-center">
+                    <p class="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
+                        &copy; {{ date('Y') }} serienguide. All rights reserved.
+                    </p>
+                </div>
             </div>
         </footer>
-
         @stack('modals')
 
         @livewireScripts
