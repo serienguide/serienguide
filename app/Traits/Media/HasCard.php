@@ -2,6 +2,7 @@
 
 namespace App\Traits\Media;
 
+use App\Models\Movies\Collection;
 use App\Models\Movies\Movie;
 use App\Models\Shows\Episodes\Episode;
 use App\Models\Shows\Show;
@@ -35,6 +36,11 @@ trait HasCard
         return strtolower(class_basename($this));
     }
 
+    public function getIsCollectionAttribute() : bool
+    {
+        return $this->isClass(Collection::class);
+    }
+
     public function getIsEpisodeAttribute() : bool
     {
         return $this->isClass(Episode::class);
@@ -62,7 +68,7 @@ trait HasCard
             return $this->progress = [
                 'watched_count' => $watched_count,
                 'percent' => ($watchable_count == 0 ? 0 : min(100, round($watched_count / $watchable_count * 100, 0))),
-                'watchable_count' => ($this->is_show ? $this->episodes_count : 1),
+                'watchable_count' => $watchable_count,
             ];
         }
 

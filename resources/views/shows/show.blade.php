@@ -4,7 +4,9 @@
     <section>
         <x-container class="py-4">
             @auth
-                @livewire('media.buttons.watch', ['model' => $model])
+                <div class="inline-block px-1">
+                    @livewire('media.buttons.watch', ['model' => $model])
+                </div>
                 <x-media.buttons.listing :model="$model"/>
                 <x-media.buttons.tmdb_update :model="$model"/>
             @endauth

@@ -26,12 +26,12 @@
                     @endif
                 </div>
                 <div class="ml-2 text-center">
-                    @unless ($model->is_episode)
+                    @if ($model->is_movie && $model->is_show)
                         <div>
                             <div class="text-2xl">{{ $model->list_items()->count() }}</div>
                             <div class="text-xs text-gray-500"><i class="fas fa-list"></i> LISTEN</div>
                         </div>
-                   @endunless
+                   @endif
                 </div>
             </div>
         </x-container>

@@ -70,6 +70,7 @@ class MovieController extends Controller
             'genres',
             'providers',
             'writers',
+            'collection',
         ]);
 
         return view($this->base_view_path . '.show')

@@ -55,6 +55,11 @@ trait HasImages
         return Storage::disk('s3')->url($this->backdrop_path ? 'w423' . $this->backdrop_path : 'no/750x422.png');
     }
 
+    public function getBackdropUrlXlAttribute() : string
+    {
+        return Storage::disk('s3')->url($this->backdrop_path ? 'w1920' . $this->backdrop_path : 'no/750x422.png');
+    }
+
     public function images() : MorphMany
     {
         return $this->morphMany(Image::class, 'medium');
