@@ -122,4 +122,14 @@ class EpisodeTest extends TestCase
         $this->assertEquals(2, $next_episodes->get(1)->absolute_number);
 
     }
+
+    /**
+     * @test
+     */
+    public function it_knows_its_label()
+    {
+        $this->assertEquals('Folge', $this->class_name::label(1));
+        $this->assertEquals('Folgen', $this->class_name::label(2));
+        $this->assertEquals('Folgen', $this->class_name::label());
+    }
 }

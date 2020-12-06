@@ -313,4 +313,14 @@ class ShowTest extends TestCase
         $this->assertEquals('Donnerstag', $model->air_day);
         $this->assertEquals('20:15', $model->air_time);
     }
+
+    /**
+     * @test
+     */
+    public function it_knows_its_label()
+    {
+        $this->assertEquals('Serie', $this->class_name::label(1));
+        $this->assertEquals('Serien', $this->class_name::label(2));
+        $this->assertEquals('Serien', $this->class_name::label());
+    }
 }

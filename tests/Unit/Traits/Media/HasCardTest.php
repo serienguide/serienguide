@@ -100,5 +100,4 @@ class HasCardTest extends TestCase
             $this->assertCount(1, $model->user_ratings);
         }
     }
-
 }

@@ -45,6 +45,11 @@ class Show extends Model
     const ROUTE_NAME = 'shows';
     const VIEW_PATH = 'shows';
 
+    const LABELS = [
+        'singular' => 'Serie',
+        'plural' => 'Serien',
+    ];
+
     protected $appends = [
         //
     ];
@@ -91,6 +96,11 @@ class Show extends Model
         'tmdb_trending',
         'tmdb_popularity',
     ];
+
+    public static function label(int $count = 0)
+    {
+        return ($count == 1 ? self::LABELS['singular'] : self::LABELS['plural']);
+    }
 
     public static function createOrUpdateFromTmdb(int $tmdb_id) : self
     {

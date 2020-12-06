@@ -53,6 +53,11 @@ class Movie extends Model
     const ROUTE_NAME = 'movies';
     const VIEW_PATH = 'movies';
 
+    const LABELS = [
+        'singular' => 'Film',
+        'plural' => 'Filme',
+    ];
+
     protected $appends = [
         //
     ];
@@ -92,6 +97,11 @@ class Movie extends Model
         'tmdb_trending',
         'tmdb_popularity',
     ];
+
+    public static function label(int $count = 0)
+    {
+        return ($count == 1 ? self::LABELS['singular'] : self::LABELS['plural']);
+    }
 
     public static function createOrUpdateFromTmdb(int $tmdb_id) : self
     {

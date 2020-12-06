@@ -204,4 +204,14 @@ class MovieTest extends TestCase
         $this->assertCount(13, $model->providers);
         $this->assertCount(180, $model->credits);
     }
+
+    /**
+     * @test
+     */
+    public function it_knows_its_label()
+    {
+        $this->assertEquals('Film', $this->class_name::label(1));
+        $this->assertEquals('Filme', $this->class_name::label(2));
+        $this->assertEquals('Filme', $this->class_name::label());
+    }
 }

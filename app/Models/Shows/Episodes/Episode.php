@@ -34,6 +34,11 @@ class Episode extends Model
     const ROUTE_NAME = 'shows.episodes';
     const VIEW_PATH = 'shows.episodes';
 
+    const LABELS = [
+        'singular' => 'Folge',
+        'plural' => 'Folgen',
+    ];
+
     protected $appends = [
         //
     ];
@@ -64,6 +69,11 @@ class Episode extends Model
         'tmdb_vote_count',
         'tmdb_vote_average',
     ];
+
+    public static function label(int $count = 0)
+    {
+        return ($count == 1 ? self::LABELS['singular'] : self::LABELS['plural']);
+    }
 
     public function isDeletable() : bool
     {
