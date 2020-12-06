@@ -60,6 +60,11 @@ class WatchedCommand extends Command
         $this->line('Movies: ' . $movie_sync_count);
         $this->line('Episodes: ' . $episode_sync_count);
 
+        $provider->user->notify(new \App\Notifications\Apis\Tract\Sync\Watched([
+            'movie_sync_count' => $movie_sync_count,
+            'episode_sync_count' => $episode_sync_count,
+        ]));
+
         return 0;
     }
 

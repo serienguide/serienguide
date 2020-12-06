@@ -21,6 +21,7 @@ class UpdateController extends Controller
 
         Artisan::queue('apis:tmdb:' . $media_type . ':update', [
             'id' => $model->id,
+            '--user' => auth()->user()->id,
         ]);
 
         return back()

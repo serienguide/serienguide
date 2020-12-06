@@ -3,6 +3,8 @@
 namespace App\Console\Commands\Apis\Tmdb\Movies;
 
 use App\Models\Movies\Movie;
+use App\Models\User;
+use App\Notifications\Media\Imported;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,7 +15,7 @@ class UpdateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'apis:tmdb:movies:update {id}';
+    protected $signature = 'apis:tmdb:movies:update {id} {--user=}';
 
     /**
      * The console command description.
@@ -59,5 +61,10 @@ class UpdateCommand extends Command
     {
         $this->info('Updating ' . $model->name);
         $model->updateFromTmdb();
+
+        if ($this->option('user')) {
+            $user = User::find($this->option('user'));
+            $user->notify(new Imported($model));
+        }
     }
 }
