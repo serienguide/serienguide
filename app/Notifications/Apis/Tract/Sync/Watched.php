@@ -21,6 +21,7 @@ class Watched extends Notification
     public function __construct(array $result)
     {
         $this->result = $result;
+        $this->result['image_type'] = 'notifiable';
     }
 
     /**

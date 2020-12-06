@@ -46,6 +46,7 @@ class Imported extends Notification
         return [
             'model_type' => get_class($this->model),
             'model_id' => $this->model->id,
+            'image_type' => 'model',
         ];
     }
 }
