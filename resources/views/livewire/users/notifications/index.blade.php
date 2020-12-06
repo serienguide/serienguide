@@ -2,11 +2,11 @@
     <ul class="divide-y divide-gray-200">
         @forelse ($items as $item)
             @if ($item->type == App\Notifications\Media\Imported::class)
-            <?php $item->model = $item->data['model_type']::find($item->data['model_id']); ?>
+            <?php $model = $item->data['model_type']::find($item->data['model_id']); ?>
                 <li class="py-4 flex items-center">
-                    <img class="rounded-md" src="{{ $item->model->poster_url_xs }}" alt="">
+                    <img class="rounded-md" src="{{ $model->poster_url_xs }}" alt="">
                     <div class="flex-grow ml-3">
-                        <p class="text-sm font-medium text-gray-900"><a class="text-blue-500 hover:text-blue-600 font-bold" href="{{ $item->model->path }}">{{ $item->model->name }}</a> wurde aktualisiert.</p>
+                        <p class="text-sm font-medium text-gray-900"><a class="text-blue-500 hover:text-blue-600 font-bold" href="{{ $model->path }}">{{ $model->name }}</a> wurde aktualisiert.</p>
                         <p class="text-sm text-gray-500"><span title="{{ $item->created_at->format('d.m.Y (H:i)') }}">{{ $item->created_at->diffForHumans() }}</span></p>
                     </div>
                     <div class="inline-flex items-center justify-center p-3">
