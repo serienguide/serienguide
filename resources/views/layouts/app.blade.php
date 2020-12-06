@@ -84,13 +84,13 @@
                                 </h3>
                                 <ul class="mt-4 space-y-4">
                                     <li>
-                                        <a href="#" class="text-base text-gray-300 hover:text-white">
-                                            <!-- Serien -->
+                                        <a href="{{ route('media.imports.tmdb.index', ['media_type' => 'shows']) }}" class="text-base text-gray-300 hover:text-white">
+                                            Serien
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" class="text-base text-gray-300 hover:text-white">
-                                            <!-- Filme -->
+                                        <a href="{{ route('media.imports.tmdb.index', ['media_type' => 'movies']) }}" class="text-base text-gray-300 hover:text-white">
+                                            Filme
                                         </a>
                                     </li>
                                     <li>

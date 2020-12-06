@@ -49,9 +49,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/apis/trakt/watched_history/{provider}', [ App\Http\Controllers\Apis\Trakt\WatchedHistoryController::class, 'show' ])->name('apis.trakt.watched_history.show');
 
-    Route::get('/{medium_type}/{model}/tmdb/update', [ App\Http\Controllers\Media\Tmdb\UpdateController::class, 'show' ])->name('media.tmdb.update');
+    Route::get('/{media_type}/{model}/tmdb/update', [ App\Http\Controllers\Media\Tmdb\UpdateController::class, 'show' ])->name('media.tmdb.update.show');
 
-    Route::get('/{medium_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'index' ])->name('media.imports.tmdb.index');
+    Route::get('/{media_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'index' ])->name('media.imports.tmdb.index');
 
 
 });
@@ -62,7 +62,7 @@ Route::resource(App\Models\Lists\Listing::ROUTE_NAME, App\Http\Controllers\Lists
 ]);
 
 Route::bind('model', function ($id) {
-    switch(app()->request->route('medium_type')) {
+    switch(app()->request->route('media_type')) {
         case 'episodes': return App\Models\Shows\Episodes\Episode::findOrFail($id); break;
         case 'movies': return App\Models\Movies\Movie::findOrFail($id); break;
         case 'people': return App\Models\People\Person::findOrFail($id); break;

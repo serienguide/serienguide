@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Artisan;
 
 class UpdateController extends Controller
 {
-    public function show(Request $request, string $medium_type, Model $model) {
+    public function show(Request $request, string $media_type, Model $model) {
 
         if ($model->updated_at->diffInHours() < 1) {
             return back()
@@ -19,7 +19,7 @@ class UpdateController extends Controller
                 ]);
         }
 
-        Artisan::queue('apis:tmdb:' . $medium_type . ':update', [
+        Artisan::queue('apis:tmdb:' . $media_type . ':update', [
             'id' => $model->id,
         ]);
 
