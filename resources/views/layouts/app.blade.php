@@ -182,7 +182,7 @@
                 if (!localStorage.getItem('cookieconsent')) {
                     document.body.innerHTML += '\
                     <div class="cookieconsent" style="position:fixed;padding:20px;left:0;bottom:0;background-color: rgba(37, 47, 63);color: rgba(210, 214, 220);text-align:center;width:100%;z-index:99999;">\
-                        Diese Website verwendet Cookies. Wenn Du die Website weiterhin nutzen, gehen wir davon aus, dass Du deine Zustimmung gegeben hast. \
+                        Diese Website verwendet Cookies. Wenn Du die Website weiterhin nutzt, gehen wir davon aus, dass Du deine Zustimmung gegeben hast. \
                         <a href="/impressum" style="color: rgba(63, 131, 248);">Datenschutz</a>\
                         <button style="padding: 0.5rem 1rem;line-height: 1.25rem;font-size: 0.875rem;font-weight: 500;align-items: center;display: inline-flex;border-radius: 0.375rem;border-width: 1px;border-color: rgba(210, 214, 220);background-color: rgba(255, 255, 255);color: rgba(107, 114, 128);">Ok</button>\
                     </div>\
