@@ -57,8 +57,6 @@ class UpdateCommand extends Command
                 continue;
             }
 
-            dump($show->id);
-
             $show_changes = \App\Apis\Tmdb\Shows\Show::changes($tmdb_show_id);
             $show_changes_count = count($show_changes['changes']);
             $season_changes_key = array_search('season', array_column($show_changes['changes'], 'key'));
