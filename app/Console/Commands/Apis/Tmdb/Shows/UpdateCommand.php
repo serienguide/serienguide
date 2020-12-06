@@ -3,6 +3,8 @@
 namespace App\Console\Commands\Apis\Tmdb\Shows;
 
 use App\Models\Shows\Show;
+use App\Models\User;
+use App\Notifications\Media\Imported;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 
@@ -69,5 +71,10 @@ class UpdateCommand extends Command
         }
 
         $model->setAbsoluteNumbers();
+
+        if ($this->option('user')) {
+            $user = User::find($this->option('user'));
+            $user->notify(new Imported($model));
+        }
     }
 }

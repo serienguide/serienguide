@@ -40,6 +40,7 @@ class Tmdb extends Component
         if ($model->wasRecentlyCreated) {
             Artisan::queue('apis:tmdb:' . $this->media_type . ':update', [
                 'id' => $model->id,
+                '--user' => auth()->user()->id,
             ]);
 
             return $this->dispatchBrowserEvent('flash', [
