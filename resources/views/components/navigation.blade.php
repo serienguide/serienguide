@@ -57,7 +57,8 @@
                                 class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
                                 <div class="py-1 rounded-md bg-white shadow-xs">
                                     <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
-                                    @if (false)<a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>@endif
+                                    <a href="{{ Auth::user()->profile_path }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+                                    <a href="{{ Auth::user()->profile_path }}/watched" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Gesehen</a>
                                     <a href="{{ route('users.lists.index', ['user' => auth()->user()->id]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Listen</a>
                                     <a href="{{ App\Models\Auth\OauthProvider::indexPath() }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Verbindungen</a>
                                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Abmelden</a>
@@ -112,16 +113,17 @@
         <div class="pt-4 pb-3 border-t border-gray-700">
             <div class="flex items-center px-5 space-x-3">
                 <div class="flex-shrink-0">
-                    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                    <img class="h-10 w-10 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" alt="">
                 </div>
                 <div class="space-y-1">
-                    <div class="text-base font-medium leading-none text-white">Tom Cook</div>
-                    <div class="text-sm font-medium leading-none text-gray-400">tom@example.com</div>
+                    <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}</div>
+                    <div class="text-sm font-medium leading-none text-gray-400">{{ Auth::user()->email }}</div>
                 </div>
             </div>
             <div class="mt-3 px-2 space-y-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                 <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Dashboard</a>
-                @if(false)<a href="{{ route('profile.show') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Your Profile</a>@endif
+                <a href="{{ Auth::user()->profile_path }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Profil</a>
+                <a href="{{ Auth::user()->profile_path }}/watched" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Gesehen</a>
                 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Abmelden</a>
             </div>
         </div>
