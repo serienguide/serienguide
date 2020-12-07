@@ -109,24 +109,24 @@
             <a href="{{ App\Models\Shows\Show::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Serien</a>
             <a href="{{ App\Models\Movies\Movie::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Filme</a>
         </div>
-
-        <div class="pt-4 pb-3 border-t border-gray-700">
-            <div class="flex items-center px-5 space-x-3">
-                <div class="flex-shrink-0">
-                    <img class="h-10 w-10 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" alt="">
+        @auth
+            <div class="pt-4 pb-3 border-t border-gray-700">
+                <div class="flex items-center px-5 space-x-3">
+                    <div class="flex-shrink-0">
+                        <img class="h-10 w-10 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" alt="">
+                    </div>
+                    <div class="space-y-1">
+                        <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}</div>
+                        <div class="text-sm font-medium leading-none text-gray-400">{{ Auth::user()->email }}</div>
+                    </div>
                 </div>
-                <div class="space-y-1">
-                    <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}</div>
-                    <div class="text-sm font-medium leading-none text-gray-400">{{ Auth::user()->email }}</div>
+                <div class="mt-3 px-2 space-y-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                    <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Dashboard</a>
+                    <a href="{{ Auth::user()->profile_path }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Profil</a>
+                    <a href="{{ Auth::user()->profile_path }}/watched" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Gesehen</a>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Abmelden</a>
                 </div>
             </div>
-            <div class="mt-3 px-2 space-y-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Dashboard</a>
-                <a href="{{ Auth::user()->profile_path }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Profil</a>
-                <a href="{{ Auth::user()->profile_path }}/watched" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Gesehen</a>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Abmelden</a>
-            </div>
-        </div>
-
+        @endauth
     </div>
 </nav>
