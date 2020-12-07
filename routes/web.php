@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 // Route::get('/shows/{show}/update/tmdb', [ App\Http\Controllers\Shows\Updates\TmdbController::class, 'show' ])->name('shows.update.tmdb');
 // Route::get('/seasons/{season}/update/tmdb', [ App\Http\Controllers\Shows\Seasons\Updates\TmdbController::class, 'show' ])->name('seasons.update.tmdb');
+Route::get('/profiles/{user}/{section?}', [ App\Http\Controllers\Users\Profiles\ProfileController::class, 'show' ])->name('users.profiles.show');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Route::resource('{medium_type}/{model}/' . App\Models\Ratings\Rating::ROUTE_NAME, App\Http\Controllers\Ratings\RatingController::class);
@@ -55,7 +56,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 
     Route::get('/notifications', [ App\Http\Controllers\Users\NotificationController::class, 'index' ])->name('users.notifications.index');
-
 
 
 });

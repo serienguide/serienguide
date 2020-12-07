@@ -97,32 +97,42 @@
     <main class="flex-grow relative">
         <a class="" href="{{ (($model->is_episode) ? $model->show->path : $model->path) }}" title="{{ $model->name }}">
             <img src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}">
-                <div class="absolute bottom-3 left-3">
-                @if ($model->is_episode)
-                    @if ($model->episode_number == 1)
-                        @if ($model->season->season_number == 1)
-                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white">
-                                Serienstart
-                            </span>
-                        @else
-                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white">
-                                Staffelstart
-                            </span>
+                @isset($model->action)
+                    <div class="absolute left-0 right-0 bottom-0 h-24" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);"></div>
+                    <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center">
+                        <a class="inline-flex items-center" href="{{ $model->action->user->profile_path }}" title="{{ $model->action->user->name }} hat {{ $model->name }} {{ $model->action->created_at->diffForHumans() }} am {{ $model->action->created_at->format('d.m.Y H:i') }} gesehen">
+                            <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://www.gravatar.com/avatar/{{ md5($model->action->user->email) }}" alt="">
+                            <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-check"></i></div>
+                        </a>
+                    </div>
+                @else
+                    <div class="absolute bottom-3 left-3">
+                    @if ($model->is_episode)
+                        @if ($model->episode_number == 1)
+                            @if ($model->season->season_number == 1)
+                                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white">
+                                    Serienstart
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white">
+                                    Staffelstart
+                                </span>
+                            @endif
+                        @endif
+                        @if ($model->first_aired_at)
+                            <div class="flex items-center mt-1 px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
+                                {{ $model->first_aired_at->format('d.m.Y') }}
+                            </div>
+                        @endif
+                    @elseif ($model->is_movie)
+                        @if ($model->released_at)
+                            <div class="flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
+                                {{ $model->released_at->format('d.m.Y') }}
+                            </div>
                         @endif
                     @endif
-                    @if ($model->first_aired_at)
-                        <div class="flex items-center mt-1 px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
-                            {{ $model->first_aired_at->format('d.m.Y') }}
-                        </div>
-                    @endif
-                @elseif ($model->is_movie)
-                    @if ($model->released_at)
-                        <div class="flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
-                            {{ $model->released_at->format('d.m.Y') }}
-                        </div>
-                    @endif
-                @endif
-            </div>
+                </div>
+            @endisset
         </a>
     </main>
     <footer class="flex items-center px-3 py-1">

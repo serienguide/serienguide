@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\Auth\OauthProvider;
 use App\Models\Lists\Listing;
+use App\Models\Watched\Watched;
 use App\Traits\HasSlug;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -85,6 +87,13 @@ class User extends Authenticatable
         $this->attributes['slug'] = $slug;
     }
 
+    public function getProfilePathAttribute() : string
+    {
+        return route('users.profiles.show', [
+            'user' => $this->id,
+        ]);
+    }
+
     public function lists() : HasMany
     {
         return $this->hasMany(Listing::class, 'user_id');
@@ -93,5 +102,15 @@ class User extends Authenticatable
     public function oauth_providers() : HasMany
     {
         return $this->hasMany(OauthProvider::class, 'user_id');
+    }
+
+    public function watched() : HasMany
+    {
+        return $this->hasMany(Watched::class, 'user_id');
+    }
+
+    public function last_watched() : HasOne
+    {
+        return $this->hasOne(Watched::class, 'user_id')->latest()->take(1);
     }
 }

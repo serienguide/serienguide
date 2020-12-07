@@ -96,14 +96,14 @@
                         <div>
                             <span class="font-bold">{{ $model->progress['watched_count'] }}</span>
                             von <span class="font-bold">{{ $model->progress['watchable_count'] }}</span>
-                            (<span class="font-bold">{{ round($model->progress['watched_runtime'] / 60, 0) }}h
+                            (<span class="font-bold">{{ floor($model->progress['watched_runtime'] / 60) }}h
                             {{ $model->progress['watched_runtime'] % 60 }}m</span>)
                             {{ $model->progress['labels']['plural'] }} gesehen.
                             Es {{ ($model->progress['unwatched_count'] == 1 ? ' ist' : 'sind') }}
                             noch <span class="font-bold">{{ $model->progress['unwatched_count'] }}</span>
                             {{ ($model->progress['unwatched_count'] == 1 ? $model->progress['labels']['singular'] : $model->progress['labels']['plural']) }}
                             übrig
-                            (<span class="font-bold">{{ round($model->progress['unwatched_runtime'] / 60, 0) }}h {{ $model->progress['unwatched_runtime'] % 60 }}m</span>).
+                            (<span class="font-bold">{{ floor($model->progress['unwatched_runtime'] / 60) }}h {{ $model->progress['unwatched_runtime'] % 60 }}m</span>).
                         </div>
                         @if ($model->last_watched)
                             <div>
