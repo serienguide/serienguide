@@ -45,10 +45,11 @@ class Watched extends Component
             ->latest($this->sort_by)
             ->paginate(12);
 
+        $sort_by = $this->sort_by;
         $last_date = null;
         foreach ($items as $key => $item) {
-            if (is_null($last_date) || $last_date->format('Ymd') != $item->created_at->format('Ymd')) {
-                $last_date = $item->created_at;
+            if (is_null($last_date) || $last_date->format('Ymd') != $item->$sort_by->format('Ymd')) {
+                $last_date = $item->$sort_by;
                 $this->daily_runtimes[$last_date->format('Ymd')] = 0;
             }
             $this->daily_runtimes[$last_date->format('Ymd')] += $item->watchable->runtime;

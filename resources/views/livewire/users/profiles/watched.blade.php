@@ -24,8 +24,8 @@
     </div>
     <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mb-3">
         @forelse ($items as $item)
-            @if (is_null($last_date) || $last_date->format('Ymd') != $item->created_at->format('Ymd'))
-                <?php $last_date = $item->created_at; ?>
+            @if ((is_null($last_date)) || ($last_date->format('Ymd') != $item->$sort_by->format('Ymd')))
+                <?php $last_date = $item->$sort_by; ?>
                 <li x-show="show_dividers" class="pb-1 border-b border-gray-200 sm:flex sm:items-center sm:justify-between" style="grid-column: 1 / -1;">
                     <h3 class="text-base leading-6 font-medium text-gray-900">
                         <i class="fas fa-history"></i> {{ $last_date->dayName }}, {{ $last_date->format('d.') }} {{ $last_date->monthName }} {{ $last_date->format('Y') }}
