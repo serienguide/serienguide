@@ -118,4 +118,13 @@ class Watched extends Model
     {
         return $this->morphTo();
     }
+
+    public function scopeWatchableType(Builder $query, $value) : Builder
+    {
+        if (! $value) {
+            return $query;
+        }
+
+        return $query->where('watchable_type', $value);
+    }
 }

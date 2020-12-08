@@ -13,10 +13,25 @@ class Watched extends Component
     public $user;
     public $last_date;
     public $daily_runtimes = [];
+    public $sort_by = 'watched_at';
+
+    public $filter = [
+        'watchable_type' => 0,
+    ];
 
     public function mount(User $user)
     {
         $this->user = $user;
+    }
+
+    public function UpdatingFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function UpdatingSortBy()
+    {
+        $this->resetPage();
     }
 
     public function getItems()
@@ -26,7 +41,8 @@ class Watched extends Component
                 'user',
                 'watchable'
             ])
-            ->latest()
+            ->watchableType($this->filter['watchable_type'])
+            ->latest($this->sort_by)
             ->paginate(12);
 
         $last_date = null;

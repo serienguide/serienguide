@@ -4,7 +4,16 @@
             Gesehen
         </h3>
         <div class="mt-3 flex sm:mt-0 sm:ml-4">
-            <button @click="show_dividers = !show_dividers" type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <select wire:model="filter.watchable_type" class="rounded-md border-gray-300">
+                <option value="0">Alle</option>
+                <option value="{{ App\Models\Movies\Movie::class }}">{{ App\Models\Movies\Movie::label() }}</option>
+                <option value="{{ App\Models\Shows\Episodes\Episode::class }}">{{ App\Models\Shows\Episodes\Episode::label() }}</option>
+            </select>
+            <select wire:model="sort_by" class="ml-3 rounded-md border-gray-300">
+                <option value="created_at">Erstellt</option>
+                <option value="watched_at">Gesehen</option>
+            </select>
+            <button @click="show_dividers = !show_dividers" type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <i class="fas fa-code"></i>
             </button>
         </div>
