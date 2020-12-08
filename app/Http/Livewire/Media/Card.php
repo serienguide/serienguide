@@ -11,6 +11,7 @@ use Livewire\Component;
 class Card extends Component
 {
     public $model;
+    public $action;
     public $type = 'poster';
     public $load_next = false;
 
@@ -35,9 +36,10 @@ class Card extends Component
         return $listeners;
     }
 
-    public function mount($model)
+    public function mount($model, $action = null)
     {
         $this->model = $model;
+        $this->action = $action;
         $this->loadWatchedCount();
 
         $this->original_listeners = $this->getListeners();

@@ -26,7 +26,7 @@
                     </div>
                 </li>
             @endif
-            @livewire('media.card', ['model' => $item->watchable], key('media-card-' . $item->id))
+            @livewire('media.card', ['action' => $item, 'model' => $item->watchable], key('media-card-' . $item->watchable->id . '-action-' . $item->id))
         @empty
            <li class="bg-white rounded-lg shadow">Noch nichts gesehen.</li>
         @endforelse
