@@ -158,6 +158,24 @@ class Episode extends Model
         ]);
     }
 
+    public function next()
+    {
+        return self::with([
+            'season'
+        ])
+            ->nextByAbsoluteNumber($this->show_id, $this->absolute_number)
+            ->first();
+    }
+
+    public function previous()
+    {
+        return self::with([
+            'season'
+        ])
+            ->previousByAbsoluteNumber($this->show_id, $this->absolute_number)
+            ->first();
+    }
+
     public function season() : BelongsTo
     {
         return $this->belongsTo(Season::class, 'season_id');
@@ -177,6 +195,18 @@ class Episode extends Model
         return $query->where('absolute_number', '>', $absolute_number)
             ->where('show_id', $show_id)
             ->orderBy('absolute_number', 'ASC')
+            ->take(1);
+    }
+
+    public function scopePreviousByAbsoluteNumber(Builder $query, int $show_id, int $absolute_number) : Builder
+    {
+        if (is_null($absolute_number)) {
+            return $query;
+        }
+
+        return $query->where('absolute_number', '<', $absolute_number)
+            ->where('show_id', $show_id)
+            ->orderBy('absolute_number', 'DESC')
             ->take(1);
     }
 

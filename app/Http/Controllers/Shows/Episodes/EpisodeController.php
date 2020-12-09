@@ -29,6 +29,8 @@ class EpisodeController extends Controller
         }
 
         return view($this->base_view_path . '.show')
-            ->with('model', $episode);
+            ->with('model', $episode)
+            ->with('next_episode', $episode->next())
+            ->with('previous_episode', $episode->previous());
     }
 }

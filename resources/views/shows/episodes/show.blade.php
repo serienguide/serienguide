@@ -27,4 +27,20 @@
         </x-container>
     @endauth
 
+    @if ($next_episode)
+        <div class="fixed opacity-25 hover:opacity-100" style="top:35%; right: 25px;">
+            <a href="{{ $next_episode->path }}" title="{{ $next_episode->season->season_number }}x{{ $next_episode->episode_number }} {{ $next_episode->name }}">
+                <i class="fas fa-chevron-right fa-3x"></i>
+            </a>
+        </div>
+    @endif
+
+    @if ($previous_episode)
+        <div class="fixed opacity-25 hover:opacity-100" style="top:35%; left: 25px;">
+            <a href="{{ $previous_episode->path }}" title="{{ $previous_episode->season->season_number }}x{{ $previous_episode->episode_number }} {{ $previous_episode->name }}">
+                <i class="fas fa-chevron-left fa-3x"></i>
+            </a>
+        </div>
+    @endif
+
 </x-app-layout>
