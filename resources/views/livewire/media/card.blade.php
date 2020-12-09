@@ -99,12 +99,21 @@
             <img src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}">
                 @isset($action)
                     <div class="absolute left-0 right-0 bottom-0 h-24" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);"></div>
-                    <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center">
-                        <a class="inline-flex items-center" href="{{ $action->user->profile_path }}" title="{{ $action->user->name }} hat {{ $model->name }} {{ $action->watched_at->diffForHumans() }} am {{ $action->watched_at->format('d.m.Y H:i') }} gesehen">
-                            <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://www.gravatar.com/avatar/{{ md5($action->user->email) }}" alt="">
-                            <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-check"></i></div>
-                        </a>
-                    </div>
+                    @if (get_class($action) == App\Models\Watched\Watched::class)
+                        <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center">
+                            <a class="inline-flex items-center" href="{{ $action->user->profile_path }}" title="{{ $action->user->name }} hat {{ $model->name }} {{ $action->watched_at->diffForHumans() }} am {{ $action->watched_at->format('d.m.Y H:i') }} gesehen">
+                                <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://www.gravatar.com/avatar/{{ md5($action->user->email) }}" alt="">
+                                <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-check"></i></div>
+                            </a>
+                        </div>
+                    @elseif (get_class($action) == App\Models\Ratings\Rating::class)
+                        <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center">
+                            <a class="inline-flex items-center" href="{{ $action->user->profile_path }}" title="{{ $action->user->name }} hat {{ $model->name }} {{ $action->created_at->diffForHumans() }} am {{ $action->created_at->format('d.m.Y H:i') }} mit {{ $action->rating }} Punkten bewertet">
+                                <img class="h-8 w-8 rounded-full ring-2 ring-white" src="https://www.gravatar.com/avatar/{{ md5($action->user->email) }}" alt="">
+                                <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-star text-yellow-400"></i></div>
+                            </a>
+                        </div>
+                    @endif
                 @else
                     <div class="absolute bottom-3 left-3">
                     @if ($model->is_episode)

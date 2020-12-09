@@ -1,17 +1,14 @@
 <div x-data="{ show_dividers: true }">
     <div class="mb-3 pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
-            Gesehen
+            Bewertet
         </h3>
         <div class="mt-3 flex sm:mt-0 sm:ml-4">
-            <select wire:model="filter.watchable_type" class="rounded-md border-gray-300">
+            <select wire:model="filter.medium_type" class="rounded-md border-gray-300">
                 <option value="0">Alle</option>
                 <option value="{{ App\Models\Movies\Movie::class }}">{{ App\Models\Movies\Movie::label() }}</option>
+                <option value="{{ App\Models\Shows\Show::class }}">{{ App\Models\Shows\Show::label() }}</option>
                 <option value="{{ App\Models\Shows\Episodes\Episode::class }}">{{ App\Models\Shows\Episodes\Episode::label() }}</option>
-            </select>
-            <select wire:model="sort_by" class="ml-3 rounded-md border-gray-300">
-                <option value="created_at">Erstellt</option>
-                <option value="watched_at">Gesehen</option>
             </select>
             <button @click="show_dividers = !show_dividers" type="button" class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <i class="fas fa-code"></i>
@@ -35,9 +32,9 @@
                     </div>
                 </li>
             @endif
-            @livewire('media.card', ['action' => $item, 'model' => $item->watchable], key('media-card-' . $item->watchable->id . '-action-' . $item->id))
+            @livewire('media.card', ['action' => $item, 'model' => $item->medium], key('media-card-' . $item->medium->id . '-action-' . $item->id))
         @empty
-           <li class="bg-white rounded-lg shadow px-4 py-2" style="grid-column: 1 / -1;">Noch nichts gesehen.</li>
+           <li class="bg-white rounded-lg shadow px-4 py-2" style="grid-column: 1 / -1;">Noch nichts bewertet.</li>
         @endforelse
     </ul>
 

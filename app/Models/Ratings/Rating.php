@@ -4,6 +4,7 @@ namespace App\Models\Ratings;
 
 use App\Traits\BelongsToUser;
 use D15r\ModelPath\Traits\HasModelPath;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -51,5 +52,14 @@ class Rating extends Model
     public function medium() : MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function scopeMediumType(Builder $query, $value) : Builder
+    {
+        if (! $value) {
+            return $query;
+        }
+
+        return $query->where('medium_type', $value);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Auth\OauthProvider;
 use App\Models\Lists\Listing;
+use App\Models\Ratings\Rating;
 use App\Models\Watched\Watched;
 use App\Traits\HasSlug;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -102,6 +103,11 @@ class User extends Authenticatable
     public function oauth_providers() : HasMany
     {
         return $this->hasMany(OauthProvider::class, 'user_id');
+    }
+
+    public function ratings() : HasMany
+    {
+        return $this->hasMany(Rating::class, 'user_id');
     }
 
     public function watched() : HasMany
