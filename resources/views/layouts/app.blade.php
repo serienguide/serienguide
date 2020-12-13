@@ -148,12 +148,12 @@
                                 <ul class="mt-4 space-y-4">
                                     <li>
                                         <a href="https://www.themoviedb.org/" target="_blank" class="text-base text-gray-300 hover:text-white">
-                                            <img src="{{ Storage::disk('s3')->url('tmdb_logo.png') }}" style="max-width: 100px; border: 0;">
+                                            <img loading="lazy" src="{{ Storage::disk('s3')->url('tmdb_logo.png') }}" style="max-width: 100px; border: 0;">
                                         </a>
                                     </li>
                                     <li>
                                         <a href="http://thetvdb.com/" target="_blank" class="text-base text-gray-300 hover:text-white">
-                                            <img src="{{ Storage::disk('s3')->url('tvdb_logo.png') }}" style="max-width: 100px; border: 0;">
+                                            <img loading="lazy" src="{{ Storage::disk('s3')->url('tvdb_logo.png') }}" style="max-width: 100px; border: 0;">
                                         </a>
                                     </li>
                                 </ul>

@@ -4,7 +4,7 @@
             <div class="flex-grow flex items-center">
                 <div class="flex-shrink-0">
                     <a href="/">
-                        <img class="h-8 w-8" src="{{ Storage::disk('s3')->url('icons/favicon-96x96.png') }}" alt="Workflow logo">
+                        <img loading="lazy" class="h-8 w-8" src="{{ Storage::disk('s3')->url('icons/favicon-96x96.png') }}" alt="Workflow logo">
                     </a>
                 </div>
                 <div class="hidden md:block">
@@ -31,7 +31,7 @@
                         <div class="ml-3 relative" x-data="{ open: false }">
                             <div>
                                 <button @click="open = true" class="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid" id="user-menu" aria-label="User menu" aria-haspopup="true">
-                                    <img class="h-8 w-8 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" alt="">
+                                    <img loading="lazy" class="h-8 w-8 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" alt="">
                                 </button>
                             </div>
                               <!--
@@ -113,7 +113,7 @@
             <div class="pt-4 pb-3 border-t border-gray-700">
                 <div class="flex items-center px-5 space-x-3">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" alt="">
+                        <img loading="lazy" class="h-10 w-10 rounded-full" src="https://www.gravatar.com/avatar/{{ md5(Auth::user()->email) }}" alt="">
                     </div>
                     <div class="space-y-1">
                         <div class="text-base font-medium leading-none text-white">{{ Auth::user()->name }}</div>

@@ -4,7 +4,7 @@
             <div class="hidden md:block md:w-1/3 lg:w-1/4">
                 @if ($model->poster_path)
                     <div class="mr-4 hidden sm:block">
-                        <img class="max-w-full rounded-md" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
+                        <img loading="lazy" class="max-w-full rounded-md" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
                     </div>
                 @endif
             </div>
