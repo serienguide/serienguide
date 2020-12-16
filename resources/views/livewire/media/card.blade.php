@@ -151,6 +151,11 @@
                     <div class="font-bold">{{ $model->season->season_number }}x{{ $model->episode_number }}</div>
                     <div class="text-gray-400">{{ $model->name }}</div>
                 </a>
+            @elseif ($next_episode)
+                <a href="{{ $next_episode->path }}" title="{{ $next_episode->name }}" class="text-center">
+                    <div class="font-bold">{{ $next_episode->season->season_number }}x{{ $next_episode->episode_number }}</div>
+                    <div class="text-xs text-gray-400">NÄCHSTE EPISODE</div>
+                </a>
             @else
                 <a href="{{ $model->path }}" title="{{ $model->name }}">
                     {{ $model->name }}

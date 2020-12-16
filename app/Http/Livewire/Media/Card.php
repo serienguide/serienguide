@@ -12,6 +12,7 @@ class Card extends Component
 {
     public $model;
     public $action;
+    public $next_episode;
     public $type = 'poster';
     public $load_next = false;
 
@@ -41,6 +42,17 @@ class Card extends Component
         $this->model = $model;
         $this->action = $action;
         $this->loadWatchedCount();
+
+        if (auth()->check() && $this->model->is_show) {
+            $last_watched = auth()->user()->last_watched()->with([
+                'watchable',
+            ])->where('show_id', $this->model->id)->first();
+            if ($last_watched) {
+                $this->next_episode = Episode::with([
+                    'season',
+                ])->nextByAbsoluteNumber($last_watched->watchable->show_id, $last_watched->watchable->absolute_number)->first();
+            }
+        }
 
         $this->original_listeners = $this->getListeners();
         $this->original_model_id = $this->model->id;
