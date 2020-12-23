@@ -19,6 +19,10 @@ class Watched extends Component
         'watchable_type' => 0,
     ];
 
+    protected $listeners = [
+        'unwatched' => '$refresh'
+    ];
+
     public function mount(User $user)
     {
         $this->user = $user;

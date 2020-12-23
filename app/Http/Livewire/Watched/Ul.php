@@ -9,6 +9,7 @@ class Ul extends Component
 {
     public $model;
     public $items;
+    public $action;
 
     protected function getListeners()
     {
@@ -28,8 +29,9 @@ class Ul extends Component
         return $listeners;
     }
 
-    public function mount($model)
+    public function mount($model, $action)
     {
+        $this->action = $action;
         $this->model = $model;
         $this->loadWatched();
         $this->items = $this->model->watched;
@@ -46,12 +48,17 @@ class Ul extends Component
         $item = $items->first();
         $item->delete();
 
-        if ($this->model->is_episode) {
-            $this->emit('unwatched_episode_' . $this->model->id);
-            $this->emit('unwatched_episode_season_' . $this->model->season_id);
+        if (is_null($this->action)) {
+            if ($this->model->is_episode) {
+                $this->emit('unwatched_episode_' . $this->model->id);
+                $this->emit('unwatched_episode_season_' . $this->model->season_id);
+            }
+            elseif ($this->model->is_movie) {
+                $this->emit('unwatched_movie_' . $this->model->id);
+            }
         }
-        elseif ($this->model->is_movie) {
-            $this->emit('unwatched_movie_' . $this->model->id);
+        else {
+            $this->emit('unwatched');
         }
     }
 

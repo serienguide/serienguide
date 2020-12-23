@@ -85,7 +85,7 @@
                         class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg z-10">
                         <div class="rounded-md bg-white shadow-xs">
                             <div class="p-3" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                @livewire('watched.ul', ['model' => $model])
+                                @livewire('watched.ul', ['model' => $model, 'action' => $action])
                             </div>
                         </div>
                     </div>
