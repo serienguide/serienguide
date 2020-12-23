@@ -7,6 +7,7 @@ use App\Models\Auth\OauthProvider;
 use App\Models\Movies\Movie;
 use App\Models\Shows\Show;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
@@ -99,7 +100,7 @@ class WatchedCommand extends Command
 
             if ($not_watched_count == 1) {
                 $movie->watchedBy($user, [
-                    'watched_at' => $trakt_watched['last_watched_at'],
+                    'watched_at' => $this->parseWatchedAt($trakt_watched['last_watched_at']),
                 ]);
                 $sync_count++;
                 continue;
@@ -108,7 +109,7 @@ class WatchedCommand extends Command
             $trakt_watched_history = Trakt::watchedHistory('movies', null, $trakt_watched['movie']['ids']['trakt']);
             for ($i=0; $i < $not_watched_count; $i++) {
                 $movie->watchedBy($user, [
-                    'watched_at' => $trakt_watched_history[$i]['watched_at'],
+                    'watched_at' => $this->parseWatchedAt($trakt_watched_history[$i]['watched_at']),
                 ]);
                 $sync_count++;
             }
@@ -146,7 +147,7 @@ class WatchedCommand extends Command
                     }
 
                     $episode->watchedBy($user, [
-                        'watched_at' => $trakt_episode['last_watched_at'],
+                        'watched_at' => $this->parseWatchedAt($trakt_episode['last_watched_at']),
                     ]);
                     $sync_count++;
 
@@ -176,5 +177,13 @@ class WatchedCommand extends Command
             'tmdb_id' => $trakt_show['ids']['tmdb'],
             'tvdb_id' => $trakt_show['ids']['tvdb'],
         ]);
+    }
+
+    protected function parseWatchedAt(string $watched_at) : Carbon
+    {
+        $carbon = new Carbon($watched_at, 'GMT');
+        $carbon->setTimeZone(new \DateTimeZone('Europe/Berlin'));
+
+        return $carbon;
     }
 }
