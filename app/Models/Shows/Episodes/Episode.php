@@ -178,7 +178,7 @@ class Episode extends Model
 
     public function season() : BelongsTo
     {
-        return $this->belongsTo(Season::class, 'season_id');
+        return $this->belongsTo(Season::class, 'season_id')->withTrashed();
     }
 
     public function show() : BelongsTo
