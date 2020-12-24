@@ -11,6 +11,7 @@
                     <div class="ml-10 flex items-baseline space-x-4">
                         <a href="{{ App\Models\Shows\Show::indexPath() }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Serien</a>
                         <a href="{{ App\Models\Movies\Movie::indexPath() }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Filme</a>
+                        <a href="{{ route('calendar.index') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Kalender</a>
                     </div>
                 </div>
                 @livewire('search-bar')
@@ -108,6 +109,7 @@
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a href="{{ App\Models\Shows\Show::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Serien</a>
             <a href="{{ App\Models\Movies\Movie::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Filme</a>
+            <a href="{{ route('calendar.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Kalender</a>
         </div>
         @auth
             <div class="pt-4 pb-3 border-t border-gray-700">

@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/calendar/{year?}/{week?}', [App\Http\Controllers\Calendar\CalendarController::class, 'index'])->name('calendar.index');
+
 Route::post('/contact', [App\Http\Controllers\ContactformController::class, 'store'])->middleware(['honey', 'honey-recaptcha'])->name('contactform.store');
 
 Route::resource(App\Models\Movies\Movie::ROUTE_NAME, App\Http\Controllers\Movies\MovieController::class);
