@@ -37,4 +37,12 @@
         </div>
     </x-container>
 
+    <section class="bg-gray-400 mt-8">
+        <x-container class="py-4">
+            <div class="">
+                @livewire('media.related', ['model' => $model])
+            </div>
+        </x-container>
+    </section>
+
 </x-app-layout>

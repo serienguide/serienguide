@@ -114,6 +114,33 @@ class Show extends Model
         return $model;
     }
 
+    public function related()
+    {
+        $result = DB::table('watched')
+            ->select('related.medium_id AS id', DB::raw('COUNT( DISTINCT(lists.user_id)) AS users_count'))
+            ->join('lists', function ($join) {
+                $join->on('lists.user_id', '=', 'watched.user_id')
+                    ->where('lists.type', '=', 'currently_watching');
+            })
+            ->join('list_item AS related', function ($join) {
+                $join->on('related.list_id', '=', 'lists.id')
+                    ->where('related.medium_type', '=', self::class)
+                    ->where('related.medium_id', '!=', $this->id);
+            })
+            ->where('watched.watchable_type', Episode::class)
+            ->where('watched.show_id', $this->id)
+            ->groupBy('related.medium_id')
+            ->orderBy('users_count', 'DESC')
+            ->limit(6)
+            ->get();
+
+        $ids = $result->pluck('id');
+
+        return self::with([
+            //
+        ])->find($ids);
+    }
+
     public function updateFromTmdb()
     {
         $attributes = \App\Apis\Tmdb\Shows\Show::find($this->tmdb_id);

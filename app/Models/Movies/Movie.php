@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -113,6 +114,29 @@ class Movie extends Model
         $model->syncFromTmdb($attributes);
 
         return $model;
+    }
+
+    public function related()
+    {
+        $result = DB::table('watched')
+            ->select('related.watchable_id AS id', DB::raw('COUNT( DISTINCT(watched.user_id)) AS users_count'))
+            ->join('watched AS related', function ($join) {
+                $join->on('related.user_id', '=', 'watched.user_id')
+                    ->where('related.watchable_type', '=', self::class);
+            })
+            ->where('watched.watchable_type', self::class)
+            ->where('watched.watchable_id', $this->id)
+            ->where('related.watchable_id', '!=', $this->id)
+            ->groupBy('related.watchable_id')
+            ->orderBy('users_count', 'DESC')
+            ->limit(6)
+            ->get();
+
+        $ids = $result->pluck('id');
+
+        return self::with([
+            //
+        ])->find($ids);
     }
 
     public function updateFromTmdb()
