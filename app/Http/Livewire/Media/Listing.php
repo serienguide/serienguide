@@ -4,12 +4,14 @@ namespace App\Http\Livewire\Media;
 
 use App\Models\Lists\Item;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Listing extends Component
 {
     public $model;
     public $lists;
+    public $is_custom = false;
 
     public function mount($model)
     {
@@ -58,6 +60,8 @@ class Listing extends Component
                     ]);
                 },
             ])
+            ->orderBy(DB::raw('IF(lists.type IS NULL, 0, 1)'), 'DESC')
+            ->orderBy('name', 'ASC')
             ->get();
     }
 

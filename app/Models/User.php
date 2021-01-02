@@ -100,6 +100,16 @@ class User extends Authenticatable
         return $this->hasMany(Listing::class, 'user_id');
     }
 
+    public function watchlist() : HasOne
+    {
+        return $this->hasOne(Listing::class, 'user_id')->where('type', 'watchlist')->take(1);
+    }
+
+    public function currently_watching_list() : HasOne
+    {
+        return $this->hasOne(Listing::class, 'user_id')->where('type', 'currently_watching')->take(1);
+    }
+
     public function oauth_providers() : HasMany
     {
         return $this->hasMany(OauthProvider::class, 'user_id');

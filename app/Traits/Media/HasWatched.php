@@ -23,6 +23,12 @@ trait HasWatched
 
     public function watchedBy(User $user, array $attributes = []) : Watched
     {
+        $watchlist = $user->lists()->where('type', 'watchlist')->first();
+        $watchlist->items()
+            ->where('medium_type', self::class)
+            ->where('medium_id', $this->id)
+            ->delete();
+
         return $this->watched()->create([
             'user_id' => $user->id,
             'watched_at' => Arr::get($attributes, 'watched_at', now()),

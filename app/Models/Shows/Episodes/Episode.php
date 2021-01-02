@@ -151,6 +151,18 @@ class Episode extends Model
 
     public function watchedBy(User $user, array $attributes = []) : Watched
     {
+        $watchlist = $user->watchlist()->first();
+        $watchlist->items()
+            ->where('medium_type', Show::class)
+            ->where('medium_id', $this->show_id)
+            ->delete();
+
+        $currently_watching_list = $user->currently_watching_list()->first();
+        $currently_watching_list->items()->firstOrCreate([
+            'medium_type' => Show::class,
+            'medium_id' => $this->show_id,
+        ]);
+
         return $this->watched()->create([
             'user_id' => $user->id,
             'watched_at' => Arr::get($attributes, 'watched_at', now()),

@@ -1,6 +1,10 @@
 <div>
     <ul class="divide-y divide-gray-200">
         @forelse ($items as $item)
+            @if ($item->is_custom != $is_custom)
+                <?php $is_custom = true; ?>
+                <li class="py-3"></li>
+            @endif
             <li>
                 <a class="block hover:bg-gray-50" href="{{ $item->path }}">
                     <div class="flex items-center px-4 py-4 sm:px-6">

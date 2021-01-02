@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Users\Lists;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -11,6 +12,7 @@ class Index extends Component
     use WithPagination;
 
     public $user;
+    public $is_custom = false;
 
     public function mount($user)
     {
@@ -21,6 +23,7 @@ class Index extends Component
     {
         return $this->user
             ->lists()
+            ->orderBy(DB::raw('IF(lists.type IS NULL, 0, 1)'), 'DESC')
             ->orderBy('name', 'ASC')
             ->paginate();
     }
