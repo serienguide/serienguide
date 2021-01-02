@@ -163,7 +163,7 @@
                 </div>
                 <div class="mt-8 border-t border-gray-700 pt-8 md:flex md:items-center md:justify-between">
                     <p class="mt-8 text-base text-gray-400 md:mt-0">
-                        &copy; {{ date('Y') }} serienguide. All rights reserved.
+                        &copy; {{ date('Y') }} serienguide  - made with <i class="fas fa-fw fa-heart"></i> by <a class="text-white text-underline" href="https://d15r.de" target="_blank">D15r</a>
                     </p>
                     <div>
                         <a href="{{ route('legal.impressum.index') }}" class="text-base text-gray-300 hover:text-white">
