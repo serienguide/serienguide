@@ -29,7 +29,7 @@ class Ul extends Component
         return $listeners;
     }
 
-    public function mount($model, $action)
+    public function mount($model, $action = null)
     {
         $this->action = $action;
         $this->model = $model;
