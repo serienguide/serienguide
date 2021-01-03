@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :html-attributes="$html_attributes">
     <x-slot name="header">
         Serien
     </x-slot>

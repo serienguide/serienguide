@@ -17,6 +17,10 @@ class CalendarController extends Controller
         return view('calendar.index')
             ->with('start_of_week', $start_of_week)
             ->with('previous_week', $previous_week)
-            ->with('next_week', $next_week);
+            ->with('next_week', $next_week)
+            ->with('html_attributes', [
+                'title' => 'Serienkalender für die KW ' . str_pad($start_of_week->week, 2, '0', STR_PAD_LEFT) . ' ' . $start_of_week->year,
+                'description' => 'Kalender mit allen Ausstrahlungsdaten'
+            ]);
     }
 }

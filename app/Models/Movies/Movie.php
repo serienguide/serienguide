@@ -236,6 +236,14 @@ class Movie extends Model
         ];
     }
 
+    public function getHtmlAttributesAttribute()
+    {
+        return [
+            'title' => $this->name . ' Film (' . $this->year . ')',
+            'description' => 'Alle Infomationen zum ' . ($this->genres->count() ? ' ' . $this->genres->first()->name : '') . ' Film ' . $this->name . '. Markiere ihn als gesehen und verliere nie wieder den Überblick!',
+        ];
+    }
+
     public function getTmdbPathAttribute()
     {
         if (empty($this->tmdb_id)) {

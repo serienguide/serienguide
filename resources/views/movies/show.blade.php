@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :html-attributes="$model->html_attributes">
     <x-media.hero :model="$model"/>
 
     <section>

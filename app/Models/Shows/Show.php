@@ -237,6 +237,14 @@ class Show extends Model
         }
     }
 
+    public function getHtmlAttributesAttribute()
+    {
+        return [
+            'title' => $this->name . ' Serie (' . $this->year . ') Episodenguide',
+            'description' => 'Im ' . $this->name . ' Episodenguide findest du eine Übersicht aller '.($this->episodes->count() ? $this->episodes->count() : '').' Folgen der ' . ($this->genres->count() ? ' ' . $this->genres->first()->name : '') . ' Serie . Markiere Folgen als gesehen und verliere nie wieder den Überblick!',
+        ];
+    }
+
     public function getLastWatchedAttribute()
     {
         if (Arr::has($this->attributes, 'last_watched')) {

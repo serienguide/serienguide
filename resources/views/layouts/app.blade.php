@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+        <title>{{ $html_attributes['title'] }} | serienguide.tv</title>
+        <meta name="description" content="{{ $html_attributes['description'] }}">
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="author" content="Daniel">
-        <meta name="publisher" content="www.serienguide.tv">
+        <meta name="publisher" content="www.d15r.de">
         <meta name="copyright" content="www.serienguide.tv">
         <meta name="revisit-after" CONTENT="1 days">
         <meta name="Abstract" content="Überbilck über deine Serien und Filme">
@@ -32,8 +35,6 @@
         <link rel="icon" type="image/png" sizes="96x96" href="{{ Storage::disk('s3')->url('icons/favicon-96x96.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ Storage::disk('s3')->url('icons/favicon-16x16.png') }}">
         <link rel="manifest" href="{{ asset('manifest.json') }}">
-
-        <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">

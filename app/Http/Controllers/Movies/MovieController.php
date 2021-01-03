@@ -22,7 +22,11 @@ class MovieController extends Controller
                 ->paginate();
         }
 
-        return view($this->base_view_path . '.index');
+        return view($this->base_view_path . '.index')
+            ->with('html_attributes', [
+                'title' => 'Filme',
+                'description' => 'Überblick über alle Filme auf serienguide.tv'
+            ]);
     }
 
     /**

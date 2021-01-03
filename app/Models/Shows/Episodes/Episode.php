@@ -121,6 +121,14 @@ class Episode extends Model
         return '';
     }
 
+    public function getHtmlAttributesAttribute()
+    {
+        return [
+            'title' => $this->show->name . ' - ' . $this->season->season_number . 'x' . $this->episode_number . ' ' . $this->name,
+            'description' => 'Im Episodenguide zur Folge ' . $this->season->season_number . 'x' . $this->episode_number . ' ' . $this->name . ' der' . ($this->show->genres()->count() ? ' ' . $this->show->genres()->first()->name : '') . ' Serie ' . $this->show->name . '. Markiere sie als gesehen und verliere nie wieder den Überblick!',
+        ];
+    }
+
     public function getTmdbPathAttribute()
     {
         if (empty($this->show->tmdb_id)) {

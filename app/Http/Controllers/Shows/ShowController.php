@@ -22,7 +22,11 @@ class ShowController extends Controller
                 ->paginate();
         }
 
-        return view($this->base_view_path . '.index');
+        return view($this->base_view_path . '.index')
+            ->with('html_attributes', [
+                'title' => 'Serien',
+                'description' => 'Überblick über alle Serien auf serienguide.tv'
+            ]);
     }
 
     /**
