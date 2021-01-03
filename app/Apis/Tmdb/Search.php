@@ -8,6 +8,7 @@ use App\Models\Movies\Movie;
 use App\Models\People\Person;
 use App\Models\Shows\Show;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class Search
 {
@@ -42,7 +43,7 @@ class Search
             foreach ($data['results'] as $key => $attributes) {
                 if ($type == 'movie') {
                     $attributes['name'] = $attributes['title'];
-                    $attributes['first_air_date'] = $attributes['release_date'];
+                    $attributes['first_air_date'] = Arr::get($attributes, 'release_date');
                 }
                 $results[] = $attributes;
                 $trending++;
