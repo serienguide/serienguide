@@ -50,6 +50,22 @@ class Credit extends Model
         return $this->character . ' (' . $this->person->name . ')';
     }
 
+    public function getNameStringAttribute() : string
+    {
+        if ($this->character) {
+            return '<span itemprop="character">' . $this->character . '</span> (<span itemprop="actor">' . $this->person->name . '</span>)';
+        }
+
+        switch ($this->department) {
+            case 'Directing': $itemprop = 'director'; break;
+            case 'Writing': $itemprop = 'author'; break;
+
+            default: $itemprop = ''; break;
+        }
+
+        return '<span itemprop="' . $itemprop . '">' . $this->person->name . '</span>';
+    }
+
     public function person() : BelongsTo
     {
         return $this->belongsTo(Person::class, 'person_id');

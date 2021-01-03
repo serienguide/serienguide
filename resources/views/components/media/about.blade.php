@@ -73,19 +73,19 @@
                     @if ($model->directors->count())
                         <div class="flex items-center">
                             <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Regisseur</div>
-                            <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ $model->directors->implode('person.name', ', ') }}</div>
+                            <div class="w-1/2 md:w-3/4 lg:w-5/6">{!! $model->directors->implode('name_string', ', ') !!}</div>
                         </div>
                     @endif
                     @if ($model->writers->count())
                         <div class="flex items-center">
                             <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Autor</div>
-                            <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ $model->writers->implode('person.name', ', ') }}</div>
+                            <div class="w-1/2 md:w-3/4 lg:w-5/6">{!! $model->writers->implode('name_string', ', ') !!}</div>
                         </div>
                     @endif
                     @if ($model->actors->count())
                         <div class="flex items-center">
                             <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold self-start">Schauspieler</div>
-                            <div class="w-1/2 md:w-3/4 lg:w-5/6 max-h-16 overflow-auto">{{ $model->actors->implode('character_with_person_name', ', ') }}</div>
+                            <div class="w-1/2 md:w-3/4 lg:w-5/6 max-h-16 overflow-auto">{!! $model->actors->implode('name_string', ', ') !!}</div>
                         </div>
                     @endif
                 @endunless
