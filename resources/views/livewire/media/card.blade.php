@@ -1,5 +1,10 @@
-<li class="col-span-1 flex flex-col justify-between bg-white rounded-lg shadow">
-    <div class="rounded-t-lg h-2 w-full bg-yellow-900" title="{{ number_format($model->vote_average, (in_array($model->vote_average, [0, 10]) ? 0 : 1) , ',', '') }}/10 {{ $model->vote_count }} Stimmen">
+<li class="col-span-1 flex flex-col justify-between bg-white rounded-lg shadow" @isset($itemtype) itemtype="{{ $itemtype }}" itemscope="" @endisset>
+    <div class="rounded-t-lg h-2 w-full bg-yellow-900" title="{{ number_format($model->vote_average, (in_array($model->vote_average, [0, 10]) ? 0 : 1) , ',', '') }}/10 {{ $model->vote_count }} Stimmen" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+        <meta itemprop="bestRating" content="10">
+        <meta itemprop="worstRating" content="0">
+        <meta itemprop="ratingValue" content="{{ $model->vote_average }}">
+        <meta itemprop="ratingCount" content="{{ $model->vote_count }}">
+
         <div class="bg-yellow-400 h-2 text-xs leading-none text-center text-white transition-all @if($model->vote_average > 0) rounded-tl-lg @endif @if($model->vote_average == 10) rounded-tr-lg @endif" style="width: {{ $model->vote_average * 10 }}%"></div>
     </div>
     @auth
@@ -96,7 +101,7 @@
     @endauth
     <main class="flex-grow relative">
         <a class="" href="{{ (($model->is_episode) ? $model->show->path : $model->path) }}" title="{{ $model->name }}">
-            <img loading="lazy" src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}">
+            <img loading="lazy" src="{{ $type == 'poster' ? $model->poster_url : $model->backdrop_url }}" itemprop="image">
                 @isset($action)
                     <div class="absolute left-0 right-0 bottom-0 h-24" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);"></div>
                     @if (get_class($action) == App\Models\Watched\Watched::class)
@@ -147,9 +152,9 @@
     <footer class="flex items-center px-3 py-1">
         <h3 class="flex-grow text-gray-900 leading-5 font-medium overflow-hidden whitespace-nowrap">
             @if ($model->is_episode)
-                <a href="{{ $model->path }}" title="{{ $model->name }}" class="text-center">
-                    <div class="font-bold">{{ $model->season->season_number }}x{{ $model->episode_number }}</div>
-                    <div class="text-gray-400">{{ $model->name }}</div>
+                <a href="{{ $model->path }}" title="{{ $model->name }}" class="text-center" itemprop="url">
+                    <div class="font-bold"><span itemprop='partOfSeason'>{{ $model->season->season_number }}</span>x<span itemprop='episodeNumber'>{{ $model->episode_number }}</span></div>
+                    <div class="text-gray-400" itemprop="name">{{ $model->name }}</div>
                 </a>
             @elseif ($next_episode)
                 <a href="{{ $next_episode->path }}" title="{{ $next_episode->name }}" class="text-center">
@@ -157,8 +162,8 @@
                     <div class="text-xs text-gray-400">NÄCHSTE EPISODE</div>
                 </a>
             @else
-                <a href="{{ $model->path }}" title="{{ $model->name }}">
-                    {{ $model->name }}
+                <a href="{{ $model->path }}" title="{{ $model->name }}" itemprop="url">
+                    <span itemprop="name">{{ $model->name }}</span>
                 </a>
             @endif
         </h3>

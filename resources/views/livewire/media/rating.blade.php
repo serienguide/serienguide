@@ -1,6 +1,6 @@
 <div class="flex" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
     <meta itemprop="bestRating" content="10">
-    <meta itemprop="worstRating" content="1">
+    <meta itemprop="worstRating" content="0">
 
     <div style="position: relative; padding: 0 10px;">
         <i class="fa fa-star fa-4x text-yellow-400"></i>

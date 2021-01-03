@@ -15,6 +15,7 @@ class Card extends Component
     public $next_episode;
     public $type = 'poster';
     public $load_next = false;
+    public $itemtype;
 
     public $original_listeners = [];
     public $original_model_id = 0;
@@ -56,6 +57,19 @@ class Card extends Component
 
         $this->original_listeners = $this->getListeners();
         $this->original_model_id = $this->model->id;
+    }
+
+    protected function setItemtype()
+    {
+        if ($this->model->is_movie) {
+            $this->itemtype = 'http://schema.org/Movie';
+        }
+        elseif ($this->model->is_show) {
+            $this->itemtype = 'http://schema.org/TVSeries';
+        }
+        elseif ($this->model->is_episode) {
+            $this->itemtype = 'http://schema.org/TVEpisode';
+        }
     }
 
     public function watch()
