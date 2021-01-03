@@ -10,11 +10,15 @@ class AppLayout extends Component
         'title' => 'Willkommen zu deinem Serienerlebnis',
         'description' => 'Alle Infos zu deinen Filmen, Serien, Folgen und Schauspielern. Markiere deine Serien und Filme als gesehen und behalte so den Überblick!'
     ];
+    public $itemtype;
 
-    public function __construct($htmlAttributes = null)
+    public function __construct($htmlAttributes = null, $itemtype = null)
     {
         if (isset($htmlAttributes)) {
             $this->html_attributes = $htmlAttributes;
+        }
+        if (isset($itemtype)) {
+            $this->itemtype = $itemtype;
         }
     }
 

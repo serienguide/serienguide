@@ -70,7 +70,7 @@
                 </x-container>
             </header>
         @endif
-        <main>
+        <main @isset($itemtype) itemtype="{{ $itemtype }}" itemscope="" @endisset>
             {{ $slot }}
         </main>
         <footer class="bg-gray-800" aria-labelledby="footerHeading">

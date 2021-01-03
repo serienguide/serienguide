@@ -1,4 +1,4 @@
-<section class="relative w-screen h-screen bg-no-repeat bg-cover bg-top" style="background-image: url({{ Storage::disk('s3')->url('w1920' . $model->backdrop_path) }})">
+<section class="relative w-screen h-screen bg-no-repeat bg-cover bg-top" itemprop="image" content="{{ Storage::disk('s3')->url('w1920' . $model->backdrop_path) }}" style="background-image: url({{ Storage::disk('s3')->url('w1920' . $model->backdrop_path) }})">
     <div class="absolute w-screen bottom-0 h-36" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);"></div>
     <div class="absolute w-screen bottom-0 text-white font-bold">
         <x-container class="py-4 whitespace-nowrap">
@@ -6,11 +6,11 @@
                 <div class="flex items-center overflow-hidden">
                     @if ($model->is_episode)
                         <div>
-                            <h2 class="text-2xl"><a href="{{ $model->show->path }}">{{ $model->show->name }}</a></h2>
-                            <h1 class="">{{ $model->season->season_number }}x{{ $model->episode_number }} {{ $model->name }}</h1>
+                            <h2 class="text-2xl" itemprop="partOfSeries" itemtype="http://schema.org/TVSeries" itemscope=""><a href="{{ $model->show->path }}" itemprop="url"><span itemprop="name">{{ $model->show->name }}</span></a></h2>
+                            <h1 class=""><span itemprop='partOfSeason'>{{ $model->season->season_number }}</span>x<span itemprop='episodeNumber'>{{ $model->episode_number }}</span> <span itemprop="name">{{ $model->name }}</span></h1>
                         </div>
                     @else
-                        <h1 class="">{{ $model->name }}</h1>
+                        <h1 class="" itemprop="name">{{ $model->name }}</h1>
                     @endif
                 </div>
                 <div class="ml-2 flex-grow">

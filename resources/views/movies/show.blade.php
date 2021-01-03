@@ -1,4 +1,4 @@
-<x-app-layout :html-attributes="$model->html_attributes">
+<x-app-layout :html-attributes="$model->html_attributes" itemtype="http://schema.org/Movie">
     <x-media.hero :model="$model"/>
 
     <section>

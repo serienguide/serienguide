@@ -4,7 +4,7 @@
             <div class="hidden md:block md:w-1/3 lg:w-1/4">
                 @if ($model->poster_path)
                     <div class="mr-4 hidden sm:block">
-                        <img loading="lazy" class="max-w-full rounded-md" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}">
+                        <img loading="lazy" class="max-w-full rounded-md" src="{{ Storage::disk('s3')->url('w680' . $model->poster_path) }}" itemprop="image">
                     </div>
                 @endif
             </div>
@@ -29,12 +29,12 @@
                 @if ($model->is_movie)
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/6 font-bold">Release</div>
-                        <div class="w-1/2 md:w-5/6">{{ is_null($model->released_at) ? 'TBA' : $model->released_at->format('d.m.Y') }}</div>
+                        <div class="w-1/2 md:w-5/6" itemprop="dateCreated" content="{{ $model->released_at }}">{{ is_null($model->released_at) ? 'TBA' : $model->released_at->format('d.m.Y') }}</div>
                     </div>
                 @elseif ($model->is_show)
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Ausstrahlung</div>
-                        <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }} bis {{ is_null($model->last_aired_at) ? 'jetzt' : $model->last_aired_at->format('d.m.Y') }} @if ($model->status == 'Canceled') (Abgesetzt) @elseif ($model->status == 'Ended') (Beendet) @endif</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6" itemprop="dateCreated" content="{{ $model->first_aired_at }}">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }} bis {{ is_null($model->last_aired_at) ? 'jetzt' : $model->last_aired_at->format('d.m.Y') }} @if ($model->status == 'Canceled') (Abgesetzt) @elseif ($model->status == 'Ended') (Beendet) @endif</div>
                     </div>
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold"></div>
@@ -43,7 +43,7 @@
                 @elseif ($model->is_episode)
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Ausstrahlung</div>
-                        <div class="w-1/2 md:w-3/4 lg:w-5/6">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }}</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6" itemprop="dateCreated" content="{{ $model->first_aired_at }}">{{ is_null($model->first_aired_at) ? 'TBA' : $model->first_aired_at->format('d.m.Y') }}</div>
                     </div>
                     <div class="flex items-center">
                         <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold"></div>

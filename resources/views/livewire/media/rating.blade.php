@@ -1,4 +1,7 @@
-<div class="flex">
+<div class="flex" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+    <meta itemprop="bestRating" content="10">
+    <meta itemprop="worstRating" content="1">
+
     <div style="position: relative; padding: 0 10px;">
         <i class="fa fa-star fa-4x text-yellow-400"></i>
         <b id="" style="position: absolute; top: 20px; left: 0; width: 100%; text-align: center; font-size: 20px;" itemprop="ratingValue" content="{{ $model->vote_average }}">{{ number_format($model->vote_average, (in_array($model->vote_average, [0, 10]) ? 0 : 1) , ',', '') }}</b>
@@ -24,7 +27,7 @@
         </div>
         <div class="flex items-center h-1/2">
             <div class="inline-flex items-center justify-between">
-                Bewertung: <span class="ml-3 font-bold">{{ number_format($model->vote_average, (in_array($model->vote_average, [0, 10]) ? 0 : 1) , ',', '') }}</span>/10 bei {{ $model->vote_count }} Stimmen
+                Bewertung: <span class="ml-3 font-bold">{{ number_format($model->vote_average, (in_array($model->vote_average, [0, 10]) ? 0 : 1) , ',', '') }}</span>/10 bei <span class="mx-1" itemprop="ratingCount">{{ $model->vote_count }}</span> Stimmen
             </div>
         </div>
     </div>

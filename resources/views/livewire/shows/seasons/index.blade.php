@@ -1,16 +1,16 @@
-<div x-data="{ open: {{ $isCurrent ? 'true' : 'false' }} }">
+<div x-data="{ open: {{ $isCurrent ? 'true' : 'false' }} }" itemprop="containsSeason" itemtype="http://schema.org/TVSeason" itemscope="">
     <div class="flex my-3 items-end">
         @if ($season->poster_path)
             <img @if(is_null($items)) wire:click="load" @endif @click="open = !open;" src="{{ Storage::disk('s3')->url('w118' . $season->poster_path) }}" class="rounded-md mr-1 cursor-pointer">
         @endif
         <div @if(is_null($items)) wire:click="load" @endif @click="open = !open;" class="cursor-pointer flex-grow">
             <div class="flex">
-                <h3 class="font-bold">Staffel {{ $season->season_number }}</h3>
+                <h3 class="font-bold">Staffel <span itemprop="seasonNumber">{{ $season->season_number }}</span></h3>
                 <div wire:loading.delay class="ml-2 pointer-events-none">
                     <i class="fa fa-spinner fa-spin text-gray-400"></i>
                 </div>
             </div>
-            <div class="text-sm text-gray-400">@auth {{ $season->progress['watched_count'] }}/@endauth{{ $season->episode_count }} Folgen</div>
+            <div class="text-sm text-gray-400">@auth {{ $season->progress['watched_count'] }}/@endauth<span itemprop="numberOfEpisodes">{{ $season->episode_count }}</span> Folgen</div>
         </div>
         @auth
             <div>
