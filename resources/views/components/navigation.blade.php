@@ -105,7 +105,7 @@
     <div x-show="open"
         x-cloak
         @click.away="open = false"
-        class="md:hidden">
+        class="md:hidden bg-gray-700">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a href="{{ App\Models\Shows\Show::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Serien</a>
             <a href="{{ App\Models\Movies\Movie::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Filme</a>
