@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Media\Imports;
 
 use App\Models\Movies\Movie;
 use App\Support\Media;
-use Illuminate\Support\Artisan;
+use Illuminate\Support\Facades\Artisan;
 use Livewire\Component;
 
 class Tmdb extends Component
