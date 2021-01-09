@@ -15,7 +15,7 @@ class UpdateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'apis:tmdb:shows:update {id=0}';
+    protected $signature = 'apis:tmdb:shows:update {id=0} {--user=}';
 
     /**
      * The console command description.
