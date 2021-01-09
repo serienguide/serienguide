@@ -60,7 +60,7 @@
                                     <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
                                     <a href="{{ Auth::user()->profile_path }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
                                     <a href="{{ Auth::user()->profile_path }}/watched" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Gesehen</a>
-                                    <a href="{{ route('users.lists.index', ['user' => auth()->user()->id]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Listen</a>
+                                    <a href="{{ Auth::user()->profile_path }}/lists" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Listen</a>
                                     <a href="{{ App\Models\Auth\OauthProvider::indexPath() }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Verbindungen</a>
                                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Abmelden</a>
                                     <form method="POST" action="{{ route('logout') }}" id="logout-form">
@@ -126,7 +126,7 @@
                     <a href="{{ route('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Dashboard</a>
                     <a href="{{ Auth::user()->profile_path }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Profil</a>
                     <a href="{{ Auth::user()->profile_path }}/watched" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Gesehen</a>
-                    <a href="{{ route('users.lists.index', ['user' => auth()->user()->id]) }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Listen</a>
+                    <a href="{{ Auth::user()->profile_path }}/lists" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Listen</a>
                     <a href="{{ App\Models\Auth\OauthProvider::indexPath() }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Verbindungen</a>
                     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700" role="menuitem">Abmelden</a>
                 </div>

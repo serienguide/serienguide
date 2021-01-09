@@ -6,3 +6,61 @@
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+
+.liste-info {
+  display: flex;
+}
+
+.liste-info .posters {
+  width: 250px;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.liste-info .posters .poster-items-wrapper {
+  margin: 0;
+  position: relative;
+  min-height: 60px;
+  overflow: hidden;
+}
+
+.liste-info .posters .poster-items-wrapper:after {
+  clear:both
+}
+
+.liste-info .posters .poster-items-wrapper:before, .liste-info .posters .poster-items-wrapper:after {
+  content:" ";
+  display:table
+}
+
+.poster-items .poster-item {
+  margin: 0;
+  float: right;
+  width: 32px;
+  overflow: hidden;
+  position: relative;
+  height: 180px;
+  transition: all .5s;
+  -webkit-box-shadow: 0px 0px 15px rgba(255,255,255,0.5);
+  box-shadow: 0px 0px 15px rgba(255,255,255,0.5);
+}
+
+.poster-items .poster-item:last-child {
+  width:120px
+}
+
+.poster-item .poster {
+  position: absolute;
+  right: 0;
+  width: 120px;
+  border: none;
+  overflow: hidden;
+}
+
+.liste-info .posters .poster-items-wrapper .poster-items:hover .poster-item {
+  width:32px
+}
+
+.liste-info .posters .poster-items-wrapper .poster-items .poster-item:hover {
+  width:120px !important
+}
