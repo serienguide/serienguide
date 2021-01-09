@@ -127,6 +127,6 @@ class User extends Authenticatable
 
     public function last_watched() : HasOne
     {
-        return $this->hasOne(Watched::class, 'user_id')->latest()->take(1);
+        return $this->hasOne(Watched::class, 'user_id')->latest()->take(1)->whereHas('watchable');
     }
 }
