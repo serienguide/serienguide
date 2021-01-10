@@ -134,8 +134,8 @@
                             @endif
                         @endif
                         @if ($model->first_aired_at)
-                            <div class="flex items-center mt-1 px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800">
-                                {{ $model->first_aired_at->format('d.m.Y') }}
+                            <div class="flex items-center mt-1 px-3 py-0.5 rounded-full text-xs font-bold @if(is_null($model->first_aired_de_at)) bg-blue-100 text-blue-800 @else bg-yellow-300 text-yellow-800 @endif">
+                                {{ $model->first_aired_at->format('d.m.Y') }} @if(! is_null($model->first_aired_de_at) && $model->show->air_time) {{ substr($model->show->air_time, 0, -3) }} @endif
                             </div>
                         @endif
                     @elseif ($model->is_movie)
@@ -154,7 +154,7 @@
             @if ($model->is_episode)
                 <a href="{{ $model->path }}" title="{{ $model->name }}" class="text-center" itemprop="url">
                     <div class="font-bold"><span itemprop='partOfSeason'>{{ $model->season->season_number }}</span>x<span itemprop='episodeNumber'>{{ $model->episode_number }}</span></div>
-                    <div class="text-gray-400" itemprop="name">{{ $model->name }}</div>
+                    <div class="text-gray-400" itemprop="name">{{ $model->name }}&nbsp;</div>
                 </a>
             @elseif ($next_episode)
                 <a href="{{ $next_episode->path }}" title="{{ $next_episode->name }}" class="text-center">
