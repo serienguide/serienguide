@@ -34,12 +34,39 @@
                             {{ $user->name }}
                         </h1>
                     </div>
+                    <div class="mt-6 flex">
+                        <div class="mr-3">
+                            <span class="font-bold">{{ $user->followers->count() }}</span> Abonnenten
+                        </div>
+
+                        <div>
+                            <span class="font-bold">{{ $user->followings_count }}</span> abonniert
+                        </div>
+                    </div>
                     <div class="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-                        @if (false)
-                            <button type="button" class="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
-                                <span>Folgen</span>
-                            </button>
-                        @endif
+
+                        @auth
+                            @if ($user->id == auth()->user()->id)
+
+                            @elseif ($user->isFollowedBy(auth()->user()))
+                                <form method="POST" action="{{ route('users.follower.destroy', ['user' => $user]) }}">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-blue-300 text-sm leading-5 font-medium rounded-md bg-blue-700 text-white hover:bg-blue-500 active:bg-blue-800 transition ease-in-out duration-150">
+                                        <span>Entfolgen</span>
+                                    </button>
+                                </form>
+                            @else
+                                <form method="POST" action="{{ route('users.follower.store', ['user' => $user]) }}">
+                                    @csrf
+
+                                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition ease-in-out duration-150">
+                                        <span>Folgen</span>
+                                    </button>
+                                </form>
+                            @endif
+                        @endauth
                     </div>
                 </div>
             </div>

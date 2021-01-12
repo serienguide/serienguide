@@ -37,13 +37,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-// Route::get('/shows/{show}/update/tmdb', [ App\Http\Controllers\Shows\Updates\TmdbController::class, 'show' ])->name('shows.update.tmdb');
-// Route::get('/seasons/{season}/update/tmdb', [ App\Http\Controllers\Shows\Seasons\Updates\TmdbController::class, 'show' ])->name('seasons.update.tmdb');
 Route::get('/profiles/{user}/{section?}', [ App\Http\Controllers\Users\Profiles\ProfileController::class, 'show' ])->name('users.profiles.show');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    // Route::resource('{medium_type}/{model}/' . App\Models\Ratings\Rating::ROUTE_NAME, App\Http\Controllers\Ratings\RatingController::class);
-    // Route::resource('{medium_type}/{model}/' . App\Models\Watched\Watched::ROUTE_NAME, App\Http\Controllers\Watched\WatchedController::class);
     Route::resource(App\Models\Lists\Listing::ROUTE_NAME, App\Http\Controllers\Lists\ListingController::class)->except([
         'index',
         'show',
@@ -56,10 +52,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/{media_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'index' ])->name('media.imports.tmdb.index');
 
-
     Route::get('/notifications', [ App\Http\Controllers\Users\NotificationController::class, 'index' ])->name('users.notifications.index');
 
-
+    Route::post('/users/{user}/follower', [ App\Http\Controllers\Users\FollowController::class, 'store' ])->name('users.follower.store');
+    Route::delete('/users/{user}/follower', [ App\Http\Controllers\Users\FollowController::class, 'destroy' ])->name('users.follower.destroy');
 });
 
 Route::resource(App\Models\Lists\Listing::ROUTE_NAME, App\Http\Controllers\Lists\ListingController::class)->only([

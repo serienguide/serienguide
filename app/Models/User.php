@@ -7,6 +7,7 @@ use App\Models\Lists\Listing;
 use App\Models\Ratings\Rating;
 use App\Models\Watched\Watched;
 use App\Traits\HasSlug;
+use App\Traits\Users\Followable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,7 @@ class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
+    use Followable;
     use HasProfilePhoto;
     use HasSlug;
     use Notifiable;

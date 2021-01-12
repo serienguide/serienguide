@@ -12,6 +12,9 @@ class ProfileController extends Controller
     {
         $user->load([
             'last_watched.watchable',
+            'followers',
+        ])->loadCount([
+            'followings',
         ]);
 
         return view('users.profiles.show')
