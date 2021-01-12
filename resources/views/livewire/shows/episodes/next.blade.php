@@ -1,6 +1,6 @@
 <div wire:init="loadItems">
     <div class="flex items-center">
-        <h2 class="mr-1 font-bold">Nächste Folgen</h2>
+        <h3 class="mb-3 text-lg font-bold leading-6 font-medium text-gray-900">Nächste Folgen</h3>
         <i wire:loading.delay class="fa fa-spinner fa-spin text-grey"></i>
     </div>
     @if (isset($items))

@@ -15,4 +15,8 @@
         <br />
         <p>Feedback, Fehler und Ideen könen <a class="underline" href="https://github.com/serienguide/serienguide/issues" target="_blank">hier</a> eintragen werden.</p>
     </x-container>
+
+    <x-container class="py-4">
+        @livewire('dashboard.following.last-watched', ['user' => Auth::user()])
+    </x-container>
 </x-app-layout>
