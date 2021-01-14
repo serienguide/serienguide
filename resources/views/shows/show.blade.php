@@ -37,6 +37,12 @@
         </div>
     </x-container>
 
+    <section class="bg-gray-100 py-8">
+        <x-container class="">
+            @livewire('comments.index', ['model' => $model])
+        </x-container>
+    </section>
+
     <section class="bg-gray-400 mt-8">
         <x-container class="py-4">
             <div class="">

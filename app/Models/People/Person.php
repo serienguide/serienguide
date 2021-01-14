@@ -2,6 +2,7 @@
 
 namespace App\Models\People;
 
+use App\Traits\HasManyComments;
 use App\Traits\HasSlug;
 use App\Traits\Media\HasImages;
 use D15r\ModelPath\Traits\HasModelPath;
@@ -13,6 +14,7 @@ class Person extends Model
 {
     use HasFactory,
         HasImages,
+        HasManyComments,
         HasModelPath,
         HasSlug;
 

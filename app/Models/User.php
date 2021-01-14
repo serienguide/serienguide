@@ -97,6 +97,16 @@ class User extends Authenticatable
         ]);
     }
 
+    /**
+     * Get the URL to the user's profile photo.
+     *
+     * @return string
+     */
+    public function getProfilePhotoUrlAttribute()
+    {
+        return 'https://www.gravatar.com/avatar/' . md5($this->email);
+    }
+
     public function lists() : HasMany
     {
         return $this->hasMany(Listing::class, 'user_id');

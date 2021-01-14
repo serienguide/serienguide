@@ -14,6 +14,7 @@ use App\Models\Providers\Provider;
 use App\Models\Ratings\Rating;
 use App\Models\User;
 use App\Models\Watched\Watched;
+use App\Traits\HasManyComments;
 use App\Traits\HasManyLists;
 use App\Traits\HasSlug;
 use App\Traits\Media\HasCard;
@@ -45,6 +46,7 @@ class Movie extends Model
         HasImages,
         HasKeywords,
         HasManyLists,
+        HasManyComments,
         HasModelPath,
         HasProviders,
         HasRatings,

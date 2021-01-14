@@ -4,6 +4,7 @@ namespace App\Models\Lists;
 
 use App\Models\Lists\Item;
 use App\Traits\BelongsToUser;
+use App\Traits\HasManyComments;
 use App\Traits\HasSlug;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,11 @@ use Illuminate\Support\Str;
 
 class Listing extends Model
 {
-    use BelongsToUser, HasFactory, HasModelPath, HasSlug;
+    use BelongsToUser,
+        HasFactory,
+        HasManyComments,
+        HasModelPath,
+        HasSlug;
 
     const ROUTE_NAME = 'users.lists';
     const VIEW_PATH = 'lists';

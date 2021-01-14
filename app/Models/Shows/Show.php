@@ -6,6 +6,7 @@ use App\Models\Shows\Episodes\Episode;
 use App\Models\Shows\Seasons\Season;
 use App\Models\User;
 use App\Models\Watched\Watched;
+use App\Traits\HasManyComments;
 use App\Traits\HasManyLists;
 use App\Traits\HasSlug;
 use App\Traits\Media\HasCard;
@@ -35,6 +36,7 @@ class Show extends Model
         HasGenres,
         HasImages,
         HasKeywords,
+        HasManyComments,
         HasManyLists,
         HasModelPath,
         HasProviders,

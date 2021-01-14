@@ -35,6 +35,12 @@
         </div>
     @endif
 
+    <section class="bg-gray-100 py-8">
+        <x-container class="">
+            @livewire('comments.index', ['model' => $model])
+        </x-container>
+    </section>
+
     @if ($previous_episode)
         <div class="fixed opacity-25 hover:opacity-100" style="top:35%; left: 25px;">
             <a href="{{ $previous_episode->path }}" title="{{ $previous_episode->season->season_number }}x{{ $previous_episode->episode_number }} {{ $previous_episode->name }}">

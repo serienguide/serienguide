@@ -6,6 +6,7 @@ use App\Models\Shows\Seasons\Season;
 use App\Models\Shows\Show;
 use App\Models\User;
 use App\Models\Watched\Watched;
+use App\Traits\HasManyComments;
 use App\Traits\Media\HasCard;
 use App\Traits\Media\HasCredits;
 use App\Traits\Media\HasImages;
@@ -27,6 +28,7 @@ class Episode extends Model
         HasFactory,
         HasImages,
         HasRatings,
+        HasManyComments,
         HasModelPath,
         HasWatched,
         SoftDeletes;
