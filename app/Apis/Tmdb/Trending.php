@@ -8,6 +8,8 @@ use App\Models\Movies\Movie;
 use App\Models\People\Person;
 use App\Models\Shows\Show;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 
 class Trending extends Model
 {
@@ -40,7 +42,23 @@ class Trending extends Model
             foreach ($data['results'] as $key => $attributes) {
                 $model = $class_name::where('tmdb_id', $attributes['id'])->first();
                 if (is_null($model)) {
-                    continue;
+                    $model = $class_name::create([
+                        'tmdb_id' => $attributes['id'],
+                    ]);
+                    if ($model->is_movie) {
+                        Artisan::queue('apis:tmdb:movies:update', [
+                            'id' => $model->id
+                        ]);
+                    }
+                    elseif ($model->is_show) {
+                        Artisan::queue('apis:tmdb:shows:update', [
+                            'id' => $model->id
+                        ]);
+                    }
+                }
+
+                if (! Arr::has($attributes, 'popularity')) {
+                    dump($attributes);
                 }
 
                 $model->update([
