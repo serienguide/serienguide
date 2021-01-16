@@ -19,28 +19,28 @@ class Trakt extends Model
 
     public static function watched(string $type) : array {
 
-            $data = [];
+        $data = [];
 
-            $page = 1;
-            $total_pages = 1;
-            do {
-                $response = Http::get('sync/watched/' . $type, [
-                    'page' => $page,
-                ]);
+        $page = 1;
+        $total_pages = 1;
+        do {
+            $response = Http::get('sync/watched/' . $type, [
+                'page' => $page,
+            ]);
 
-                $total_pages = $response->header('X-Pagination-Page-Count') ?: 1;
+            $total_pages = $response->header('X-Pagination-Page-Count') ?: 1;
 
-                foreach ($response->json() as $value) {
-                    $data[] = $value;
-                }
-
-                $page++;
+            foreach ($response->json() as $value) {
+                $data[] = $value;
             }
-            while ($page < $total_pages);
 
-            return $data;
-
+            $page++;
         }
+        while ($page < $total_pages);
+
+        return $data;
+
+    }
 
     public static function watchedHistory(string $type, ?Carbon $start_at, int $id = 0)
     {
@@ -49,6 +49,15 @@ class Trakt extends Model
         $response = Http::get('sync/history/' . $type . ($id ? '/' . $id : ''), [
             'start_at' => $start_at->format(\DATETIME::ISO8601),
             'page' => 1,
+        ]);
+
+        return $response->json();
+    }
+
+    public static function searchByTvdbId(int $tvdb_id)
+    {
+        $response = Http::get('/search/tvdb/' . $tvdb_id, [
+            'type' => 'show',
         ]);
 
         return $response->json();

@@ -36,4 +36,13 @@ class TraktTest extends TestCase
         $data = Trakt::watched('shows');
         dump($data);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_search_by_tvdb_id()
+    {
+        $data = Trakt::searchByTvdbId(367070);
+        dump($data);
+    }
 }
