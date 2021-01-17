@@ -63,7 +63,7 @@ class Trending extends Model
 
                 $model->update([
                     'tmdb_trending' => $trending,
-                    'tmdb_popularity' => $attributes['popularity'],
+                    'tmdb_popularity' => Arr::get($attributes, 'popularity', 0),
                 ]);
                 $trending++;
             }
