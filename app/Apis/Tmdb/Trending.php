@@ -57,10 +57,6 @@ class Trending extends Model
                     }
                 }
 
-                if (! Arr::has($attributes, 'popularity')) {
-                    dump($attributes);
-                }
-
                 $model->update([
                     'tmdb_trending' => $trending,
                     'tmdb_popularity' => Arr::get($attributes, 'popularity', 0),
