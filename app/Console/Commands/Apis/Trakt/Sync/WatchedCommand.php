@@ -49,6 +49,8 @@ class WatchedCommand extends Command
             'user',
         ])->findOrFail($this->argument('provider'));
 
+        $provider->refresh();
+
         Trakt::setAccessToken($provider->token);
 
         $movie_sync_count = $this->movies($provider->user);

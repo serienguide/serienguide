@@ -44,12 +44,12 @@ class Trakt extends Model
 
     public static function watchedHistory(string $type, ?Carbon $start_at, int $id = 0)
     {
-        $start_at = $start_at ?? new Carbon('0000-00-00 00:00:00');
+        $parameters['page'] = 1;
+        if ($start_at) {
+            $parameters['start_at'] = $start_at->format(\DATETIME::ISO8601);
+        }
 
-        $response = Http::get('sync/history/' . $type . ($id ? '/' . $id : ''), [
-            'start_at' => $start_at->format(\DATETIME::ISO8601),
-            'page' => 1,
-        ]);
+        $response = Http::get('sync/history/' . $type . ($id ? '/' . $id : ''), $parameters);
 
         return $response->json();
     }
