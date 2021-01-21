@@ -5,9 +5,9 @@
             <x-container class="py-4 pt-16">
                 <div class="flex items-end">
 
-                    <div class="flex-grow text-right pr-3 hidden md:block">
+                    <div class="flex-grow text-right pr-3 hidden md:block z-30">
                         @isset($user->last_watched)
-                            <a href="{{ $user->last_watched->watchable->path }}" class="text-sm text-white font-bold">
+                            <a href="{{ $user->last_watched->watchable->path }}" class="text-sm text-white font-bold hover:underline cursor-pointer">
                                 @if ($user->last_watched->watchable->is_episode)
                                     {{ $user->last_watched->watchable->show->name }} {{ $user->last_watched->watchable->season->season_number }}x{{ $user->last_watched->watchable->episode_number }}
                                 @else

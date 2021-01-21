@@ -253,13 +253,18 @@ class Show extends Model
             return $this->attributes['last_watched'];
         }
 
-        if (! auth()->check()) {
+        if (is_null($this->user) && auth()->check()) {
+            $this->user = auth()->user();
+        }
+
+        if (is_null($this->user)) {
             return null;
         }
 
         return $this->attributes['last_watched'] = $this->watched()
+            ->whereHas('watchable')
             ->with('watchable.season')
-            ->where('user_id', auth()->user()->id)
+            ->where('user_id', $this->user->id)
             ->latest('watched_at')
             ->orderBy('id', 'DESC')
             ->first();
@@ -271,13 +276,17 @@ class Show extends Model
             return $this->progress;
         }
 
+        if (is_null($this->user) && auth()->check()) {
+            $this->user = auth()->user();
+        }
+
         $watchable_count = $this->episodes->count();
         $watchable_runtime = $watchable_count * $this->runtime;
         $unwatched_runtime = $watchable_runtime;
-        if (auth()->check()) {
+        if ($this->user) {
             $this->episodes->loadCount([
                 'watched' => function ($query) {
-                    return $query->where('user_id', auth()->user()->id);
+                    return $query->where('user_id', $this->user->id);
                 }
             ]);
             $watched_models = $this->episodes->filter(function ($episode) {
@@ -339,7 +348,11 @@ class Show extends Model
             return $this->attributes['next_episode_to_watch'];
         }
 
-        if (! auth()->check()) {
+        if (is_null($this->user) && auth()->check()) {
+            $this->user = auth()->user();
+        }
+
+        if (is_null($this->user)) {
             return null;
         }
 
