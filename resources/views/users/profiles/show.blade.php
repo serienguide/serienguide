@@ -78,9 +78,7 @@
             <div class="flex flex-nowrap justify-between intems-center">
                 <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700" href="{{ $user->profile_path }}">Profil</a>
                 <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700" href="{{ $user->profile_path }}/watched">Gesehen</a>
-                @env('local')
-                    <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700" href="{{ $user->profile_path }}/progress">Fortschritt</a>
-                @endenv
+                <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700" href="{{ $user->profile_path }}/progress">Fortschritt</a>
                 <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700" href="{{ $user->profile_path }}/rated">Bewertet</a>
                 <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700" href="{{ $user->profile_path }}/lists">Listen</a>
                 <a class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700" href="{{ $user->profile_path }}/followers">Follower</a>
