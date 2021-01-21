@@ -88,7 +88,7 @@
                         x-transition:leave-start="transform opacity-100 scale-100"
                         x-transition:leave-end="transform opacity-0 scale-95"
                         class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg z-10">
-                        <div class="rounded-md bg-white shadow-xs">
+                        <div class="rounded-md bg-white shadow-xs" style="min-width: 250px;">
                             <div class="p-3" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                 @livewire('watched.ul', ['model' => $model, 'action' => $action])
                             </div>

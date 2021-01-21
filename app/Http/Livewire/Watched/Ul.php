@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Watched;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 
@@ -10,6 +11,8 @@ class Ul extends Component
     public $model;
     public $items;
     public $action;
+    public $form = [];
+    public $isEditing = [];
 
     protected function getListeners()
     {
@@ -35,11 +38,25 @@ class Ul extends Component
         $this->model = $model;
         $this->loadWatched();
         $this->items = $this->model->watched;
+        foreach ($this->items as $key => $item) {
+            $this->form[$item->id] = [
+                'watchedAt' => $item->watched_at->format('d.m.Y H:i'),
+            ];
+            $this->isEditing[$item->id] = false;
+        }
     }
 
-    public function load()
+    public function update(int $id)
     {
+        $attributes = $this->validate([
+            'form.' . $id . '.watchedAt' => 'required|date_format:"d.m.Y H:i"',
+        ]);
 
+        $item = $this->items->where('id', $id)->first();
+        $item->update([
+            'watched_at' => Carbon::createFromFormat('d.m.Y H:i', $this->form[$id]['watchedAt']),
+        ]);
+        $this->isEditing[$item->id] = false;
     }
 
     public function destroy(int $index)
@@ -66,6 +83,10 @@ class Ul extends Component
     {
         $watched = $this->model->watchedBy(auth()->user());
         $this->items[-1] = $watched;
+        $this->form[$watched->id] = [
+            'watchedAt' => $watched->watched_at->format('d.m.Y H:i'),
+        ];
+        $this->isEditing[$item->id] = false;
         $this->emitUp('watched', $watched);
 
         if ($this->model->is_episode) {
