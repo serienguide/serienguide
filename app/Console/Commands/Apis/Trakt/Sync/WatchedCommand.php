@@ -19,7 +19,7 @@ class WatchedCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'apis:trakt:sync:watched {provider}';
+    protected $signature = 'apis:trakt:sync:watched {provider=0}';
 
     /**
      * The console command description.
@@ -45,10 +45,30 @@ class WatchedCommand extends Command
      */
     public function handle()
     {
-        $provider = OauthProvider::with([
-            'user',
-        ])->findOrFail($this->argument('provider'));
+        if ($this->argument('provider')) {
+            $providers = OauthProvider::with([
+                    'user',
+                ])->where('id', $this->argument('provider'))
+                ->get();
+        }
+        else {
+            $providers = OauthProvider::with([
+                    'user',
+                ])->where('provider_type', 'trakt')
+                ->whereNotNull('synced_at')
+                ->get();
+        }
 
+        foreach ($providers as $key => $provider) {
+            $this->updateProvider($provider);
+        }
+
+        return 0;
+    }
+
+    protected function updateProvider(OauthProvider $provider)
+    {
+        $this->info('syncing ' . $provider->user->name . ' (Provider ID: ' . $provider->id . ')');
         $provider->refresh();
 
         Trakt::setAccessToken($provider->token);
@@ -67,8 +87,6 @@ class WatchedCommand extends Command
             'movie_sync_count' => $movie_sync_count,
             'episode_sync_count' => $episode_sync_count,
         ]));
-
-        return 0;
     }
 
     protected function movies(User $user) : int
