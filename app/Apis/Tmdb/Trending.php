@@ -42,6 +42,9 @@ class Trending extends Model
             foreach ($data['results'] as $key => $attributes) {
                 $model = $class_name::where('tmdb_id', $attributes['id'])->first();
                 if (is_null($model)) {
+                    if ($trending > 100) {
+                        continue;
+                    }
                     $model = $class_name::create([
                         'tmdb_id' => $attributes['id'],
                     ]);
