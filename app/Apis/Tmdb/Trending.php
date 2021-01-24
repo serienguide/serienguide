@@ -43,7 +43,7 @@ class Trending extends Model
                 $model = $class_name::where('tmdb_id', $attributes['id'])->first();
                 if (is_null($model)) {
                     if ($trending > 100) {
-                        continue;
+                        break;
                     }
                     $model = $class_name::create([
                         'tmdb_id' => $attributes['id'],
