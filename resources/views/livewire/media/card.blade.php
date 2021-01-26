@@ -1,4 +1,4 @@
-<li class="col-span-1 flex flex-col justify-between bg-white rounded-lg shadow" @isset($itemtype) itemtype="{{ $itemtype }}" itemscope="" @endisset>
+<li class="relative col-span-1 flex flex-col justify-between bg-white rounded-lg shadow" @isset($itemtype) itemtype="{{ $itemtype }}" itemscope="" @endisset>
     <div class="rounded-t-lg h-2 w-full bg-yellow-900" title="{{ number_format($model->vote_average, (in_array($model->vote_average, [0, 10]) ? 0 : 1) , ',', '') }}/10 {{ $model->vote_count }} Stimmen" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
         <meta itemprop="bestRating" content="10">
         <meta itemprop="worstRating" content="0">
@@ -11,7 +11,7 @@
         <header class="flex items-center justify-center px-3 py-1">
             <div class="flex-grow"></div>
             @unless($model->is_episode)
-                <div class="relative inline-block text-left" x-data="{ open: false }">
+                <div class="inline-block text-left" x-data="{ open: false }">
                     <div class="px-1">
                         <button @click="open = true" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
                             <i class="fas fa-list"></i>
@@ -27,8 +27,8 @@
                         x-transition:leave="transition ease-in duration-75"
                         x-transition:leave-start="transform opacity-100 scale-100"
                         x-transition:leave-end="transform opacity-0 scale-95"
-                        class="origin-top-right absolute right-0 mt-2 rounded-md shadow-lg z-10"
-                        style="min-width: 300px;">
+                        class="origin-top-right absolute mt-2 rounded-md shadow-lg z-10"
+                        style="width: 90%; right: 5%;">
                         <div class="rounded-md bg-white shadow-xs">
                             <div class="p-3" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                                 @livewire('media.listing', ['model' => $model])
