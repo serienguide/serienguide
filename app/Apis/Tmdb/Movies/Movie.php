@@ -47,7 +47,7 @@ class Movie extends Model
         }
 
         $attributes = $attributes_de;
-        $attributes['keywords'] = $attributes_de['keywords']['keywords'];
+        $attributes['keywords'] = $attributes_de['keywords']['keywords'] ?? [];
         $attributes['providers'] = $attributes_de['watch/providers']['results']['DE'] ?? [];
         $attributes['name'] = $attributes_de['title'];
         $attributes['name_en'] = $attributes_en['title'];

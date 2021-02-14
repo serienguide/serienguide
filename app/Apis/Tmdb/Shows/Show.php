@@ -91,7 +91,7 @@ class Show extends Model
         }
 
         $attributes = $attributes_de;
-        $attributes['keywords'] = $attributes_de['keywords']['results'];
+        $attributes['keywords'] = $attributes_de['keywords']['results'] ?? [];
         $attributes['providers'] = $attributes_de['watch/providers']['results']['DE'] ?? [];
         $attributes['name'] = $attributes_de['name'];
         $attributes['name_en'] = $attributes_en['name'];
