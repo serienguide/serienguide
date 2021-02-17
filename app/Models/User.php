@@ -77,6 +77,23 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    /**
+     * The booting method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function($model)
+        {
+            $model->setup();
+
+            return true;
+        });
+    }
+
     public function setSlug() : void
     {
         if (! $this->isDirty('name')) {
@@ -140,5 +157,10 @@ class User extends Authenticatable
     public function last_watched() : HasOne
     {
         return $this->hasOne(Watched::class, 'user_id')->latest()->take(1)->whereHas('watchable');
+    }
+
+    public function setup()
+    {
+        Listing::setup($this);
     }
 }

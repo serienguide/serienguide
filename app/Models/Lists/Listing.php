@@ -3,6 +3,7 @@
 namespace App\Models\Lists;
 
 use App\Models\Lists\Item;
+use App\Models\User;
 use App\Traits\BelongsToUser;
 use App\Traits\HasManyComments;
 use App\Traits\HasSlug;
@@ -22,6 +23,12 @@ class Listing extends Model
 
     const ROUTE_NAME = 'users.lists';
     const VIEW_PATH = 'lists';
+
+    const DEFAULT_LISTS = [
+        'currently_watching' => 'Meine Serien',
+        'recommendations' => 'Empfehlungen',
+        'watchlist' => 'Merkzettel',
+    ];
 
     protected $appends = [
         //
@@ -78,5 +85,18 @@ class Listing extends Model
     public function items() : HasMany
     {
         return $this->hasMany(Item::class, 'list_id');
+    }
+
+    public static function setup(User $user)
+    {
+        foreach (self::DEFAULT_LISTS as $type => $name) {
+            self::firstOrCreate([
+                'user_id' => $user->id,
+                'type' => $type,
+            ], [
+                'name' => $name,
+                'default_order' => ($type == 'currently_watching' ? 'name' : 'created_at'),
+            ]);
+        }
     }
 }

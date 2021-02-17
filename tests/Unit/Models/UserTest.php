@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use App\Models\Lists\Listing;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -35,5 +36,31 @@ class UserTest extends TestCase
             'last_login_at' => now(),
         ]);
         $this->assertEquals('new-model-1', $model_1->refresh()->slug);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_all_data_after_been_created()
+    {
+        $this->assertNotNull($this->user->watchlist);
+        $this->assertNotNull($this->user->currently_watching_list);
+        $this->assertCount(1, $this->user->lists()->where('type', 'recommendations')->get());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_all_data_after_been_created_just_once()
+    {
+        foreach (Listing::DEFAULT_LISTS as $type => $name) {
+            $this->assertCount(1, $this->user->lists()->where('type', $type)->get());
+        }
+
+        $this->user->setup();
+
+        foreach (Listing::DEFAULT_LISTS as $type => $name) {
+            $this->assertCount(1, $this->user->lists()->where('type', $type)->get());
+        }
     }
 }
