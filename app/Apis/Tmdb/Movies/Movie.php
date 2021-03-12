@@ -6,6 +6,7 @@ use App\Apis\Model;
 use App\Apis\Tmdb\Http;
 use Carbon\Carbon;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Arr;
 
 class Movie extends Model
 {
@@ -55,10 +56,10 @@ class Movie extends Model
         $attributes['tagline'] = $attributes_de['tagline'] ?: $attributes_en['tagline'];
         $attributes['released_at'] = $released_at;
         $attributes['year'] = $year;
-        $attributes['facebook'] = $attributes_de['external_ids']['facebook_id'];
-        $attributes['instagram'] = $attributes_de['external_ids']['instagram_id'];
-        $attributes['twitter'] = $attributes_de['external_ids']['twitter_id'];
-        $attributes['imdb_id'] = $attributes_de['external_ids']['imdb_id'];
+        $attributes['facebook'] = Arr::get($attributes_de, 'external_ids.facebook_id', null);
+        $attributes['instagram'] = Arr::get($attributes_de, 'external_ids.instagram_id', null);
+        $attributes['twitter'] = Arr::get($attributes_de, 'external_ids.twitter_id', null);
+        $attributes['imdb_id'] = Arr::get($attributes_de, 'external_ids.imdb_id', null);
         $attributes['tmdb_vote_count'] = $attributes_en['vote_count'];
         $attributes['tmdb_vote_average'] = $attributes_en['vote_average'];
         $attributes['tmdb_popularity'] = $attributes_de['popularity'];

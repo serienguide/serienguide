@@ -21,7 +21,7 @@ class MovieTest extends TestCase
     {
         $model = $this->class_name::factory()->create();
         $route_parameter = [
-            'movie' => $model->id,
+            'movie' => $model->slug,
         ];
 
         $route = strtok(route($this->class_name::ROUTE_NAME . '.index', $route_parameter), '?');
