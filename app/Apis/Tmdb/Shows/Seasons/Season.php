@@ -90,7 +90,7 @@ class Season extends Model
         $attributes['overview'] = $attributes_de['overview'] ?: $attributes_en['overview'];
         $attributes['first_aired_at'] = $first_aired_at;
         $attributes['tmdb_id'] = $attributes_de['id'];
-        $attributes['tvdb_id'] = $attributes_de['external_ids']['tvdb_id'];
+        $attributes['tvdb_id'] = Arr::get($attributes_de, 'external_ids.tvdb_id', null);
         $attributes['episode_count'] = count($attributes_en['episodes']);
         $attributes['episodes'] = $episodes;
 

@@ -41,8 +41,8 @@ class Episode extends Model
         $attributes['first_aired_at'] = $attributes_de['air_date'] ?: $attributes_en['air_date'];
         $attributes['still_path'] = $attributes_de['still_path'] ?: $attributes_en['still_path'];
         $attributes['tmdb_id'] = $attributes_de['id'];
-        $attributes['tvdb_id'] = $attributes_de['external_ids']['tvdb_id'];
-        $attributes['imdb_id'] = $attributes_de['external_ids']['imdb_id'];
+        $attributes['tvdb_id'] = Arr::get($attributes_de, 'external_ids.tvdb_id', null);
+        $attributes['imdb_id'] = Arr::get($attributes_de, 'external_ids.imdb_id', null);
 
         return $attributes;
     }
