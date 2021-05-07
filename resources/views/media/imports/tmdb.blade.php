@@ -3,6 +3,6 @@
         {{ $media_class_name::label() }} importieren
     </x-slot>
     <x-container class="py-4">
-        @livewire('media.imports.tmdb', ['media_type' => $media_type])
+        <media-imports-tmdb-index media-type="{{ $media_type }}"></media-imports-tmdb-index>
     </x-container>
 </x-app-layout>

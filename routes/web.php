@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/card-test', function () {
+    return view('movies.vue')
+        ->with('movies', App\Models\Movies\Movie::orderBy('name', 'ASC')->take(1)->latest()->get());
+});
+
 Route::get('/calendar/{year?}/{week?}', [App\Http\Controllers\Calendar\CalendarController::class, 'index'])->name('calendar.index');
 
 Route::post('/contact', [App\Http\Controllers\ContactformController::class, 'store'])->middleware(['honey', 'honey-recaptcha'])->name('contactform.store');
@@ -51,6 +56,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/{media_type}/{model}/tmdb/update', [ App\Http\Controllers\Media\Tmdb\UpdateController::class, 'show' ])->name('media.tmdb.update.show');
 
     Route::get('/{media_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'index' ])->name('media.imports.tmdb.index');
+    Route::post('/{media_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'store' ])->name('media.imports.tmdb.store');
 
     Route::get('/notifications', [ App\Http\Controllers\Users\NotificationController::class, 'index' ])->name('users.notifications.index');
 

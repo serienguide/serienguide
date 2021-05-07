@@ -9,6 +9,7 @@ use App\Models\People\Person;
 use App\Models\Shows\Show;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class Search
 {
@@ -45,6 +46,8 @@ class Search
                     $attributes['name'] = $attributes['title'];
                     $attributes['first_air_date'] = Arr::get($attributes, 'release_date');
                 }
+                $attributes['poster_path_formatted'] = $attributes['poster_path'] ? 'https://image.tmdb.org/t/p/w300_and_h450_bestv2' . $attributes['poster_path'] : Storage::disk('s3')->url('no/680x1000.png');
+                $attributes['first_air_date_formatted'] = (((Arr::has($attributes, 'first_air_date') && $attributes['first_air_date']) ? (new \Carbon\Carbon($attributes['first_air_date']))->format('d.m.Y') : ''));
                 $results[] = $attributes;
                 $trending++;
             }

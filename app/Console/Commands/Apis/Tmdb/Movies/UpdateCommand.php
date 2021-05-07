@@ -15,7 +15,7 @@ class UpdateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'apis:tmdb:movies:update {id} {--user=}';
+    protected $signature = 'apis:tmdb:movies:update {id?} {--user=}';
 
     /**
      * The console command description.
@@ -41,7 +41,7 @@ class UpdateCommand extends Command
      */
     public function handle()
     {
-        if ($this->argument('id')) {
+        if (! is_null($this->argument('id'))) {
             $this->update(Movie::findOrFail($this->argument('id')));
             return 0;
         }

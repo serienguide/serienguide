@@ -47,7 +47,7 @@
         @livewireStyles
 
         <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}"></script>
+        <script src="{{ mix('js/app.js') }}" defer></script>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>
         @stack('scripts')
     </head>
@@ -70,7 +70,8 @@
                 </x-container>
             </header>
         @endif
-        <main @isset($itemtype) itemtype="{{ $itemtype }}" itemscope="" @endisset>
+        <main id="app" @isset($itemtype) itemtype="{{ $itemtype }}" itemscope="" @endisset>
+            <auth :user="{{ json_encode(Auth::user()) }}"></auth>
             {{ $slot }}
         </main>
         <footer class="bg-gray-800" aria-labelledby="footerHeading">

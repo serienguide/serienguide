@@ -27,6 +27,7 @@
         "@tailwindcss/forms": "^0.2.1",
         "autoprefixer": "^10.0.2",
         "laravel-mix-tailwind": "^0.1.1",
-        "postcss": "^8.1.10"
+        "postcss": "^8.1.10",
+        "vue": "^2.6.12"
     }
 }

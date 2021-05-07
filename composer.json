@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.3",
         "danielsundermeier/laravel-deploy": "^0.1.0",
-        "danielsundermeier/laravel-model-path": "^0.2.0",
+        "danielsundermeier/laravel-model-path": "^0.3.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "geo-sot/laravel-env-editor": "^0.9.10",
