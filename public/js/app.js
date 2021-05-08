@@ -32751,7 +32751,7 @@ var Flash = {
     };
 
     Vue.error = function (text) {
-      Vue.flash(text, 'danger');
+      Vue.flash(text, 'error');
     };
   }
 };

@@ -14,7 +14,7 @@ const Flash = {
             Vue.flash(text, 'success');
         };
         Vue.error = function (text) {
-            Vue.flash(text, 'danger');
+            Vue.flash(text, 'error');
         };
     }
 }

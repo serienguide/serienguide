@@ -1,11 +1,12 @@
 <div
-    x-data="{ show: {{ $show }}, message: '{{ $message }}' }"
+    x-data="{ show: {{ $show }}, message: '{{ $message }}', type: 'success' }"
     x-cloak
     x-show="show"
     x-init="() => { if (show) { setTimeout(() => show = false, 3000); } }"
     @flash.window="
         show = true;
         message = $event.detail.text;
+        type = $event.detail.type || 'success';
         setTimeout(() => show = false, 3000);
         console.log($event);
     "
@@ -21,7 +22,8 @@
         <div class="p-4">
             <div class="flex items-start">
                 <div class="flex-shrink-0">
-                    <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <svg x-show="type == 'error'" class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <svg x-show="type == 'success'" class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
