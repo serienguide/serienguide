@@ -19,7 +19,9 @@ trait HasWatched
 
     public function initializeHasWatched()
     {
-        //
+        $this->append([
+            'watched_path'
+        ]);
     }
 
     public function getWatchedPathAttribute() : string {

@@ -5,6 +5,7 @@ namespace App\Models\Watched;
 use App\Models\Shows\Episodes\Episode;
 use App\Models\User;
 use App\Traits\BelongsToUser;
+use Carbon\Carbon;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,11 +20,14 @@ class Watched extends Model
 {
     use BelongsToUser, HasFactory, HasModelPath;
 
-    const ROUTE_NAME = 'watched';
+    const ROUTE_NAME = 'media.watched';
     const VIEW_PATH = 'watched';
 
     protected $appends = [
-        //
+        'created_at_formatted',
+        'watched_at_formatted',
+        'watched_at_diff_for_humans',
+        'path',
     ];
 
     protected $casts = [
@@ -105,10 +109,31 @@ class Watched extends Model
         return true;
     }
 
+    public function getWatchedAtFormattedAttribute() : string
+    {
+        return $this->watched_at->format('d.m.Y H:i');
+    }
+
+    public function setWatchedAtFormattedAttribute(string $value) : void
+    {
+        $this->attributes['watched_at'] = Carbon::createFromFormat('d.m.Y H:i', $value);
+        Arr::forget($this->attributes, 'watched_at_formatted');
+    }
+
+    public function getWatchedAtDiffForHumansAttribute() : string
+    {
+        return $this->watched_at->diffForHumans();
+    }
+
+    public function getCreatedAtFormattedAttribute() : string
+    {
+        return $this->created_at->format('d.m.Y H:i');
+    }
+
     public function getRouteParameterAttribute() : array
     {
         return [
-            'type' => $this->watchable_type::ROUTE_NAME,
+            'media_type' => $this->watchable_type::ROUTE_NAME,
             'model' => $this->watchable_id,
             'watched' => $this->id,
         ];

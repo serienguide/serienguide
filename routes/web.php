@@ -60,7 +60,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::post('/{media_type}/{model}/rate', [ App\Http\Controllers\Ratings\RatingController::class, 'store' ])->name('media.rate.store');
 
+    Route::get('/{media_type}/{model}/watched', [ App\Http\Controllers\Watched\WatchedController::class, 'index' ])->name('media.watched.index');
     Route::post('/{media_type}/{model}/watched', [ App\Http\Controllers\Watched\WatchedController::class, 'store' ])->name('media.watched.store');
+    Route::get('/{media_type}/{model}/watched/{watched}', [ App\Http\Controllers\Watched\WatchedController::class, 'show' ])->name('media.watched.show');
+    Route::put('/{media_type}/{model}/watched/{watched}', [ App\Http\Controllers\Watched\WatchedController::class, 'update' ])->name('media.watched.update');
+    Route::delete('/{media_type}/{model}/watched/{watched}', [ App\Http\Controllers\Watched\WatchedController::class, 'destroy' ])->name('media.watched.destroy');
 
     Route::get('/{media_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'index' ])->name('media.imports.tmdb.index');
     Route::post('/{media_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'store' ])->name('media.imports.tmdb.store');

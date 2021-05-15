@@ -23,8 +23,8 @@ class WatchedController extends Controller
     {
         if ($request->wantsJson()) {
             return $model->watched()
-                ->latest()
-                ->paginate();
+                ->latest('watched_at')
+                ->get();
         }
     }
 
@@ -49,7 +49,7 @@ class WatchedController extends Controller
     public function store(Request $request, string $type, Model $model)
     {
         $attributes = $request->validate([
-            'watched_at' => 'sometimes|date',
+            'watched_at_formatted' => 'sometimes|date_format:"d.m.Y H:i"',
         ]);
 
         $watched = $model->watchedBy(auth()->user(), $attributes);
@@ -101,15 +101,16 @@ class WatchedController extends Controller
         $this->authorize('update', $watched);
 
         $attributes = $request->validate([
-            'watched_at' => 'required|date',
+            'watched_at_formatted' => 'required|date_format:"d.m.Y H:i"',
         ]);
 
         $watched->update($attributes);
 
         if ($request->wantsJson()) {
-            return $watched->load([
-                'watchable',
-            ]);
+            return [
+                'watched' => $watched->load(['watchable']),
+                'progress' => $model->progress,
+            ];
         }
 
         return back()
@@ -137,6 +138,7 @@ class WatchedController extends Controller
         if ($request->wantsJson()) {
             return [
                 'deleted' => $is_deletable,
+                'progress' => $model->progress,
             ];
         }
 

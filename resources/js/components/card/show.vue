@@ -13,9 +13,10 @@
 
         <header class="flex items-center justify-center px-3 py-1" v-if="$auth.check()">
 
-            <div class="flex-grow">{{ $auth.user.name }}</div>
+            <div class="flex-grow"></div>
             <rating :model="model" @rated="rated($event)"></rating>
             <lists :model="model" v-if="! model.is_episode"></lists>
+            <watched :model="model" v-if="! model.is_episode"></watched>
 
         </header>
 
@@ -62,12 +63,14 @@
 <script type="text/javascript">
     import lists from './list/index.vue';
     import rating from './rating/show.vue';
+    import watched from './watched/index.vue';
 
     export default {
 
         components: {
             lists,
             rating,
+            watched,
         },
 
         mixins: [
