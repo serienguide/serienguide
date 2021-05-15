@@ -55,6 +55,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/{media_type}/{model}/tmdb/update', [ App\Http\Controllers\Media\Tmdb\UpdateController::class, 'show' ])->name('media.tmdb.update.show');
 
+    Route::get('/{media_type}/{model}/lists', [ App\Http\Controllers\Media\Lists\ListingController::class, 'index' ])->name('media.lists.index');
+    Route::put('/{media_type}/{model}/lists/{list}/toggle', [ App\Http\Controllers\Media\Lists\ToggleController::class, 'update' ])->name('media.lists.toggle.update');
+
+    Route::post('/{media_type}/{model}/rate', [ App\Http\Controllers\Ratings\RatingController::class, 'store' ])->name('media.rate.store');
+
+    Route::post('/{media_type}/{model}/watched', [ App\Http\Controllers\Watched\WatchedController::class, 'store' ])->name('media.watched.store');
+
     Route::get('/{media_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'index' ])->name('media.imports.tmdb.index');
     Route::post('/{media_type}/imports/tmdb', [ App\Http\Controllers\Media\Imports\TmdbController::class, 'store' ])->name('media.imports.tmdb.store');
 

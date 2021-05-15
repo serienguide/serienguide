@@ -8,7 +8,6 @@
         message = $event.detail.text;
         type = $event.detail.type || 'success';
         setTimeout(() => show = false, 3000);
-        console.log($event);
     "
     x-transition:enter="transform ease-out duration-300 transition"
     x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"

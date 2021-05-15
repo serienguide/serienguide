@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Watched;
 use App\Http\Controllers\Controller;
 use App\Models\Movies\Movie;
 use App\Models\Watched\Watched;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -18,7 +19,7 @@ class WatchedController extends Controller
      * @param  \App\Models\Movies\Movie  $model
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, string $type, Movie $model)
+    public function index(Request $request, string $type, Model $model)
     {
         if ($request->wantsJson()) {
             return $model->watched()
@@ -33,7 +34,7 @@ class WatchedController extends Controller
      * @param  \App\Models\Movies\Movie  $model
      * @return \Illuminate\Http\Response
      */
-    public function create(string $type, Movie $model)
+    public function create(string $type, Model $model)
     {
         //
     }
@@ -45,7 +46,7 @@ class WatchedController extends Controller
      * @param  \App\Models\Movies\Movie  $model
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, string $type, Movie $model)
+    public function store(Request $request, string $type, Model $model)
     {
         $attributes = $request->validate([
             'watched_at' => 'sometimes|date',
@@ -53,7 +54,10 @@ class WatchedController extends Controller
 
         $watched = $model->watchedBy(auth()->user(), $attributes);
 
-        return $watched;
+        return [
+            'watched' => $watched,
+            'progress' => $model->progress,
+        ];
     }
 
     /**
@@ -63,7 +67,7 @@ class WatchedController extends Controller
      * @param  \App\Models\Watched\Watched  $watched
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, string $type, Movie $model, Watched $watched)
+    public function show(Request $request, string $type, Model $model, Watched $watched)
     {
         $this->authorize('view', $watched);
 
@@ -79,7 +83,7 @@ class WatchedController extends Controller
      * @param  \App\Models\Watched\Watched  $watched
      * @return \Illuminate\Http\Response
      */
-    public function edit(string $type, Movie $model, Watched $watched)
+    public function edit(string $type, Model $model, Watched $watched)
     {
         $this->authorize('update', $watched);
     }
@@ -92,7 +96,7 @@ class WatchedController extends Controller
      * @param  \App\Models\Watched\Watched  $watched
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, string $type, Movie $model, Watched $watched)
+    public function update(Request $request, string $type, Model $model, Watched $watched)
     {
         $this->authorize('update', $watched);
 
@@ -122,7 +126,7 @@ class WatchedController extends Controller
      * @param  \App\Models\Watched\Watched  $watched
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, string $type, Movie $model, Watched $watched)
+    public function destroy(Request $request, string $type, Model $model, Watched $watched)
     {
         $this->authorize('delete', $watched);
 

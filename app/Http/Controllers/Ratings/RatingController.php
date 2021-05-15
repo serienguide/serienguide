@@ -49,12 +49,10 @@ class RatingController extends Controller
     public function store(Request $request, string $type, Model $model)
     {
         $attributes = $request->validate([
-            'rating' => 'required|integer|between:1,10',
+            'rating' => 'required|integer|between:0,10',
         ]);
 
-        $rating = $model->rateBy(auth()->user(), $attributes);
-
-        return $rating;
+        return $model->rateBy(auth()->user(), $attributes);
     }
 
     /**

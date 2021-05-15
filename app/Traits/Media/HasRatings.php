@@ -17,7 +17,10 @@ trait HasRatings
 
     public function initializeHasRatings()
     {
-        //
+        $this->append([
+            'rate_path',
+            'rated_event_name',
+        ]);
     }
 
     public function rateBy(User $user, array $attributes = [])
@@ -50,6 +53,18 @@ trait HasRatings
             'vote_count' => $this->ratings()->count(),
             'vote_average' => round($this->ratings()->avg('rating'), 1),
         ]);
+    }
+
+    public function getRatePathAttribute() : string
+    {
+        return route('media.rate.store', [
+            'media_type' => $this->media_type,
+            'model' => $this->id,
+        ]);
+    }
+
+    public function getRatedEventNameAttribute() : string {
+        return $this->class_name . '_' . $this->id . '_rated';
     }
 
     public function ratings() : MorphMany

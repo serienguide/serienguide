@@ -19,6 +19,14 @@ trait HasManyLists
         //
     }
 
+    public function getListsPathAttribute() : string
+    {
+        return route('media.lists.index', [
+            'media_type' => $this->media_type,
+            'model' => $this->id,
+        ]);
+    }
+
     public function list_items() : MorphMany
     {
         return $this->morphMany(Item::class, 'medium');

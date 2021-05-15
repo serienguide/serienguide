@@ -19,7 +19,7 @@ class ListingController extends Controller
     public function index(Request $request, User $user)
     {
         if ($request->wantsJson()) {
-            return $user->lists()
+            $query = $user->lists()
                 ->orderBy('name', 'ASC')
                 ->paginate();
         }

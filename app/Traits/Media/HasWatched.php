@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Watched\Watched;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait HasWatched
 {
@@ -19,6 +20,13 @@ trait HasWatched
     public function initializeHasWatched()
     {
         //
+    }
+
+    public function getWatchedPathAttribute() : string {
+        return route('media.watched.store', [
+            'media_type' => $this->media_type,
+            'model' => $this->id,
+        ]);
     }
 
     public function watchedBy(User $user, array $attributes = []) : Watched

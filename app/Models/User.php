@@ -74,6 +74,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $appends = [
+        'lists_path',
         'profile_photo_url',
     ];
 
@@ -122,6 +123,17 @@ class User extends Authenticatable
     public function getProfilePhotoUrlAttribute()
     {
         return 'https://www.gravatar.com/avatar/' . md5($this->email);
+    }
+
+    /** Get the URL to the user's lists.
+     *
+     * @return string
+     */
+    public function getListsPathAttribute() : string
+    {
+        return route('users.lists.index', [
+            'user' => $this->id,
+        ]);
     }
 
     public function lists() : HasMany

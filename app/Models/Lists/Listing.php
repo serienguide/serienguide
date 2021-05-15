@@ -31,7 +31,8 @@ class Listing extends Model
     ];
 
     protected $appends = [
-        //
+        'is_custom',
+        'is_watchlist',
     ];
 
     protected $casts = [
@@ -72,6 +73,11 @@ class Listing extends Model
     public function getIsCustomAttribute() : bool
     {
         return is_null($this->type);
+    }
+
+    public function getIsWatchlistAttribute() : bool
+    {
+        return ($this->type == 'watchlist');
     }
 
     public function getRouteParameterAttribute() : array

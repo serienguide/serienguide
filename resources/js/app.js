@@ -5,12 +5,43 @@ window.Bus = new Vue();
 
 Vue.prototype.$auth = {
     user: null,
+    lists: [],
     check: function () {
         return (this.user != null);
     },
     setUser: function (user) {
         this.user = user;
     },
+};
+
+/**
+ * Number.prototype.format(n, x, s, c)
+ *
+ * @param integer n: length of decimal
+ * @param integer x: length of whole part
+ * @param mixed   s: sections delimiter
+ * @param mixed   c: decimal delimiter
+ */
+Number.prototype.format = function(decimals, dec_point, thousands_sep) {
+    var number = (this + '').replace(/[^0-9+\-Ee.]/g, '');
+    var n = !isFinite(+number) ? 0 : +number,
+        prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+        sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+        dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+        s = '',
+        toFixedFix = function (n, prec) {
+          var k = Math.pow(10, prec);
+          return '' + (Math.round(n * k) / k).toFixed(prec);
+    };
+    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    if (s[0].length > 3) {
+        s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || '').length < prec) {
+        s[1] = s[1] || '';
+        s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+    return s.join(dec);
 };
 
 import Flash from './plugins/flash.js';
