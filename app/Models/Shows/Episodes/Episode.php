@@ -42,7 +42,7 @@ class Episode extends Model
     ];
 
     protected $appends = [
-        //
+        'next_path',
     ];
 
     protected $casts = [
@@ -100,6 +100,13 @@ class Episode extends Model
         $this->syncCreditsFromTmdb([
             'crew' => $attributes['crew'],
             'guest_stars' => $attributes['guest_stars'],
+        ]);
+    }
+
+    public function getNextPathAttribute()
+    {
+        return route('episodes.next', [
+            'episode' => $this->id,
         ]);
     }
 

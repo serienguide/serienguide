@@ -3,6 +3,6 @@
         Serien
     </x-slot>
     <x-container class="py-4">
-        @livewire('shows.index')
+        <deck-base></deck-base>
     </x-container>
 </x-app-layout>

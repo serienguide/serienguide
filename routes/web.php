@@ -20,7 +20,8 @@ Route::get('/', function () {
 Route::get('/card-test', function () {
     return view('movies.vue')
         ->with('movies', App\Models\Movies\Movie::orderBy('name', 'ASC')->take(1)->latest()->get())
-        ->with('episodes', App\Models\Shows\Episodes\Episode::orderBy('name', 'ASC')->take(1)->latest()->get());
+        ->with('episodes', App\Models\Shows\Episodes\Episode::orderBy('name', 'ASC')->take(1)->latest()->get())
+        ->with('shows', App\Models\Shows\Show::whereNotNull('slug')->orderBy('name', 'ASC')->take(1)->latest()->get());
 });
 
 Route::get('/calendar/{year?}/{week?}', [App\Http\Controllers\Calendar\CalendarController::class, 'index'])->name('calendar.index');
@@ -53,6 +54,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('/auth/' . App\Models\Auth\OauthProvider::ROUTE_NAME, App\Http\Controllers\Auth\OauthProviderController::class);
 
     Route::get('/apis/trakt/watched_history/{provider}', [ App\Http\Controllers\Apis\Trakt\WatchedHistoryController::class, 'show' ])->name('apis.trakt.watched_history.show');
+
+    Route::get('/episodes/{episode}/next', [ App\Http\Controllers\Shows\Episodes\NextController::class, 'show' ])->name('episodes.next');
 
     Route::get('/{media_type}/{model}/tmdb/update', [ App\Http\Controllers\Media\Tmdb\UpdateController::class, 'show' ])->name('media.tmdb.update.show');
 

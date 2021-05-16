@@ -1,7 +1,10 @@
 <template>
 
     <li class="relative col-span-1 flex flex-col justify-between bg-white rounded-lg shadow" :itemtype="model.itemtype ? model.itemtype : false" :itemscope="model.itemtype ? '' : false">
-
+        <div class="absolute inset-0 bg-gray-200 bg-opacity-50 z-10 inline-flex flex-col items-center justify-center" v-if="loadNext" v-show="is_nexting">
+            <div><i class="fas fa-spinner fa-spin text-3xl"></i></div>
+            <div>Lade nächste Episode</div>
+        </div>
         <div class="rounded-t-lg h-2 w-full bg-yellow-900" :title="model.vote_average_formatted + '/10 ' + model.vote_count + ' Stimmen'" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
             <meta itemprop="bestRating" content="10">
             <meta itemprop="worstRating" content="0">
@@ -186,6 +189,7 @@
                     vote_count: this.model.vote_count,
                 },
                 is_watching: false,
+                is_nexting: false,
             };
         },
 
@@ -200,6 +204,27 @@
         },
 
         methods: {
+            next() {
+                var component = this;
+                component.is_nexting = true;
+                axios.get(component.model.next_path)
+                    .then( function (response) {
+                        console.log(response.data);
+                        if (true) {
+                            Vue.success('Du hast alle Episoden gesehen.');
+                            return;
+                        }
+
+                        component.$emit('nexted', response.data);
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                        Vue.error(component.model.name + 'Nächste Episode konnte nicht geladen werden.');
+                })
+                    .then(function () {
+                        component.is_nexting = false;
+                });
+            },
             watch() {
                 var component = this;
                 component.is_watching = true;
@@ -207,6 +232,9 @@
                     .then( function (response) {
                         Bus.$emit(component.model.watched_event_name, response.data);
                         Vue.success(component.model.name + ' zum ' + component.progress.watched_count + '. mal gesehen');
+                        if (component.loadNext) {
+                            component.next();
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);

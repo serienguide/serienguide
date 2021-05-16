@@ -132,4 +132,15 @@ class EpisodeTest extends TestCase
         $this->assertEquals('Folgen', $this->class_name::label(2));
         $this->assertEquals('Folgen', $this->class_name::label());
     }
+
+    /**
+     * @test
+     */
+    public function it_knows_its_next_path()
+    {
+        $model = $this->class_name::factory()->create();
+        $this->assertEquals(route('episodes.next', [
+            'episode' => $model->id,
+        ]), $model->next_path);
+    }
 }
