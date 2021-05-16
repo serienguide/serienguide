@@ -2384,6 +2384,11 @@ __webpack_require__.r(__webpack_exports__);
       required: false,
       "default": 'poster',
       type: String
+    },
+    loadNext: {
+      required: false,
+      "default": false,
+      type: Boolean
     }
   },
   computed: {
@@ -2572,6 +2577,10 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    var component = this;
+    Bus.$on(component.model.watched_event_name, function (data) {
+      component.fetch();
+    });
     this.fetch();
   },
   methods: {

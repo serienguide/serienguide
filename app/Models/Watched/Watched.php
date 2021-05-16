@@ -139,7 +139,7 @@ class Watched extends Model
     public function getRouteParameterAttribute() : array
     {
         return [
-            'media_type' => $this->watchable_type::ROUTE_NAME,
+            'media_type' => $this->watchable_type::mediaType(),
             'model' => $this->watchable_id,
             'watched' => $this->id,
         ];

@@ -82,6 +82,11 @@
         },
 
         mounted () {
+            var component = this;
+            Bus.$on(component.model.watched_event_name, function (data) {
+                component.fetch();
+            });
+
             this.fetch();
         },
 

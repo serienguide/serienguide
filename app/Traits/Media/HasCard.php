@@ -23,6 +23,11 @@ trait HasCard
         });
     }
 
+    public static function mediaType() : string
+    {
+        return Str::plural(strtolower(class_basename(self::class)));
+    }
+
     public function initializeHasCard()
     {
         //
@@ -71,13 +76,17 @@ trait HasCard
             'watched_path',
             'vote_average_formatted',
             'path',
-            'lists_path',
             'rate_path',
             'watched_event_name',
         ]);
 
         if ($this->is_episode) {
             $this->show->append('path');
+        }
+        else {
+            $this->append([
+                'lists_path',
+            ]);
         }
 
         return $this;

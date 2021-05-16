@@ -19,7 +19,8 @@ Route::get('/', function () {
 
 Route::get('/card-test', function () {
     return view('movies.vue')
-        ->with('movies', App\Models\Movies\Movie::orderBy('name', 'ASC')->take(1)->latest()->get());
+        ->with('movies', App\Models\Movies\Movie::orderBy('name', 'ASC')->take(1)->latest()->get())
+        ->with('episodes', App\Models\Shows\Episodes\Episode::orderBy('name', 'ASC')->take(1)->latest()->get());
 });
 
 Route::get('/calendar/{year?}/{week?}', [App\Http\Controllers\Calendar\CalendarController::class, 'index'])->name('calendar.index');

@@ -111,6 +111,11 @@
                 default: 'poster',
                 type: String,
             },
+            loadNext: {
+                required: false,
+                default: false,
+                type: Boolean,
+            },
         },
 
         computed: {

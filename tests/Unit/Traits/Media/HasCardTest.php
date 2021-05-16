@@ -19,7 +19,7 @@ class HasCardTest extends TestCase
     /**
      * @test
      */
-    public function it_has_ist_class_name()
+    public function it_has_its_class_name()
     {
         $class_names = [
             'episode',
@@ -98,6 +98,25 @@ class HasCardTest extends TestCase
             $model = $class_name::cardForUser($this->user->id)->find($model->id);
             $this->assertEquals($this->user->id, $model->card_user_id);
             $this->assertCount(1, $model->user_ratings);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_its_media_type()
+    {
+        $media_types = [
+            'episodes',
+            'movies',
+            'shows',
+        ];
+
+        foreach ($this->class_names as $key => $class_name)
+        {
+            $model = $class_name::factory()->create();
+            $this->assertEquals($media_types[$key], $model->media_type);
+            $this->assertEquals($media_types[$key], $class_name::mediaType());
         }
     }
 }

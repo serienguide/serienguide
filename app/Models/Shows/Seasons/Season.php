@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Season extends Model
 {
@@ -73,6 +74,16 @@ class Season extends Model
             'percent' => 0,
             'watchable_count' => $watchable_count,
         ];
+    }
+
+    public function getClassNameAttribute() : string
+    {
+        return strtolower(class_basename($this));
+    }
+
+    public function getMediaTypeAttribute() : string
+    {
+        return Str::plural($this->class_name);
     }
 
     public function show() : BelongsTo
