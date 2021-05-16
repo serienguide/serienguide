@@ -24,10 +24,11 @@ class Watched extends Model
     const VIEW_PATH = 'watched';
 
     protected $appends = [
+        'class_name',
         'created_at_formatted',
-        'watched_at_formatted',
-        'watched_at_diff_for_humans',
         'path',
+        'watched_at_diff_for_humans',
+        'watched_at_formatted',
     ];
 
     protected $casts = [
@@ -107,6 +108,11 @@ class Watched extends Model
     public function isDeletable() : bool
     {
         return true;
+    }
+
+    public function getClassNameAttribute() : string
+    {
+        return strtolower(class_basename($this));
     }
 
     public function getWatchedAtFormattedAttribute() : string

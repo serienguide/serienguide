@@ -16,7 +16,7 @@
             <div class="flex-grow"></div>
             <rating :model="model" @rated="rated($event)"></rating>
             <lists :model="model" v-if="! model.is_episode"></lists>
-            <watched :model="model" v-if="! model.is_episode"></watched>
+            <watched :model="model" v-if="! model.is_show"></watched>
 
         </header>
 
@@ -24,6 +24,23 @@
             <a class="" :href="(model.is_episode ? model.show.path : model.path)" :title="model.name">
 
                 <img loading="lazy" :src="(imgType == 'poster' ? model.poster_url : model.backdrop_url)" itemprop="image" />
+
+                <div v-if="action != null">
+                    <div class="absolute left-0 right-0 bottom-0 h-24" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);"></div>
+                        <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center" v-if="action.class_name == 'watched'">
+                            <a class="inline-flex items-center" :href="action.user.profile_path" :title="action.user.name + ' hat ' + model.name + ' ' + action.watched_at_diff_for_humans + ' am ' + action.watched_at_formatted + ' gesehen'">
+                                <img class="h-8 w-8 rounded-full ring-2 ring-white" :src="action.user.profile_photo_url" alt="">
+                                <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-check"></i></div>
+                            </a>
+                        </div>
+                        <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center" v-else-if="action.class_name == 'rating'">
+                            <a class="inline-flex items-center" :href="action.user.profile_path" :title="action.user.name + ' hat ' + model.name + ' ' + action.created_at_diff_for_humans + ' am ' + action.created_at_formatted + ' mit ' + action.rating + ' Punkten bewertet'">
+                                <img class="h-8 w-8 rounded-full ring-2 ring-white" :src="action.user.profile_photo_url" alt="">
+                                <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-star text-yellow-400"></i></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
             </a>
 

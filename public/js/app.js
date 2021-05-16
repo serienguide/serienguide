@@ -2340,6 +2340,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -21092,7 +21109,7 @@ var render = function() {
                 ? _c("lists", { attrs: { model: _vm.model } })
                 : _vm._e(),
               _vm._v(" "),
-              !_vm.model.is_episode
+              !_vm.model.is_show
                 ? _c("watched", { attrs: { model: _vm.model } })
                 : _vm._e()
             ],
@@ -21119,7 +21136,103 @@ var render = function() {
                     : _vm.model.backdrop_url,
                 itemprop: "image"
               }
-            })
+            }),
+            _vm._v(" "),
+            _vm.action != null
+              ? _c("div", [
+                  _c("div", {
+                    staticClass: "absolute left-0 right-0 bottom-0 h-24",
+                    staticStyle: {
+                      "background-image":
+                        "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.action.class_name == "watched"
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "absolute bottom-8 left-0 right-0 inline-flex items-center justify-center"
+                        },
+                        [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "inline-flex items-center",
+                              attrs: {
+                                href: _vm.action.user.profile_path,
+                                title:
+                                  _vm.action.user.name +
+                                  " hat " +
+                                  _vm.model.name +
+                                  " " +
+                                  _vm.action.watched_at_diff_for_humans +
+                                  " am " +
+                                  _vm.action.watched_at_formatted +
+                                  " gesehen"
+                              }
+                            },
+                            [
+                              _c("img", {
+                                staticClass:
+                                  "h-8 w-8 rounded-full ring-2 ring-white",
+                                attrs: {
+                                  src: _vm.action.user.profile_photo_url,
+                                  alt: ""
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm._m(0)
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm.action.class_name == "rating"
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "absolute bottom-8 left-0 right-0 inline-flex items-center justify-center"
+                        },
+                        [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "inline-flex items-center",
+                              attrs: {
+                                href: _vm.action.user.profile_path,
+                                title:
+                                  _vm.action.user.name +
+                                  " hat " +
+                                  _vm.model.name +
+                                  " " +
+                                  _vm.action.created_at_diff_for_humans +
+                                  " am " +
+                                  _vm.action.created_at_formatted +
+                                  " mit " +
+                                  _vm.action.rating +
+                                  " Punkten bewertet"
+                              }
+                            },
+                            [
+                              _c("img", {
+                                staticClass:
+                                  "h-8 w-8 rounded-full ring-2 ring-white",
+                                attrs: {
+                                  src: _vm.action.user.profile_photo_url,
+                                  alt: ""
+                                }
+                              }),
+                              _vm._v(" "),
+                              _vm._m(1)
+                            ]
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              : _vm._e()
           ]
         )
       ]),
@@ -21277,7 +21390,34 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white"
+      },
+      [_c("i", { staticClass: "fas fa-check" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white"
+      },
+      [_c("i", { staticClass: "fas fa-star text-yellow-400" })]
+    )
+  }
+]
 render._withStripped = true
 
 

@@ -17,7 +17,9 @@ class Rating extends Model
     const VIEW_PATH = 'ratings';
 
     protected $appends = [
-        //
+        'class_name',
+        'created_at_formatted',
+        'created_at_diff_for_humans',
     ];
 
     protected $casts = [
@@ -38,6 +40,21 @@ class Rating extends Model
     public function isDeletable() : bool
     {
         return true;
+    }
+
+    public function getClassNameAttribute() : string
+    {
+        return strtolower(class_basename($this));
+    }
+
+    public function getCreatedAtFormattedAttribute() : string
+    {
+        return $this->created_at->format('d.m.Y H:i');
+    }
+
+    public function getCreatedAtDiffForHumansAttribute() : string
+    {
+        return $this->created_at->diffForHumans();
     }
 
     public function getRouteParameterAttribute() : array
