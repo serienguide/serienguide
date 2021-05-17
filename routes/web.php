@@ -76,6 +76,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/notifications', [ App\Http\Controllers\Users\NotificationController::class, 'index' ])->name('users.notifications.index');
 
+    Route::get('/users/followings/last-watched', [ App\Http\Controllers\Users\Followings\LastWatchedController::class, 'index' ])->name('users.followings.last-watched');
+
     Route::post('/users/{user}/follower', [ App\Http\Controllers\Users\FollowController::class, 'store' ])->name('users.follower.store');
     Route::delete('/users/{user}/follower', [ App\Http\Controllers\Users\FollowController::class, 'destroy' ])->name('users.follower.destroy');
 });

@@ -17,6 +17,6 @@
     </x-container>
 
     <x-container class="py-4">
-        @livewire('dashboard.following.last-watched', ['user' => Auth::user()])
+        <deck-following-last-watched index-path="{{ route('users.followings.last-watched') }}"></deck-following-last-watched>
     </x-container>
 </x-app-layout>

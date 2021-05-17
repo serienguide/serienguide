@@ -21,7 +21,7 @@ class ShowController extends Controller
             $models = Show::whereNotNull('slug')
                 ->search($request->input('query'))
                 ->orderBy('name', 'ASC')
-                ->paginate(18);
+                ->paginate(12);
 
             foreach ($models as $key => $model) {
                 $model->toCard();

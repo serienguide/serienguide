@@ -2244,6 +2244,63 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/following/last-watched.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/card/deck/following/last-watched.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _base_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../base.vue */ "./resources/js/components/card/deck/base.vue");
+/* harmony import */ var _mixins_deck_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../mixins/deck/base.js */ "./resources/js/mixins/deck/base.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    deckBase: _base_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  mixins: [_mixins_deck_base_js__WEBPACK_IMPORTED_MODULE_1__["baseMixin"]],
+  props: {
+    indexPath: {
+      required: true,
+      type: String
+    }
+  },
+  data: function data() {
+    return {
+      index_path: this.indexPath
+    };
+  },
+  methods: {//
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/movies/index.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/card/deck/movies/index.vue?vue&type=script&lang=js& ***!
@@ -2663,7 +2720,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _list_index_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./list/index.vue */ "./resources/js/components/card/list/index.vue");
 /* harmony import */ var _rating_show_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rating/show.vue */ "./resources/js/components/card/rating/show.vue");
 /* harmony import */ var _watched_index_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./watched/index.vue */ "./resources/js/components/card/watched/index.vue");
-//
 //
 //
 //
@@ -21626,6 +21682,71 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/following/last-watched.vue?vue&type=template&id=7a7627b2&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/card/deck/following/last-watched.vue?vue&type=template&id=7a7627b2& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("deck-base", {
+    attrs: {
+      models: _vm.models,
+      pagination: _vm.pagination,
+      "is-fetching": _vm.is_fetching,
+      "is-fetched": _vm.is_fetched,
+      "has-filter-search": false
+    },
+    on: {
+      paginating: function($event) {
+        _vm.filter.page = $event
+      }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "title",
+        fn: function() {
+          return [_vm._v("\n        Aktionen von Freunden\n    ")]
+        },
+        proxy: true
+      },
+      {
+        key: "card",
+        fn: function() {
+          return _vm._l(_vm.models, function(model, index) {
+            return _c("card-show", {
+              key: model.id,
+              attrs: { action: model, model: model.watchable }
+            })
+          })
+        },
+        proxy: true
+      },
+      {
+        key: "empty",
+        fn: function() {
+          return [_vm._v("\n        Du folgst noch niemandem.\n    ")]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/movies/index.vue?vue&type=template&id=7de00ef8&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/card/deck/movies/index.vue?vue&type=template&id=7de00ef8& ***!
@@ -35695,6 +35816,7 @@ Vue.component('card-show', __webpack_require__(/*! ./components/card/show.vue */
 Vue.component('deck-base', __webpack_require__(/*! ./components/card/deck/base.vue */ "./resources/js/components/card/deck/base.vue")["default"]);
 Vue.component('deck-calendar-index', __webpack_require__(/*! ./components/card/deck/calendar/index.vue */ "./resources/js/components/card/deck/calendar/index.vue")["default"]);
 Vue.component('deck-episodes-next', __webpack_require__(/*! ./components/card/deck/episodes/next.vue */ "./resources/js/components/card/deck/episodes/next.vue")["default"]);
+Vue.component('deck-following-last-watched', __webpack_require__(/*! ./components/card/deck/following/last-watched.vue */ "./resources/js/components/card/deck/following/last-watched.vue")["default"]);
 Vue.component('deck-movies-index', __webpack_require__(/*! ./components/card/deck/movies/index.vue */ "./resources/js/components/card/deck/movies/index.vue")["default"]);
 Vue.component('deck-shows-index', __webpack_require__(/*! ./components/card/deck/shows/index.vue */ "./resources/js/components/card/deck/shows/index.vue")["default"]);
 Vue.component('media-imports-tmdb-index', __webpack_require__(/*! ./components/media/imports/tmdb/index.vue */ "./resources/js/components/media/imports/tmdb/index.vue")["default"]);
@@ -36007,6 +36129,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_next_vue_vue_type_template_id_436a1148___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_next_vue_vue_type_template_id_436a1148___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/card/deck/following/last-watched.vue":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/card/deck/following/last-watched.vue ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _last_watched_vue_vue_type_template_id_7a7627b2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./last-watched.vue?vue&type=template&id=7a7627b2& */ "./resources/js/components/card/deck/following/last-watched.vue?vue&type=template&id=7a7627b2&");
+/* harmony import */ var _last_watched_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./last-watched.vue?vue&type=script&lang=js& */ "./resources/js/components/card/deck/following/last-watched.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _last_watched_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _last_watched_vue_vue_type_template_id_7a7627b2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _last_watched_vue_vue_type_template_id_7a7627b2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/card/deck/following/last-watched.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/card/deck/following/last-watched.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/card/deck/following/last-watched.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_last_watched_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./last-watched.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/following/last-watched.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_last_watched_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/card/deck/following/last-watched.vue?vue&type=template&id=7a7627b2&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/card/deck/following/last-watched.vue?vue&type=template&id=7a7627b2& ***!
+  \*****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_last_watched_vue_vue_type_template_id_7a7627b2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./last-watched.vue?vue&type=template&id=7a7627b2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/following/last-watched.vue?vue&type=template&id=7a7627b2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_last_watched_vue_vue_type_template_id_7a7627b2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_last_watched_vue_vue_type_template_id_7a7627b2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
