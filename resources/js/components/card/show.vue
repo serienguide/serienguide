@@ -209,8 +209,7 @@
                 component.is_nexting = true;
                 axios.get(component.model.next_path)
                     .then( function (response) {
-                        console.log(response.data);
-                        if (true) {
+                        if (! response.data) {
                             Vue.success('Du hast alle Episoden gesehen.');
                             return;
                         }

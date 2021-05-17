@@ -55,7 +55,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/apis/trakt/watched_history/{provider}', [ App\Http\Controllers\Apis\Trakt\WatchedHistoryController::class, 'show' ])->name('apis.trakt.watched_history.show');
 
-    Route::get('/episodes/{episode}/next', [ App\Http\Controllers\Shows\Episodes\NextController::class, 'show' ])->name('episodes.next');
+    Route::get('/episodes/next', [ App\Http\Controllers\Shows\Episodes\NextController::class, 'index' ])->name('episodes.next.index');
+    Route::get('/episodes/{episode}/next', [ App\Http\Controllers\Shows\Episodes\NextController::class, 'show' ])->name('episodes.next.show');
 
     Route::get('/{media_type}/{model}/tmdb/update', [ App\Http\Controllers\Media\Tmdb\UpdateController::class, 'show' ])->name('media.tmdb.update.show');
 

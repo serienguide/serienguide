@@ -28,11 +28,13 @@
         </div>
         <ul class="grid gap-6 mb-3" :class="(isLine ? 'grid-rows-1 grid-cols-6-3/4 sm:grid-cols-6-1/3 md:grid-cols-6-1/4 lg:grid-cols-6 xl:grid-cols-6 overflow-auto' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6')" v-else-if="models.length">
             <slot name="card">
-                <card-show :model="model" :key="model.id" :load-next="true" v-for="(model, index) in models"></card-show>
+                <card-show :model="model" :key="model.id" :load-next="true" v-for="(model, index) in models" @nexted="nexted(index, $event)"></card-show>
             </slot>
         </ul>
 
-        <pagination :pagination="pagination" @paginating="$emit('paginating', $event)"></pagination>
+        <slot name="pagination">
+            <pagination :pagination="pagination" @paginating="$emit('paginating', $event)"></pagination>
+        </slot>
 
     </div>
 
@@ -90,6 +92,15 @@
                     query: '',
                 },
             };
+        },
+
+        methods: {
+            nexted(index, model) {
+                this.$emit('nexted', {
+                    index: index,
+                    model: model,
+                });
+            },
         },
 
     };

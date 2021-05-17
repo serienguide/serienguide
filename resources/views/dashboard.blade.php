@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-container class="py-4">
-        @livewire('shows.episodes.next')
+        <deck-episodes-next index-path="{{ route('episodes.next.index') }}"></deck-episodes-next>
     </x-container>
 
     <x-container class="py-4">

@@ -17,6 +17,7 @@ export const baseMixin = {
                 page: 1,
             },
             is_fetching: false,
+            is_fetched: false,
             models: [],
             pagination: {
                 nextPageUrl: null,
@@ -44,6 +45,7 @@ export const baseMixin = {
                 .then(function (response) {
                     component.fetched(response);
                     component.is_fetching = false;
+                    component.is_fetched = true;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -60,6 +62,9 @@ export const baseMixin = {
             this.pagination.from = response.data.from;
             this.pagination.to = response.data.to;
             this.pagination.total = response.data.total;
+        },
+        nexted({index, model}) {
+            Vue.set(this.models, index, model);
         },
         searching(query) {
             this.filter.query = query;

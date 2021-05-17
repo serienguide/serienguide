@@ -1989,6 +1989,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2034,6 +2036,14 @@ __webpack_require__.r(__webpack_exports__);
         query: ''
       }
     };
+  },
+  methods: {
+    nexted: function nexted(index, model) {
+      this.$emit('nexted', {
+        index: index,
+        model: model
+      });
+    }
   }
 });
 
@@ -2147,11 +2157,63 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _base_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../base.vue */ "./resources/js/components/card/deck/base.vue");
+/* harmony import */ var _mixins_deck_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../mixins/deck/base.js */ "./resources/js/mixins/deck/base.js");
 //
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    deckBase: _base_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  mixins: [_mixins_deck_base_js__WEBPACK_IMPORTED_MODULE_1__["baseMixin"]],
+  props: {
+    indexPath: {
+      required: true,
+      type: String
+    }
+  },
+  data: function data() {
+    return {
+      index_path: this.indexPath
+    };
+  },
+  methods: {
+    fetched: function fetched(response) {
+      this.models = response.data;
+    }
+  }
+});
 
 /***/ }),
 
@@ -2762,9 +2824,7 @@ __webpack_require__.r(__webpack_exports__);
       var component = this;
       component.is_nexting = true;
       axios.get(component.model.next_path).then(function (response) {
-        console.log(response.data);
-
-        if (true) {
+        if (!response.data) {
           Vue.success('Du hast alle Episoden gesehen.');
           return;
         }
@@ -21121,7 +21181,12 @@ var render = function() {
                 _vm._l(_vm.models, function(model, index) {
                   return _c("card-show", {
                     key: model.id,
-                    attrs: { model: model, "load-next": true }
+                    attrs: { model: model, "load-next": true },
+                    on: {
+                      nexted: function($event) {
+                        return _vm.nexted(index, $event)
+                      }
+                    }
                   })
                 })
               )
@@ -21130,16 +21195,18 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _c("pagination", {
-        attrs: { pagination: _vm.pagination },
-        on: {
-          paginating: function($event) {
-            return _vm.$emit("paginating", $event)
+      _vm._t("pagination", [
+        _c("pagination", {
+          attrs: { pagination: _vm.pagination },
+          on: {
+            paginating: function($event) {
+              return _vm.$emit("paginating", $event)
+            }
           }
-        }
-      })
+        })
+      ])
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -21352,7 +21419,122 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("deck-base", {
+    attrs: {
+      models: _vm.models,
+      pagination: _vm.pagination,
+      "is-fetching": _vm.is_fetching,
+      "has-filter-search": false,
+      "is-line": true,
+      "load-next": true
+    },
+    on: {
+      nexted: function($event) {
+        return _vm.nexted($event)
+      }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "pagination",
+        fn: function() {
+          return [
+            _c(
+              "nav",
+              {
+                staticClass: "flex items-center justify-between",
+                attrs: {
+                  role: "navigation",
+                  "aria-label": "Pagination Navigation"
+                }
+              },
+              [
+                _c("div", { staticClass: "flex justify-end flex-1" }, [
+                  _vm.filter.page > 1
+                    ? _c("span", [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150",
+                            on: {
+                              click: function($event) {
+                                _vm.filter.page--
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                staticClass: "w-5 h-5",
+                                attrs: {
+                                  fill: "currentColor",
+                                  viewBox: "0 0 20 20"
+                                }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    "fill-rule": "evenodd",
+                                    d:
+                                      "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z",
+                                    "clip-rule": "evenodd"
+                                  }
+                                })
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.models.length == 6
+                    ? _c("span", [
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "relative inline-flex items-center px-4 py-2 ml-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150",
+                            on: {
+                              click: function($event) {
+                                _vm.filter.page++
+                              }
+                            }
+                          },
+                          [
+                            _c(
+                              "svg",
+                              {
+                                staticClass: "w-5 h-5",
+                                attrs: {
+                                  fill: "currentColor",
+                                  viewBox: "0 0 20 20"
+                                }
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    "fill-rule": "evenodd",
+                                    d:
+                                      "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z",
+                                    "clip-rule": "evenodd"
+                                  }
+                                })
+                              ]
+                            )
+                          ]
+                        )
+                      ])
+                    : _vm._e()
+                ])
+              ]
+            )
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -36580,6 +36762,7 @@ var baseMixin = {
         page: 1
       },
       is_fetching: false,
+      is_fetched: false,
       models: [],
       pagination: {
         nextPageUrl: null,
@@ -36604,6 +36787,7 @@ var baseMixin = {
       }).then(function (response) {
         component.fetched(response);
         component.is_fetching = false;
+        component.is_fetched = true;
       })["catch"](function (error) {
         console.log(error);
         Vue.error('Datensätze konnten nicht geladen werden.');
@@ -36619,6 +36803,11 @@ var baseMixin = {
       this.pagination.from = response.data.from;
       this.pagination.to = response.data.to;
       this.pagination.total = response.data.total;
+    },
+    nexted: function nexted(_ref) {
+      var index = _ref.index,
+          model = _ref.model;
+      Vue.set(this.models, index, model);
     },
     searching: function searching(query) {
       this.filter.query = query;

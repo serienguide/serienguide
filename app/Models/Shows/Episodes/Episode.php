@@ -105,7 +105,7 @@ class Episode extends Model
 
     public function getNextPathAttribute()
     {
-        return route('episodes.next', [
+        return route('episodes.next.show', [
             'episode' => $this->id,
         ]);
     }

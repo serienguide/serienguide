@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Shows;
 
+use App\Models\Shows\Show;
 use Illuminate\Console\Command;
 
 class SetAbsoluteNumbersCommand extends Command
