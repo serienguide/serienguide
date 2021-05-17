@@ -28,8 +28,8 @@
 
                 @if ($model->is_movie)
                     <div class="flex items-center">
-                        <div class="w-1/2 md:w-1/6 font-bold">Release</div>
-                        <div class="w-1/2 md:w-5/6" itemprop="dateCreated" content="{{ $model->released_at }}">{{ is_null($model->released_at) ? 'TBA' : $model->released_at->format('d.m.Y') }}</div>
+                        <div class="w-1/2 md:w-1/4 lg:w-1/6 font-bold">Release</div>
+                        <div class="w-1/2 md:w-3/4 lg:w-5/6" itemprop="dateCreated" content="{{ $model->released_at }}">{{ is_null($model->released_at) ? 'TBA' : $model->released_at->format('d.m.Y') }}</div>
                     </div>
                 @elseif ($model->is_show)
                     <div class="flex items-center">

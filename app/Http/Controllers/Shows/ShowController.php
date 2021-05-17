@@ -18,16 +18,16 @@ class ShowController extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            $shows = Show::whereNotNull('slug')
+            $models = Show::whereNotNull('slug')
                 ->search($request->input('query'))
                 ->orderBy('name', 'ASC')
                 ->paginate(18);
 
-            foreach ($shows as $key => $show) {
-                $show->toCard();
+            foreach ($models as $key => $model) {
+                $model->toCard();
             }
 
-            return $shows;
+            return $models;
         }
 
         return view($this->base_view_path . '.index')

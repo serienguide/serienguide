@@ -18,8 +18,16 @@ class MovieController extends Controller
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
-            return Movie::orderBy('title', 'ASC')
-                ->paginate();
+            $models = Movie::whereNotNull('slug')
+                ->search($request->input('query'))
+                ->orderBy('name', 'ASC')
+                ->paginate(18);
+
+            foreach ($models as $key => $model) {
+                $model->toCard();
+            }
+
+            return $models;
         }
 
         return view($this->base_view_path . '.index')

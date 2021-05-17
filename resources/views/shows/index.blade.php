@@ -3,6 +3,6 @@
         Serien
     </x-slot>
     <x-container class="py-4">
-        <deck-base></deck-base>
+        <deck-shows-index></deck-shows-index>
     </x-container>
 </x-app-layout>

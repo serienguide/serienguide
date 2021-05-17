@@ -3,7 +3,7 @@
         Kalender
     </x-slot>
     <x-container class="py-4">
-        @livewire('calendar.index', ['start_of_week' => $start_of_week])
+        <deck-calendar-index index-path="{{ route('calendar.index', ['year' => $start_of_week->year, 'week' => $start_of_week->week]) }}" title="{{ $title }}" :watchable_types="{{ json_encode($watchable_types) }}"></deck-calendar-index>
     </x-container>
 
     <div class="fixed opacity-25 hover:opacity-100" style="top:35%; right: 25px;">

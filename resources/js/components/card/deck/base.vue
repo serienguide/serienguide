@@ -2,13 +2,23 @@
 
     <div>
 
-        <div class="mb-3">
+        <div class="mb-3 pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <slot name="title">
 
-            <filter-search v-model="filter.query" @input="search()"></filter-search>
+                    <filter-search v-model="filter.query" @input="$emit('searching', filter.query)" v-if="hasFilterSearch"></filter-search>
 
+                </slot>
+            </h3>
+            <div class="mt-3 flex sm:mt-0 sm:ml-4">
+
+                <slot name="filter"></slot>
+                <slot name="actions"></slot>
+
+            </div>
         </div>
 
-        <div class="p-5" v-if="is_fetching">
+        <div class="p-5" v-if="isFetching">
             <center>
                 <span class="text-3xl">
                     <i class="fas fa-spinner fa-spin"></i><br />
@@ -16,11 +26,13 @@
                 Lade Daten..
             </center>
         </div>
-        <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mb-3" v-else-if="models.length">
-            <card-show :model="model" :key="model.id" :load-next="true" v-for="(model, index) in models"></card-show>
+        <ul class="grid gap-6 mb-3" :class="(isLine ? 'grid-rows-1 grid-cols-6-3/4 sm:grid-cols-6-1/3 md:grid-cols-6-1/4 lg:grid-cols-6 xl:grid-cols-6 overflow-auto' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6')" v-else-if="models.length">
+            <slot name="card">
+                <card-show :model="model" :key="model.id" :load-next="true" v-for="(model, index) in models"></card-show>
+            </slot>
         </ul>
 
-        <pagination :pagination="pagination" @paginating="filter.page = $event"></pagination>
+        <pagination :pagination="pagination" @paginating="$emit('paginating', $event)"></pagination>
 
     </div>
 
@@ -29,7 +41,7 @@
 <script type="text/javascript">
     import card from '../show.vue';
     import filterSearch from '../../filter/search.vue';
-    import pagination from '../../pagination.vue';
+    import pagination from '../../pagination/index.vue';
 
     export default {
 
@@ -44,76 +56,40 @@
         ],
 
         props: {
-            //
-        },
-
-        computed: {
-            page() {
-                return this.filter.page;
+            models: {
+                required: true,
+                type: Array,
             },
+            pagination: {
+                required: false,
+                type: Object,
+                default() {
+                    return null;
+                },
+            },
+            isFetching: {
+                required: true,
+                default: false,
+                type: Boolean,
+            },
+            isLine: {
+                required: false,
+                default: false,
+                type: Boolean,
+            },
+            hasFilterSearch: {
+                required: false,
+                default: false,
+                type: Boolean,
+            }
         },
 
-        data () {
+        data() {
             return {
                 filter: {
                     query: '',
-                    page: 1,
-                },
-                is_fetching: false,
-                models: [],
-                pagination: {
-                    nextPageUrl: null,
-                    prevPageUrl: null,
-                    lastPage: 0,
-                    currentPage: 0,
-                    from: 0,
-                    to: 0,
-                    total: 0,
                 },
             };
-        },
-
-        mounted() {
-            this.fetch();
-        },
-
-        methods: {
-            fetch() {
-                var component = this;
-                component.is_fetching = true;
-                axios.get('/shows', {
-                    params: component.filter
-                })
-                    .then(function (response) {
-                        component.fetched(response);
-                        component.is_fetching = false;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                        Vue.error('Datensätze konnten nicht geladen werden.');
-                    });
-            },
-            fetched(response) {
-                this.models = response.data.data;
-                this.filter.page = response.data.current_page;
-                this.pagination.nextPageUrl = response.data.next_page_url;
-                this.pagination.prevPageUrl = response.data.prev_page_url;
-                this.pagination.lastPage = response.data.last_page;
-                this.pagination.currentPage = response.data.current_page;
-                this.pagination.from = response.data.from;
-                this.pagination.to = response.data.to;
-                this.pagination.total = response.data.total;
-            },
-            search() {
-                this.filter.page = 1;
-                this.fetch();
-            },
-        },
-
-        watch: {
-            page () {
-                this.fetch();
-            },
         },
 
     };
