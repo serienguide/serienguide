@@ -77,6 +77,7 @@ class User extends Authenticatable
     protected $appends = [
         'lists_path',
         'profile_photo_url',
+        'profile_path',
     ];
 
     /**
