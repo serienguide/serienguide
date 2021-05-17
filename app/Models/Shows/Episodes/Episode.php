@@ -42,6 +42,7 @@ class Episode extends Model
     ];
 
     protected $appends = [
+        'first_aired_at_formatted',
         'next_path',
     ];
 
@@ -123,6 +124,15 @@ class Episode extends Model
     public function getRuntimeAttribute()
     {
         return $this->show->runtime;
+    }
+
+    public function getFirstAiredAtFormattedAttribute() : string
+    {
+        if (is_null($this->first_aired_at)) {
+            return '';
+        }
+
+        return $this->first_aired_at->format('d.m.Y');
     }
 
     public function getcreatePathAttribute()

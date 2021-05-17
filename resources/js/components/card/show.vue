@@ -30,19 +30,44 @@
 
                 <div v-if="action != null">
                     <div class="absolute left-0 right-0 bottom-0 h-24" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);"></div>
-                        <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center" v-if="action.class_name == 'watched'">
-                            <a class="inline-flex items-center" :href="action.user.profile_path" :title="action.user.name + ' hat ' + model.name + ' ' + action.watched_at_diff_for_humans + ' am ' + action.watched_at_formatted + ' gesehen'">
-                                <img class="h-8 w-8 rounded-full ring-2 ring-white" :src="action.user.profile_photo_url" alt="">
-                                <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-check"></i></div>
-                            </a>
-                        </div>
-                        <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center" v-else-if="action.class_name == 'rating'">
-                            <a class="inline-flex items-center" :href="action.user.profile_path" :title="action.user.name + ' hat ' + model.name + ' ' + action.created_at_diff_for_humans + ' am ' + action.created_at_formatted + ' mit ' + action.rating + ' Punkten bewertet'">
-                                <img class="h-8 w-8 rounded-full ring-2 ring-white" :src="action.user.profile_photo_url" alt="">
-                                <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-star text-yellow-400"></i></div>
-                            </a>
-                        </div>
+                    <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center" v-if="action.class_name == 'watched'">
+                        <a class="inline-flex items-center" :href="action.user.profile_path" :title="action.user.name + ' hat ' + model.name + ' ' + action.watched_at_diff_for_humans + ' am ' + action.watched_at_formatted + ' gesehen'">
+                            <img class="h-8 w-8 rounded-full ring-2 ring-white" :src="action.user.profile_photo_url" alt="">
+                            <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-check"></i></div>
+                        </a>
                     </div>
+                    <div class="absolute bottom-8 left-0 right-0 inline-flex items-center justify-center" v-else-if="action.class_name == 'rating'">
+                        <a class="inline-flex items-center" :href="action.user.profile_path" :title="action.user.name + ' hat ' + model.name + ' ' + action.created_at_diff_for_humans + ' am ' + action.created_at_formatted + ' mit ' + action.rating + ' Punkten bewertet'">
+                            <img class="h-8 w-8 rounded-full ring-2 ring-white" :src="action.user.profile_photo_url" alt="">
+                            <div class="-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white" ><i class="fas fa-star text-yellow-400"></i></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="absolute bottom-3 left-3" v-else>
+                    <template v-if="model.is_episode">
+
+                        <template v-if="model.episode_number == 1">
+
+                            <span class="inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white" v-if="model.season.season_number == 1">
+                                Serienstart
+                            </span>
+
+                            <span class="inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white" v-else>
+                                Staffelstart
+                            </span>
+
+                        </template>
+
+                        <div class="flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800" :class="(model.first_aired_de_at == null ? 'bg-blue-100 text-blue-800' : 'bg-yellow-300 text-yellow-800')" v-if="model.first_aired_at">
+                            {{ model.first_aired_at_formatted }} <span v-if="(model.first_aired_de_at != null && model.show.air_time)">{{ model.show.air_time.substring(0, -3) }}</span>
+                        </div>
+
+                    </template>
+                    <template v-else-if="model.is_movie">
+                        <div class="flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800" v-if="model.released_at">
+                            {{ model.released_at_formatted }}
+                        </div>
+                    </template>
                 </div>
 
             </a>

@@ -2801,6 +2801,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3518,7 +3544,7 @@ __webpack_require__.r(__webpack_exports__);
         return true;
       }
 
-      if (page <= this.filter.page + 2 && page >= this.filter.page - 2) {
+      if (page <= this.pagination.currentPage + 2 && page >= this.pagination.currentPage - 2) {
         return true;
       }
 
@@ -21767,7 +21793,7 @@ var render = function() {
       models: _vm.models,
       pagination: _vm.pagination,
       "is-fetching": _vm.is_fetching,
-      "is-fetched": "is_fetched",
+      "is-fetched": _vm.is_fetched,
       "has-filter-search": true
     },
     on: {
@@ -21816,7 +21842,7 @@ var render = function() {
       models: _vm.models,
       pagination: _vm.pagination,
       "is-fetching": _vm.is_fetching,
-      "is-fetched": "is_fetched",
+      "is-fetched": _vm.is_fetched,
       "has-filter-search": true
     },
     on: {
@@ -22500,7 +22526,101 @@ var render = function() {
                       )
                     : _vm._e()
                 ])
-              : _vm._e()
+              : _c(
+                  "div",
+                  { staticClass: "absolute bottom-3 left-3" },
+                  [
+                    _vm.model.is_episode
+                      ? [
+                          _vm.model.episode_number == 1
+                            ? [
+                                _vm.model.season.season_number == 1
+                                  ? _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white"
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                            Serienstart\n                        "
+                                        )
+                                      ]
+                                    )
+                                  : _c(
+                                      "span",
+                                      {
+                                        staticClass:
+                                          "inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white"
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                            Staffelstart\n                        "
+                                        )
+                                      ]
+                                    )
+                              ]
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.model.first_aired_at
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800",
+                                  class:
+                                    _vm.model.first_aired_de_at == null
+                                      ? "bg-blue-100 text-blue-800"
+                                      : "bg-yellow-300 text-yellow-800"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(
+                                        _vm.model.first_aired_at_formatted
+                                      ) +
+                                      " "
+                                  ),
+                                  _vm.model.first_aired_de_at != null &&
+                                  _vm.model.show.air_time
+                                    ? _c("span", [
+                                        _vm._v(
+                                          _vm._s(
+                                            _vm.model.show.air_time.substring(
+                                              0,
+                                              -3
+                                            )
+                                          )
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ]
+                              )
+                            : _vm._e()
+                        ]
+                      : _vm.model.is_movie
+                      ? [
+                          _vm.model.released_at
+                            ? _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800"
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(_vm.model.released_at_formatted) +
+                                      "\n                    "
+                                  )
+                                ]
+                              )
+                            : _vm._e()
+                        ]
+                      : _vm._e()
+                  ],
+                  2
+                )
           ]
         )
       ]),

@@ -62,7 +62,7 @@ class Movie extends Model
     ];
 
     protected $appends = [
-        //
+        'released_at_formatted',
     ];
 
     protected $casts = [
@@ -236,6 +236,15 @@ class Movie extends Model
         return [
             Str::singular($this->base_route) => $this->slug
         ];
+    }
+
+    public function getReleasedAtFormattedAttribute() : string
+    {
+        if (is_null($this->released_at)) {
+            return '';
+        }
+
+        return $this->released_at->format('d.m.Y');
     }
 
     public function getHtmlAttributesAttribute()

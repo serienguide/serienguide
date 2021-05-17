@@ -98,7 +98,7 @@
                     return true;
                 }
 
-                if (page <= this.filter.page + 2 && page >= this.filter.page - 2) {
+                if (page <= this.pagination.currentPage + 2 && page >= this.pagination.currentPage - 2) {
                     return true;
                 }
 
