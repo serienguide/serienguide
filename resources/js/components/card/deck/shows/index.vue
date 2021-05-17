@@ -1,6 +1,12 @@
 <template>
 
-    <deck-base :models="models" :pagination="pagination" :is-fetching="is_fetching" :has-filter-search="true" @paginating="filter.page = $event" @searching="searching($event)"></deck-base>
+    <deck-base :models="models" :pagination="pagination" :is-fetching="is_fetching" is-fetched="is_fetched" :has-filter-search="true" @paginating="filter.page = $event" @searching="searching($event)">
+
+        <template v-slot:empty>
+            Keine Serien vorhanden.
+        </template>
+
+    </deck-base>
 
 </template>
 

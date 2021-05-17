@@ -62,8 +62,10 @@ class CalendarController extends Controller
                 $daily_runtimes[$last_date->format('Ymd')] += $model->runtime;
             }
 
-            $dates[$last_date->format('Ymd')]['h'] = floor($dates[$last_date->format('Ymd')]['runtime'] / 60);
-            $dates[$last_date->format('Ymd')]['m'] = $dates[$last_date->format('Ymd')]['runtime'] % 60;
+            if ($models->count()) {
+                $dates[$last_date->format('Ymd')]['h'] = floor($dates[$last_date->format('Ymd')]['runtime'] / 60);
+                $dates[$last_date->format('Ymd')]['m'] = $dates[$last_date->format('Ymd')]['runtime'] % 60;
+            }
 
             return [
                 'models' => $models,

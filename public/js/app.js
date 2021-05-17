@@ -1991,6 +1991,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2016,6 +2026,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     isFetching: {
       required: true,
+      "default": false,
+      type: Boolean
+    },
+    isFetched: {
+      required: false,
       "default": false,
       type: Boolean
     },
@@ -2060,6 +2075,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _base_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../base.vue */ "./resources/js/components/card/deck/base.vue");
 /* harmony import */ var _mixins_deck_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../mixins/deck/base.js */ "./resources/js/mixins/deck/base.js");
+//
+//
+//
+//
 //
 //
 //
@@ -2190,6 +2209,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2234,6 +2261,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2261,6 +2294,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _base_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../base.vue */ "./resources/js/components/card/deck/base.vue");
 /* harmony import */ var _mixins_deck_base_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../mixins/deck/base.js */ "./resources/js/mixins/deck/base.js");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -21193,6 +21232,23 @@ var render = function() {
             ],
             2
           )
+        : _vm.isFetched && _vm.models.length == 0
+        ? _c("div", { staticClass: "p-2 rounded-lg bg-gray-200 mb-3" }, [
+            _c("div", { staticClass: "flex items-center justify-between" }, [
+              _c(
+                "p",
+                { staticClass: "font-medium truncate text-center w-full" },
+                [
+                  _vm._t("empty", [
+                    _vm._v(
+                      "\n                    Keine Daten vorhanden\n                "
+                    )
+                  ])
+                ],
+                2
+              )
+            ])
+          ])
         : _vm._e(),
       _vm._v(" "),
       _vm._t("pagination", [
@@ -21236,6 +21292,7 @@ var render = function() {
       models: _vm.models,
       pagination: _vm.pagination,
       "is-fetching": _vm.is_fetching,
+      "is-fetched": _vm.is_fetched,
       "has-filter-search": true
     },
     on: {
@@ -21393,6 +21450,13 @@ var render = function() {
           ]
         },
         proxy: true
+      },
+      {
+        key: "empty",
+        fn: function() {
+          return [_vm._v("\n        Keine Ausstrahlungen vorhanden.\n    ")]
+        },
+        proxy: true
       }
     ])
   })
@@ -21424,6 +21488,7 @@ var render = function() {
       models: _vm.models,
       pagination: _vm.pagination,
       "is-fetching": _vm.is_fetching,
+      "is-fetched": _vm.is_fetched,
       "has-filter-search": false,
       "is-line": true,
       "load-next": true
@@ -21434,6 +21499,13 @@ var render = function() {
       }
     },
     scopedSlots: _vm._u([
+      {
+        key: "title",
+        fn: function() {
+          return [_vm._v("\n        Nächste Folgen\n    ")]
+        },
+        proxy: true
+      },
       {
         key: "pagination",
         fn: function() {
@@ -21532,6 +21604,17 @@ var render = function() {
           ]
         },
         proxy: true
+      },
+      {
+        key: "empty",
+        fn: function() {
+          return [
+            _vm._v(
+              "\n        Du hast noch keine Serien gesehen. Hier siehst Du deine nächsten Episoden.\n    "
+            )
+          ]
+        },
+        proxy: true
       }
     ])
   })
@@ -21563,6 +21646,7 @@ var render = function() {
       models: _vm.models,
       pagination: _vm.pagination,
       "is-fetching": _vm.is_fetching,
+      "is-fetched": "is_fetched",
       "has-filter-search": true
     },
     on: {
@@ -21572,7 +21656,16 @@ var render = function() {
       searching: function($event) {
         return _vm.searching($event)
       }
-    }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "empty",
+        fn: function() {
+          return [_vm._v("\n        Keine Filme vorhanden.\n    ")]
+        },
+        proxy: true
+      }
+    ])
   })
 }
 var staticRenderFns = []
@@ -21602,6 +21695,7 @@ var render = function() {
       models: _vm.models,
       pagination: _vm.pagination,
       "is-fetching": _vm.is_fetching,
+      "is-fetched": "is_fetched",
       "has-filter-search": true
     },
     on: {
@@ -21611,7 +21705,16 @@ var render = function() {
       searching: function($event) {
         return _vm.searching($event)
       }
-    }
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "empty",
+        fn: function() {
+          return [_vm._v("\n        Keine Serien vorhanden.\n    ")]
+        },
+        proxy: true
+      }
+    ])
   })
 }
 var staticRenderFns = []

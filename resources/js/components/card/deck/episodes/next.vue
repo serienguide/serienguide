@@ -1,6 +1,10 @@
 <template>
 
-    <deck-base :models="models" :pagination="pagination" :is-fetching="is_fetching" :has-filter-search="false" :is-line="true" :load-next="true" @nexted="nexted($event)">
+    <deck-base :models="models" :pagination="pagination" :is-fetching="is_fetching" :is-fetched="is_fetched" :has-filter-search="false" :is-line="true" :load-next="true" @nexted="nexted($event)">
+
+        <template v-slot:title>
+            Nächste Folgen
+        </template>
 
         <template v-slot:pagination>
 
@@ -23,6 +27,10 @@
                 </div>
             </nav>
 
+        </template>
+
+        <template v-slot:empty>
+            Du hast noch keine Serien gesehen. Hier siehst Du deine nächsten Episoden.
         </template>
 
     </deck-base>

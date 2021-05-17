@@ -1,6 +1,6 @@
 <template>
 
-    <deck-base :models="models" :pagination="pagination" :is-fetching="is_fetching" :has-filter-search="true" @paginating="filter.page = $event" @searching="searching($event)">
+    <deck-base :models="models" :pagination="pagination" :is-fetching="is_fetching" :is-fetched="is_fetched" :has-filter-search="true" @paginating="filter.page = $event" @searching="searching($event)">
 
         <template v-slot:title>
             {{ title }}
@@ -39,6 +39,10 @@
 
             </template>
 
+        </template>
+
+        <template v-slot:empty>
+            Keine Ausstrahlungen vorhanden.
         </template>
 
     </deck-base>

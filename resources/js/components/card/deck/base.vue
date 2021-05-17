@@ -31,6 +31,16 @@
                 <card-show :model="model" :key="model.id" :load-next="true" v-for="(model, index) in models" @nexted="nexted(index, $event)"></card-show>
             </slot>
         </ul>
+        <div class="p-2 rounded-lg bg-gray-200 mb-3" v-else-if="isFetched && models.length == 0">
+            <div class="flex items-center justify-between">
+                <p class="font-medium truncate text-center w-full">
+                    <slot name="empty">
+                        Keine Daten vorhanden
+                    </slot>
+                </p>
+            </div>
+        </div>
+
 
         <slot name="pagination">
             <pagination :pagination="pagination" @paginating="$emit('paginating', $event)"></pagination>
@@ -71,6 +81,11 @@
             },
             isFetching: {
                 required: true,
+                default: false,
+                type: Boolean,
+            },
+            isFetched: {
+                required: false,
                 default: false,
                 type: Boolean,
             },
