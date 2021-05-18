@@ -5,13 +5,13 @@
             <div><i class="fas fa-spinner fa-spin text-3xl"></i></div>
             <div>Lade nächste Episode</div>
         </div>
-        <div class="rounded-t-lg h-2 w-full bg-yellow-900" :title="model.vote_average_formatted + '/10 ' + model.vote_count + ' Stimmen'" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+        <div class="rounded-t-lg h-2 w-full bg-yellow-900" :title="rating_stats.avg_formatted + '/10 ' + rating_stats.count + ' Stimmen'" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
             <meta itemprop="bestRating" content="10">
             <meta itemprop="worstRating" content="0">
-            <meta itemprop="ratingValue" :content="model.vote_average">
-            <meta itemprop="ratingCount" :content="model.vote_count">
+            <meta itemprop="ratingValue" :content="rating_stats.avg">
+            <meta itemprop="ratingCount" :content="rating_stats.count">
 
-            <div class="bg-yellow-400 h-2 text-xs leading-none text-center text-white transition-all" :class="rating_bar_class" :style="{ width: (model.vote_average * 10) + '%' }"></div>
+            <div class="bg-yellow-400 h-2 text-xs leading-none text-center text-white transition-all" :class="rating_bar_class" :style="{ width: (rating_stats.avg * 10) + '%' }"></div>
         </div>
 
         <header class="flex items-center justify-center px-3 py-1" v-if="$auth.check()">
@@ -188,31 +188,22 @@
                 return '';
             },
             rating_bar_class() {
-                if (this.ratings.vote_average > 0 && this.ratings.vote_average == 10) {
+                if (this.rating_stats.avg > 0 && this.rating_stats.avg == 10) {
                     return 'rounded-tl-lg rounded-tr-lg';
                 }
 
-                if (this.ratings.vote_average > 0) {
+                if (this.rating_stats.avg > 0) {
                     return 'rounded-tl-lg';
                 }
 
                 return '';
-            },
-            rating_points() {
-                return (this.ratings.vote_average * this.ratings.vote_count);
-            },
-            vote_average_formatted() {
-                return this.ratings.vote_average.format((this.ratings.vote_average == 10 || this.ratings.vote_average == 0) ? 0 : 1, ',', '');
             },
         },
 
         data () {
             return {
                 progress: this.model.progress,
-                ratings: {
-                    vote_average: Number(this.model.vote_average),
-                    vote_count: this.model.vote_count,
-                },
+                rating_stats: this.model.rating_stats,
                 is_watching: false,
                 is_nexting: false,
             };
@@ -256,9 +247,6 @@
                     .then( function (response) {
                         Bus.$emit(component.model.watched_event_name, response.data);
                         Vue.success(component.model.name + ' zum ' + component.progress.watched_count + '. mal gesehen');
-                        if (component.loadNext) {
-                            component.next();
-                        }
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -270,10 +258,13 @@
             },
             watched(data) {
                 this.progress = data.progress;
+                if (this.loadNext) {
+                    this.next();
+                }
             },
-            rated(rating) {
-                //
-            }
+            rated(data) {
+                this.rating_stats = data.rating_stats;
+            },
         },
 
     };

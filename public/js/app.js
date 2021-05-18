@@ -2450,6 +2450,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     model: {
       required: true,
       type: Object
+    },
+    isInCard: {
+      required: false,
+      type: Boolean,
+      "default": true
     }
   },
   computed: {
@@ -2459,6 +2464,50 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       if (this.watchlist[0].items.length > 0) {
+        return 'text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700';
+      }
+
+      return 'text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600';
+    },
+    is_on_lists: function is_on_lists() {
+      var _iterator = _createForOfIteratorHelper(this.lists),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var list = _step.value;
+
+          if (list.items.length) {
+            return true;
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      var _iterator2 = _createForOfIteratorHelper(this.custom_lists),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var list = _step2.value;
+
+          if (list.items.length) {
+            return true;
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+
+      return false;
+    },
+    list_class: function list_class() {
+      if (this.is_on_lists > 0) {
         return 'text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700';
       }
 
@@ -2484,12 +2533,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get(component.model.lists_path, {
         params: {}
       }).then(function (response) {
-        var _iterator = _createForOfIteratorHelper(response.data),
-            _step;
+        var _iterator3 = _createForOfIteratorHelper(response.data),
+            _step3;
 
         try {
-          for (_iterator.s(); !(_step = _iterator.n()).done;) {
-            var list = _step.value;
+          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+            var list = _step3.value;
 
             if (list.is_custom) {
               component.custom_lists.push(list);
@@ -2502,9 +2551,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             }
           }
         } catch (err) {
-          _iterator.e(err);
+          _iterator3.e(err);
         } finally {
-          _iterator.f();
+          _iterator3.f();
         }
 
         component.is_fetched = true;
@@ -2567,12 +2616,23 @@ __webpack_require__.r(__webpack_exports__);
   mixins: [//
   ],
   props: {
+    list: {
+      required: true,
+      type: Object
+    },
     model: {
       required: true,
       type: Object
     }
   },
-  computed: {//
+  computed: {
+    is_available: function is_available() {
+      if (this.model.is_movie && this.list.type == 'currently_watching') {
+        return false;
+      }
+
+      return true;
+    }
   },
   data: function data() {
     return {
@@ -2585,7 +2645,7 @@ __webpack_require__.r(__webpack_exports__);
     toggle: function toggle() {
       var component = this;
       component.is_toggling = true;
-      axios.put(component.model.toggle_path).then(function (response) {
+      axios.put(component.list.toggle_path).then(function (response) {
         component.$emit('toggled', response.data);
       })["catch"](function (error) {
         Vue.error('Listeneintrag konnte nicht aktualisiert werden.');
@@ -2687,10 +2747,10 @@ __webpack_require__.r(__webpack_exports__);
         component.rated(response.data);
         Bus.$emit(component.model.rated_event_name, response.data);
 
-        if (response.data == '') {
+        if (response.data.rating == null) {
           Vue.success('Bewertung von ' + component.model.name + ' gelöscht.');
         } else {
-          Vue.success(component.model.name + ' mit ' + response.data.rating + ' Punkten bewertet.');
+          Vue.success(component.model.name + ' mit ' + response.data.rating.rating + ' Punkten bewertet.');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -2699,8 +2759,8 @@ __webpack_require__.r(__webpack_exports__);
         component.is_rating = false;
       });
     },
-    rated: function rated(rating) {
-      Vue.set(this, 'rating', rating);
+    rated: function rated(data) {
+      Vue.set(this, 'rating', data.rating);
       this.hovered = this.rating_value;
     }
   }
@@ -2903,30 +2963,21 @@ __webpack_require__.r(__webpack_exports__);
       return '';
     },
     rating_bar_class: function rating_bar_class() {
-      if (this.ratings.vote_average > 0 && this.ratings.vote_average == 10) {
+      if (this.rating_stats.avg > 0 && this.rating_stats.avg == 10) {
         return 'rounded-tl-lg rounded-tr-lg';
       }
 
-      if (this.ratings.vote_average > 0) {
+      if (this.rating_stats.avg > 0) {
         return 'rounded-tl-lg';
       }
 
       return '';
-    },
-    rating_points: function rating_points() {
-      return this.ratings.vote_average * this.ratings.vote_count;
-    },
-    vote_average_formatted: function vote_average_formatted() {
-      return this.ratings.vote_average.format(this.ratings.vote_average == 10 || this.ratings.vote_average == 0 ? 0 : 1, ',', '');
     }
   },
   data: function data() {
     return {
       progress: this.model.progress,
-      ratings: {
-        vote_average: Number(this.model.vote_average),
-        vote_count: this.model.vote_count
-      },
+      rating_stats: this.model.rating_stats,
       is_watching: false,
       is_nexting: false
     };
@@ -2964,10 +3015,6 @@ __webpack_require__.r(__webpack_exports__);
       axios.post(component.model.watched_path).then(function (response) {
         Bus.$emit(component.model.watched_event_name, response.data);
         Vue.success(component.model.name + ' zum ' + component.progress.watched_count + '. mal gesehen');
-
-        if (component.loadNext) {
-          component.next();
-        }
       })["catch"](function (error) {
         console.log(error);
         Vue.error(component.model.name + ' konnten nicht als gesehen markiert werden.');
@@ -2977,8 +3024,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     watched: function watched(data) {
       this.progress = data.progress;
+
+      if (this.loadNext) {
+        this.next();
+      }
     },
-    rated: function rated(rating) {//
+    rated: function rated(data) {
+      this.rating_stats = data.rating_stats;
     }
   }
 });
@@ -21907,7 +21959,11 @@ var render = function() {
             {
               staticClass:
                 "flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600",
-              class: _vm.watchlist_class,
+              class:
+                _vm.watchlist_class +
+                (_vm.isInCard
+                  ? ""
+                  : " px-3 py-3 border border-gray-300 rounded-full"),
               on: { click: _vm.toggleWatchlist }
             },
             [
@@ -21950,6 +22006,11 @@ var render = function() {
             {
               staticClass:
                 "flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600",
+              class:
+                _vm.list_class +
+                (_vm.isInCard
+                  ? ""
+                  : " px-3 py-3 border border-gray-300 rounded-full"),
               attrs: {
                 "aria-label": "Options",
                 id: "options-menu",
@@ -21992,7 +22053,7 @@ var render = function() {
                 ],
                 staticClass:
                   "origin-top-right absolute mt-2 rounded-md shadow-lg z-10",
-                staticStyle: { width: "90%", right: "5%" }
+                style: _vm.isInCard ? "width: 90%; right: 5%;" : ""
               },
               [
                 _c("div", { staticClass: "rounded-md bg-white shadow-xs" }, [
@@ -22025,8 +22086,8 @@ var render = function() {
                         [
                           _vm._l(_vm.lists, function(list, index) {
                             return _c("show", {
-                              key: list.id,
-                              attrs: { model: list },
+                              key: _vm.model.id + "_" + list.id,
+                              attrs: { model: _vm.model, list: list },
                               on: {
                                 toggled: function($event) {
                                   return _vm.toggled("lists", index, $event)
@@ -22051,8 +22112,8 @@ var render = function() {
                           _vm._v(" "),
                           _vm._l(_vm.custom_lists, function(list, index) {
                             return _c("show", {
-                              key: list.id,
-                              attrs: { model: list },
+                              key: _vm.model.id + "_" + list.id,
+                              attrs: { model: _vm.model, list: list },
                               on: {
                                 toggled: function($event) {
                                   return _vm.toggled(
@@ -22101,51 +22162,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("li", { staticClass: "flex items-center" }, [
-    _c("i", {
-      directives: [
-        {
-          name: "show",
-          rawName: "v-show",
-          value: _vm.is_toggling,
-          expression: "is_toggling"
-        }
-      ],
-      staticClass: "h-4 w-4 text-sm text-gray-400 fas fa-spinner fa-spin"
-    }),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "show",
-          rawName: "v-show",
-          value: !_vm.is_toggling,
-          expression: "! is_toggling"
-        }
-      ],
-      staticClass:
-        "form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out",
-      attrs: { id: _vm.model.id, type: "checkbox", disabled: _vm.is_toggling },
-      domProps: { checked: _vm.model.items.length > 0 },
-      on: {
-        click: [
-          _vm.toggle,
-          function($event) {
-            $event.preventDefault()
+  return _vm.is_available
+    ? _c("li", { staticClass: "flex items-center" }, [
+        _c("i", {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.is_toggling,
+              expression: "is_toggling"
+            }
+          ],
+          staticClass: "h-4 w-4 text-sm text-gray-400 fas fa-spinner fa-spin"
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.is_toggling,
+              expression: "! is_toggling"
+            }
+          ],
+          staticClass:
+            "form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out",
+          attrs: {
+            id: _vm.model.id + "_" + _vm.list.id,
+            type: "checkbox",
+            disabled: _vm.is_toggling
+          },
+          domProps: { checked: _vm.list.items.length > 0 },
+          on: {
+            click: [
+              _vm.toggle,
+              function($event) {
+                $event.preventDefault()
+              }
+            ]
           }
-        ]
-      }
-    }),
-    _vm._v(" "),
-    _c(
-      "label",
-      {
-        staticClass: "ml-2 block text-sm leading-5 text-gray-900",
-        attrs: { for: _vm.model.id }
-      },
-      [_vm._v("\n        " + _vm._s(_vm.model.name) + "\n    ")]
-    )
-  ])
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          {
+            staticClass: "ml-2 block text-sm leading-5 text-gray-900",
+            attrs: { for: _vm.model.id + "_" + _vm.list.id }
+          },
+          [_vm._v("\n        " + _vm._s(_vm.list.name) + "\n    ")]
+        )
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -22352,9 +22419,9 @@ var render = function() {
           staticClass: "rounded-t-lg h-2 w-full bg-yellow-900",
           attrs: {
             title:
-              _vm.model.vote_average_formatted +
+              _vm.rating_stats.avg_formatted +
               "/10 " +
-              _vm.model.vote_count +
+              _vm.rating_stats.count +
               " Stimmen",
             itemprop: "aggregateRating",
             itemscope: "",
@@ -22367,18 +22434,18 @@ var render = function() {
           _c("meta", { attrs: { itemprop: "worstRating", content: "0" } }),
           _vm._v(" "),
           _c("meta", {
-            attrs: { itemprop: "ratingValue", content: _vm.model.vote_average }
+            attrs: { itemprop: "ratingValue", content: _vm.rating_stats.avg }
           }),
           _vm._v(" "),
           _c("meta", {
-            attrs: { itemprop: "ratingCount", content: _vm.model.vote_count }
+            attrs: { itemprop: "ratingCount", content: _vm.rating_stats.count }
           }),
           _vm._v(" "),
           _c("div", {
             staticClass:
               "bg-yellow-400 h-2 text-xs leading-none text-center text-white transition-all",
             class: _vm.rating_bar_class,
-            style: { width: _vm.model.vote_average * 10 + "%" }
+            style: { width: _vm.rating_stats.avg * 10 + "%" }
           })
         ]
       ),
@@ -35932,6 +35999,7 @@ Number.prototype.format = function (decimals, dec_point, thousands_sep) {
 
 Vue.use(_plugins_flash_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Vue.component('auth', __webpack_require__(/*! ./components/auth.vue */ "./resources/js/components/auth.vue")["default"]);
+Vue.component('buttons-lists', __webpack_require__(/*! ./components/card/list/index.vue */ "./resources/js/components/card/list/index.vue")["default"]);
 Vue.component('card-show', __webpack_require__(/*! ./components/card/show.vue */ "./resources/js/components/card/show.vue")["default"]);
 Vue.component('deck-base', __webpack_require__(/*! ./components/card/deck/base.vue */ "./resources/js/components/card/deck/base.vue")["default"]);
 Vue.component('deck-calendar-index', __webpack_require__(/*! ./components/card/deck/calendar/index.vue */ "./resources/js/components/card/deck/calendar/index.vue")["default"]);

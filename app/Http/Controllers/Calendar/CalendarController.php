@@ -12,7 +12,6 @@ class CalendarController extends Controller
 {
     public function index(Request $request, int $year = null, int $week = null)
     {
-
         $now = now();
         $start_of_week = $now->setISODate($year ?? $now->year, str_pad($week ?? $now->week, 2, '0', STR_PAD_LEFT))->startOfWeek();
         $end_of_week = $start_of_week->clone()->endOfWeek();

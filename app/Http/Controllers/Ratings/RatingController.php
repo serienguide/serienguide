@@ -52,7 +52,10 @@ class RatingController extends Controller
             'rating' => 'required|integer|between:0,10',
         ]);
 
-        return $model->rateBy(auth()->user(), $attributes);
+        return [
+            'rating' => $model->rateBy(auth()->user(), $attributes),
+            'rating_stats' => $model->rating_stats,
+        ];
     }
 
     /**

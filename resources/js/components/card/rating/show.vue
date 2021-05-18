@@ -86,11 +86,11 @@
                     .then( function (response) {
                         component.rated(response.data);
                         Bus.$emit(component.model.rated_event_name, response.data);
-                        if (response.data == '') {
+                        if (response.data.rating == null) {
                             Vue.success('Bewertung von ' + component.model.name + ' gelöscht.');
                         }
                         else {
-                            Vue.success(component.model.name + ' mit ' + response.data.rating + ' Punkten bewertet.');
+                            Vue.success(component.model.name + ' mit ' + response.data.rating.rating + ' Punkten bewertet.');
                         }
                     })
                     .catch(function (error) {
@@ -101,8 +101,8 @@
                         component.is_rating = false;
                     });
             },
-            rated(rating) {
-                Vue.set(this, 'rating', rating);
+            rated(data) {
+                Vue.set(this, 'rating', data.rating);
                 this.hovered = this.rating_value;
             },
         },

@@ -63,6 +63,15 @@ trait HasRatings
         ]);
     }
 
+    public function getRatingStatsAttribute() : array
+    {
+        return [
+            'avg' => $this->vote_average,
+            'avg_formatted' => number_format($this->vote_average, (in_array($this->vote_average, [0, 10]) ? 0 : 1) , ',', ''),
+            'count' => $this->vote_count
+        ];
+    }
+
     public function getRatedEventNameAttribute() : string {
         return $this->class_name . '_' . $this->id . '_rated';
     }
