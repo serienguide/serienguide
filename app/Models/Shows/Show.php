@@ -269,13 +269,13 @@ class Show extends Model
             ->orderBy('id', 'DESC')
             ->first();
 
-        $watched->watchable->append([
-            'path',
-        ]);
-
         if (is_null($watched)) {
             return $watched;
         }
+
+        $watched->watchable->append([
+            'path',
+        ]);
 
         return $watched;
     }
@@ -410,15 +410,23 @@ class Show extends Model
         return $this->hasMany(Episode::class, 'show_id');
     }
 
-    public function watchedBy(User $user, array $attributes = []) : void
+    public function watchedBy(User $user, array $attributes = []) : array
     {
+        $data = [];
         foreach ($this->episodes as $episode) {
-            $episode->watched()->create([
+            $watched = $episode->watched()->create([
                 'user_id' => $user->id,
                 'watched_at' => Arr::get($attributes, 'watched_at', now()),
                 'show_id' => $this->id,
             ]);
+
+            $data[$episode->watched_event_name] = [
+                'watched' => $watched,
+                'progress' => $episode->progress,
+            ];
         }
+
+        return $data;
     }
 
     public function watched() : HasMany

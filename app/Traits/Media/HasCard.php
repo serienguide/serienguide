@@ -5,6 +5,7 @@ namespace App\Traits\Media;
 use App\Models\Movies\Collection;
 use App\Models\Movies\Movie;
 use App\Models\Shows\Episodes\Episode;
+use App\Models\Shows\Seasons\Season;
 use App\Models\Shows\Show;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,7 @@ trait HasCard
             'is_episode',
             'is_movie',
             'is_show',
+            'is_season',
         ]);
     }
 
@@ -133,6 +135,11 @@ trait HasCard
     public function getIsShowAttribute() : bool
     {
         return $this->isClass(Show::class);
+    }
+
+    public function getIsSeasonAttribute() : bool
+    {
+        return $this->isClass(Season::class);
     }
 
     public function getItemtypeAttribute() : string

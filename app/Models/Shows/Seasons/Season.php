@@ -26,7 +26,7 @@ class Season extends Model
         SoftDeletes;
 
     protected $appends = [
-        //
+        'is_season',
     ];
 
     protected $casts = [
@@ -81,6 +81,11 @@ class Season extends Model
         return strtolower(class_basename($this));
     }
 
+    public function getIsSeasonAttribute() : bool
+    {
+        return true;
+    }
+
     public function getMediaTypeAttribute() : string
     {
         return Str::plural($this->class_name);
@@ -96,15 +101,23 @@ class Season extends Model
         return $this->hasMany(Episode::class, 'season_id')->orderBy('episode_number', 'ASC');
     }
 
-    public function watchedBy(User $user, array $attributes = []) : void
+    public function watchedBy(User $user, array $attributes = []) : array
     {
+        $data = [];
         foreach ($this->episodes as $episode) {
-            $episode->watched()->create([
+            $watched = $episode->watched()->create([
                 'user_id' => $user->id,
                 'watched_at' => Arr::get($attributes, 'watched_at', now()),
                 'show_id' => $this->show_id,
             ]);
+
+            $data[$episode->watched_event_name] = [
+                'watched' => $watched,
+                'progress' => $episode->progress,
+            ];
         }
+
+        return $data;
     }
 
     public function watched() : HasMany

@@ -49,6 +49,8 @@ Vue.use(Flash);
 
 Vue.component('auth', require('./components/auth.vue').default);
 Vue.component('buttons-lists', require('./components/card/list/index.vue').default);
+Vue.component('buttons-watched-create', require('./components/card/watched/create.vue').default);
+Vue.component('buttons-watched-index', require('./components/card/watched/index.vue').default);
 Vue.component('card-show', require('./components/card/show.vue').default);
 Vue.component('deck-base', require('./components/card/deck/base.vue').default);
 Vue.component('deck-calendar-index', require('./components/card/deck/calendar/index.vue').default);

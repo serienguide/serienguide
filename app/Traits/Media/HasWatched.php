@@ -20,7 +20,8 @@ trait HasWatched
     public function initializeHasWatched()
     {
         $this->append([
-            'watched_path'
+            'watched_path',
+            'watched_event_name',
         ]);
     }
 

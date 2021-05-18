@@ -2451,10 +2451,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       required: true,
       type: Object
     },
-    isInCard: {
+    isStandAlone: {
       required: false,
       type: Boolean,
-      "default": true
+      "default": false
     }
   },
   computed: {
@@ -2958,6 +2958,11 @@ __webpack_require__.r(__webpack_exports__);
     progress: {
       required: true,
       type: Object
+    },
+    isStandAlone: {
+      required: false,
+      "default": false,
+      type: Boolean
     }
   },
   computed: {
@@ -2999,21 +3004,49 @@ __webpack_require__.r(__webpack_exports__);
       component.is_watching = true;
       axios.post(component.model.watched_path).then(function (response) {
         Bus.$emit(component.model.watched_event_name, response.data);
+        component.watched(response.data);
 
         if (component.model.is_movie) {
           Bus.$emit(component.model.collection.progress_event_name, response.data);
         } else if (component.model.is_episode) {
           Bus.$emit(component.model.show.progress_event_name, response.data);
+        } else if (component.model.is_show) {
+          Bus.$emit(component.model.progress_event_name, response.data);
         }
 
-        Vue.success(component.model.name + ' zum ' + component.progress.watched_count + '. mal gesehen');
+        if (component.model.is_show || component.model.is_season) {
+          for (var event_name in response.data.watched) {
+            Bus.$emit(event_name, response.data.watched[event_name]);
+          }
+        }
+
+        if (component.model.is_show) {
+          Vue.success(component.progress.watched_count + ' Episoden der Serie ' + component.model.name + ' als gesehen markiert.');
+        } else if (component.model.is_season) {
+          Vue.success(component.progress.watched_count + ' Episoden der ' + component.model.season_number + '. Staffel der Serie ' + component.model.show.name + ' als gesehen markiert.');
+        } else {
+          Vue.success(component.model.name + ' zum ' + component.progress.watched_count + '. mal gesehen.');
+        }
       })["catch"](function (error) {
         console.log(error);
         Vue.error(component.model.name + ' konnten nicht als gesehen markiert werden.');
       }).then(function () {
         component.is_watching = false;
       });
+    },
+    watched: function watched(data) {
+      this.progress = data.progress;
     }
+  },
+  mounted: function mounted() {
+    if (!this.isStandAlone) {
+      return;
+    }
+
+    var component = this;
+    Bus.$on(component.model.watched_event_name, function (data) {
+      component.watched(data);
+    });
   }
 });
 
@@ -3089,6 +3122,11 @@ __webpack_require__.r(__webpack_exports__);
     model: {
       required: true,
       type: Object
+    },
+    isStandAlone: {
+      required: false,
+      type: Boolean,
+      "default": false
     }
   },
   computed: {//
@@ -3107,7 +3145,7 @@ __webpack_require__.r(__webpack_exports__);
     Bus.$on(component.model.watched_event_name, function (data) {
       component.fetch();
     });
-    this.fetch();
+    component.fetch();
   },
   methods: {
     fetch: function fetch() {
@@ -22111,9 +22149,9 @@ var render = function() {
                 "flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600",
               class:
                 _vm.watchlist_class +
-                (_vm.isInCard
-                  ? ""
-                  : " px-3 py-3 border border-gray-300 rounded-full"),
+                (_vm.isStandAlone
+                  ? " px-3 py-3 border border-gray-300 rounded-full"
+                  : ""),
               on: { click: _vm.toggleWatchlist }
             },
             [
@@ -22158,9 +22196,9 @@ var render = function() {
                 "flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600",
               class:
                 _vm.list_class +
-                (_vm.isInCard
-                  ? ""
-                  : " px-3 py-3 border border-gray-300 rounded-full"),
+                (_vm.isStandAlone
+                  ? " px-3 py-3 border border-gray-300 rounded-full"
+                  : ""),
               attrs: {
                 "aria-label": "Options",
                 id: "options-menu",
@@ -22203,7 +22241,7 @@ var render = function() {
                 ],
                 staticClass:
                   "origin-top-right absolute mt-2 rounded-md shadow-lg z-10",
-                style: _vm.isInCard ? "width: 90%; right: 5%;" : ""
+                style: _vm.isStandAlone ? "" : "width: 90%; right: 5%;"
               },
               [
                 _c("div", { staticClass: "rounded-md bg-white shadow-xs" }, [
@@ -23094,6 +23132,9 @@ var render = function() {
             {
               staticClass:
                 "flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600",
+              class: _vm.isStandAlone
+                ? " px-3 py-3 border border-gray-300 rounded-full"
+                : "",
               attrs: {
                 "aria-label": "Options",
                 id: "options-menu",
@@ -23136,7 +23177,9 @@ var render = function() {
                 ],
                 staticClass:
                   "origin-top-right absolute mt-2 rounded-md shadow-lg z-10",
-                staticStyle: { width: "90%", "min-width": "250px", right: "5%" }
+                style: _vm.isStandAlone
+                  ? "min-width: 250px;"
+                  : "width: 90%; min-width: 250px;"
               },
               [
                 _c("div", { staticClass: "rounded-md bg-white shadow-xs" }, [
@@ -36491,6 +36534,8 @@ Number.prototype.format = function (decimals, dec_point, thousands_sep) {
 Vue.use(_plugins_flash_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
 Vue.component('auth', __webpack_require__(/*! ./components/auth.vue */ "./resources/js/components/auth.vue")["default"]);
 Vue.component('buttons-lists', __webpack_require__(/*! ./components/card/list/index.vue */ "./resources/js/components/card/list/index.vue")["default"]);
+Vue.component('buttons-watched-create', __webpack_require__(/*! ./components/card/watched/create.vue */ "./resources/js/components/card/watched/create.vue")["default"]);
+Vue.component('buttons-watched-index', __webpack_require__(/*! ./components/card/watched/index.vue */ "./resources/js/components/card/watched/index.vue")["default"]);
 Vue.component('card-show', __webpack_require__(/*! ./components/card/show.vue */ "./resources/js/components/card/show.vue")["default"]);
 Vue.component('deck-base', __webpack_require__(/*! ./components/card/deck/base.vue */ "./resources/js/components/card/deck/base.vue")["default"]);
 Vue.component('deck-calendar-index', __webpack_require__(/*! ./components/card/deck/calendar/index.vue */ "./resources/js/components/card/deck/calendar/index.vue")["default"]);

@@ -2,7 +2,7 @@
     <div>
         <div class="inline-block text-left" v-show="is_fetched">
             <div class="px-1">
-                <button @click="toggleWatchlist" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" :class="watchlist_class + (isInCard ? '' : ' px-3 py-3 border border-gray-300 rounded-full')">
+                <button @click="toggleWatchlist" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" :class="watchlist_class + (isStandAlone ? ' px-3 py-3 border border-gray-300 rounded-full' : '')">
                     <i class="fas fa-bookmark" v-show="! is_toggling"></i>
                     <i class="text-gray-400 fas fa-spinner fa-spin" v-show="is_toggling"></i>
                 </button>
@@ -10,7 +10,7 @@
         </div>
         <div class="inline-block text-left">
             <div class="px-1">
-                <button @click="isOpen = ! isOpen" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" :class="list_class + (isInCard ? '' : ' px-3 py-3 border border-gray-300 rounded-full')" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                <button @click="isOpen = ! isOpen" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" :class="list_class + (isStandAlone ? ' px-3 py-3 border border-gray-300 rounded-full' : '')" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
                     <i class="fas fa-list"></i>
                 </button>
             </div>
@@ -18,7 +18,7 @@
             <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
                 <div v-show="isOpen"
                     class="origin-top-right absolute mt-2 rounded-md shadow-lg z-10"
-                    :style="(isInCard ? 'width: 90%; right: 5%;' : '')">
+                    :style="(isStandAlone ? '' : 'width: 90%; right: 5%;')">
                     <div class="rounded-md bg-white shadow-xs">
                         <div class="p-3" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                             <div class="flex items-center mb-3">
@@ -60,10 +60,10 @@
                 required: true,
                 type: Object,
             },
-            isInCard: {
+            isStandAlone: {
                 required: false,
                 type: Boolean,
-                default: true,
+                default: false,
             },
         },
 

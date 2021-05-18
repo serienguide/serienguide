@@ -1,7 +1,7 @@
 <div x-data="{ open: {{ $isCurrent ? 'true' : 'false' }} }" itemprop="containsSeason" itemtype="http://schema.org/TVSeason" itemscope="">
     <div class="flex my-3 items-end">
         @if ($season->poster_path)
-            <img @if(is_null($items)) wire:click="load" @endif @click="open = !open;" src="{{ Storage::disk('s3')->url('w118' . $season->poster_path) }}" class="rounded-md mr-1 cursor-pointer">
+            <img @if(is_null($items)) wire:click="load" @endif @click="open = !open;" src="{{ $season->poster_url_md }}" class="rounded-md mr-1 cursor-pointer">
         @endif
         <div @if(is_null($items)) wire:click="load" @endif @click="open = !open;" class="cursor-pointer flex-grow">
             <div class="flex">

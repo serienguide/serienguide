@@ -4,9 +4,8 @@
     <section>
         <x-container class="py-4">
             @auth
-                <div class="inline-block px-1">
-                    @livewire('media.buttons.watch', ['model' => $model])
-                </div>
+                <buttons-watched-create class="relative inline-block" :model="{{ json_encode($model) }}" :progress="{{ json_encode($model->progress) }}" :is-stand-alone="true"></buttons-watched-create>
+                <buttons-watched-index class="relative inline-block" :model="{{ json_encode($model) }}" :is-stand-alone="true"></buttons-watched-index>
                 <x-media.buttons.tmdb_update :model="$model"/>
                 <x-media.buttons.tmdb_edit :model="$model"/>
             @endauth
@@ -18,14 +17,6 @@
     @guest
         <section class="bg-gray-700 mt-8"></section>
     @endguest
-
-    @auth
-        <x-container class="py-4">
-            <div class="">
-                @livewire('watched.ul', ['model' => $model])
-            </div>
-        </x-container>
-    @endauth
 
     @if ($next_episode)
         <div class="fixed opacity-25 hover:opacity-100" style="top:35%; right: 25px;">

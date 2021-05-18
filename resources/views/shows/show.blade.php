@@ -4,10 +4,8 @@
     <section>
         <x-container class="py-4">
             @auth
-                <div class="inline-block px-1">
-                    @livewire('media.buttons.watch', ['model' => $model])
-                </div>
-                <buttons-lists class="relative inline-block text-left" :model="{{ json_encode($model) }}" :is-in-card="false"></buttons-lists>
+                <buttons-watched-create class="relative inline-block" :model="{{ json_encode($model) }}" :progress="{{ json_encode($model->progress) }}" :is-stand-alone="true"></buttons-watched-create>
+                <buttons-lists class="relative inline-block text-left" :model="{{ json_encode($model) }}" :is-stand-alone="true"></buttons-lists>
                 <x-media.buttons.tmdb_update :model="$model"/>
                 <x-media.buttons.tmdb_edit :model="$model"/>
             @endauth

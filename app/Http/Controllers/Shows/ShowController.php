@@ -64,6 +64,7 @@ class ShowController extends Controller
             'last_aired_episodes',
             'next_episode_to_watch',
             'progress',
+            'path',
         ]);
 
         if ($request->wantsJson()) {

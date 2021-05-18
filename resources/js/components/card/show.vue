@@ -89,12 +89,8 @@
                 </a>
             </h3>
 
-            <div class="ml-1" v-if="$auth.check()">
-                <button type="button" class="inline-flex items-center px-3 py-3 border border-gray-300 text-sm leading-5 font-medium rounded-full whitespace-no-wrap focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150" :class="watched_button_class" :title="watched_button_title" :disabled="is_watching" @click="watch()">
-                    <i class="fas fa-check" v-show="! is_watching"></i>
-                    <i class="fas fa-spinner fa-spin" v-show="is_watching"></i>
-                </button>
-            </div>
+            <watched-create :model="model" :progress="progress"></watched-create>
+
         </footer>
 
         <div class="rounded-b-lg h-2 w-full bg-blue-900" :title="progress_title">
@@ -109,6 +105,7 @@
     import lists from './list/index.vue';
     import rating from './rating/show.vue';
     import watched from './watched/index.vue';
+    import watchedCreate from './watched/create.vue';
 
     export default {
 
@@ -116,6 +113,7 @@
             lists,
             rating,
             watched,
+            watchedCreate,
         },
 
         mixins: [
@@ -147,32 +145,6 @@
         },
 
         computed: {
-            watched_button_class() {
-                if (! this.$auth.check()) {
-                    return 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700';
-                }
-
-                if (this.progress.watched_count == 0) {
-                    return 'bg-white text-gray-700 border-gray-300 hover:text-gray-500';
-                }
-
-                if (this.progress.watched_count % 2 == 0) {
-                    return 'bg-green-600 text-white border-green-600 hover:bg-green-700';
-                }
-
-                return 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700';
-            },
-            watched_button_title() {
-                if (! this.$auth.check()) {
-                    return '';
-                }
-
-                if (this.progress.watched_count > 0) {
-                    return this.progress.watched_count + ' mal gesehen';
-                }
-
-                return 'Noch nicht gesehen';
-            },
             progress_title() {
                 return this.progress.watched_distinct_count + '/' + this.progress.watchable_count + ' ' + this.progress.percent + '%';
             },
@@ -204,7 +176,6 @@
             return {
                 progress: this.model.progress,
                 rating_stats: this.model.rating_stats,
-                is_watching: false,
                 is_nexting: false,
             };
         },
@@ -239,22 +210,6 @@
                     .then(function () {
                         component.is_nexting = false;
                 });
-            },
-            watch() {
-                var component = this;
-                component.is_watching = true;
-                axios.post(component.model.watched_path)
-                    .then( function (response) {
-                        Bus.$emit(component.model.watched_event_name, response.data);
-                        Vue.success(component.model.name + ' zum ' + component.progress.watched_count + '. mal gesehen');
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                        Vue.error(component.model.name + ' konnten nicht als gesehen markiert werden.');
-                    })
-                    .then(function () {
-                        component.is_watching = false;
-                    });
             },
             watched(data) {
                 this.progress = data.progress;
