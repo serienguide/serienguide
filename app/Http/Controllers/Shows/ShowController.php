@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shows;
 use App\Http\Controllers\Controller;
 use App\Models\Shows\Show;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShowController extends Controller
 {
@@ -47,6 +48,10 @@ class ShowController extends Controller
     {
         if ($request->wantsJson()) {
             return $show;
+        }
+
+        if (Auth::check()) {
+            $show->rating_by_user = $show->ratingByUser(Auth::id());
         }
 
         $show->load([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Movies;
 use App\Http\Controllers\Controller;
 use App\Models\Movies\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
@@ -75,6 +76,10 @@ class MovieController extends Controller
                 return $query->orderBy('watched_at', 'DESC');
             },
         ]);
+
+        if (Auth::check()) {
+            $movie->rating_by_user = $movie->ratingByUser(Auth::id());
+        }
 
         $movie->load([
             'actors',

@@ -20,6 +20,7 @@ trait HasRatings
         $this->append([
             'rate_path',
             'rated_event_name',
+            'rating_stats',
         ]);
     }
 

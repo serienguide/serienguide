@@ -30,7 +30,7 @@ trait HasCard
 
     public function initializeHasCard()
     {
-        if (! $this->is_episode) {
+        if (! $this->is_episode && ! $this->is_collection) {
             $this->append([
                 'lists_path',
             ]);
@@ -82,7 +82,6 @@ trait HasCard
             'path',
             'rate_path',
             'watched_event_name',
-            'rating_stats',
         ]);
 
         if ($this->is_episode) {

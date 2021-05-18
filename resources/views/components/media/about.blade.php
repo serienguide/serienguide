@@ -95,7 +95,7 @@
                 <div class="flex-grow"></div>
                 @unless($model->is_collection)
                     <div class="my-3">
-                        @livewire('media.rating', ['model' => $model ], key('media-rating-' . $model->id))
+                        <media-rating-show :model="{{ json_encode($model) }}"></media-rating-show>
                     </div>
                 @endunless
             </div>

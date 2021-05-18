@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Shows\Episodes\Episode;
 use App\Models\Shows\Show;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EpisodeController extends Controller
 {
@@ -23,6 +24,10 @@ class EpisodeController extends Controller
         $episode = $season->episodes()->where('episode_number', $episode_number)->firstOrFail();
         $episode->show = $show;
         $episode->season = $season;
+
+        if (Auth::check()) {
+            $episode->rating_by_user = $episode->ratingByUser(Auth::id());
+        }
 
         if ($request->wantsJson()) {
             return $episode;

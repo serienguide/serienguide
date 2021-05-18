@@ -7,7 +7,7 @@
                 <div class="inline-block px-1">
                     @livewire('media.buttons.watch', ['model' => $model])
                 </div>
-                <x-media.buttons.listing :model="$model"/>
+                <buttons-lists class="relative inline-block text-left" :model="{{ json_encode($model) }}" :is-in-card="false"></buttons-lists>
                 <x-media.buttons.tmdb_update :model="$model"/>
                 <x-media.buttons.tmdb_edit :model="$model"/>
             @endauth
