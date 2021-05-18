@@ -58,6 +58,7 @@ Vue.component('deck-movies-index', require('./components/card/deck/movies/index.
 Vue.component('deck-shows-index', require('./components/card/deck/shows/index.vue').default);
 Vue.component('media-imports-tmdb-index', require('./components/media/imports/tmdb/index.vue').default);
 Vue.component('media-rating-show', require('./components/media/rating/show.vue').default);
+Vue.component('media-progress-show', require('./components/media/progress/show.vue').default);
 
 const app = new Vue({
     el: '#app',

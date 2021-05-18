@@ -111,6 +111,12 @@
                     .then(function (response) {
                         component.created(response.data);
                         Bus.$emit(component.model.watched_event_name, response.data);
+                        if (component.model.is_movie) {
+                            Bus.$emit(component.model.collection.progress_event_name, response.data);
+                        }
+                        else if (component.model.is_episode) {
+                            Bus.$emit(component.model.show.progress_event_name, response.data);
+                        }
                         Vue.success(component.model.name + ' zum ' + response.data.progress.watched_count + '. mal gesehen');
                 })
                     .catch(function (error) {
@@ -130,6 +136,12 @@
             destroyed(index, data) {
                 this.items.splice(index, 1);
                 Bus.$emit(this.model.watched_event_name, data);
+                if (this.model.is_movie) {
+                    Bus.$emit(this.model.collection.progress_event_name, data);
+                }
+                else if (this.model.is_episode) {
+                    Bus.$emit(this.model.show.progress_event_name, data);
+                }
                 Vue.success('Datensatz wurde gelöscht.');
             },
         },

@@ -26,7 +26,8 @@ class Collection extends Model
     const VIEW_PATH = 'collections';
 
     protected $appends = [
-        //
+        'progress_event_name',
+        'path',
     ];
 
     protected $casts = [
@@ -112,13 +113,28 @@ class Collection extends Model
             return null;
         }
 
-        return Watched::with('watchable')
+        $watched = Watched::with('watchable')
             ->where('user_id', auth()->user()->id)
             ->where('watchable_type', Movie::class)
             ->whereIn('watchable_id', $this->movies->pluck('id'))
             ->latest()
             ->orderBy('id', 'DESC')
             ->first();
+
+        if (is_null($watched)) {
+            return $watched;
+        }
+
+        $watched->watchable->append([
+            'path',
+        ]);
+
+        return $watched;
+    }
+
+    public function getProgressEventNameAttribute() : string
+    {
+        return 'collection_' . $this->id . '_progress';
     }
 
     public function getProgressAttribute() : array

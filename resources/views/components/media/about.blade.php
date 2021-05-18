@@ -90,7 +90,7 @@
                     @endif
                 @endunless
                 @if ($model->is_show || $model->is_collection)
-                    <x-media.progress.index :model="$model"></x-media.progress.index>
+                    <media-progress-show :model="{{ json_encode($model) }}"></media-progress-show>
                 @endif
                 <div class="flex-grow"></div>
                 @unless($model->is_collection)

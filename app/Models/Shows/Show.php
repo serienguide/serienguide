@@ -53,7 +53,7 @@ class Show extends Model
     ];
 
     protected $appends = [
-        //
+        'progress_event_name',
     ];
 
     protected $casts = [
@@ -261,13 +261,28 @@ class Show extends Model
             return null;
         }
 
-        return $this->attributes['last_watched'] = $this->watched()
+        $watched = $this->attributes['last_watched'] = $this->watched()
             ->whereHas('watchable')
             ->with('watchable.season')
             ->where('user_id', $this->user->id)
             ->latest('watched_at')
             ->orderBy('id', 'DESC')
             ->first();
+
+        $watched->watchable->append([
+            'path',
+        ]);
+
+        if (is_null($watched)) {
+            return $watched;
+        }
+
+        return $watched;
+    }
+
+    public function getProgressEventNameAttribute() : string
+    {
+        return 'show_' . $this->id . '_progress';
     }
 
     public function getProgressAttribute() : array

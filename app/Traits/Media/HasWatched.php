@@ -24,6 +24,11 @@ trait HasWatched
         ]);
     }
 
+    public function getWatchedEventNameAttribute() : string
+    {
+        return $this->class_name . '_' . $this->id . '_watched';
+    }
+
     public function getWatchedPathAttribute() : string {
         return route('media.watched.store', [
             'media_type' => $this->media_type,

@@ -18,10 +18,6 @@ class CollectionController extends Controller
      */
     public function show(Request $request, Collection $collection)
     {
-        if ($request->wantsJson()) {
-            return $collection;
-        }
-
         $collection->load([
             'movies' => function ($query) {
                 $query = $query->orderBy('year', 'ASC');
@@ -38,7 +34,14 @@ class CollectionController extends Controller
             },
         ]);
 
-        $collection->append('last_watched');
+        $collection->append([
+            'last_watched',
+            'progress',
+        ]);
+
+        if ($request->wantsJson()) {
+            return $collection;
+        }
 
         return view($this->base_view_path . '.show')
             ->with('model', $collection);

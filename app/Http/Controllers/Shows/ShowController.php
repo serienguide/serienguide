@@ -46,10 +46,6 @@ class ShowController extends Controller
      */
     public function show(Request $request, Show $show)
     {
-        if ($request->wantsJson()) {
-            return $show;
-        }
-
         if (Auth::check()) {
             $show->rating_by_user = $show->ratingByUser(Auth::id());
         }
@@ -69,6 +65,10 @@ class ShowController extends Controller
             'next_episode_to_watch',
             'progress',
         ]);
+
+        if ($request->wantsJson()) {
+            return $show;
+        }
 
         return view($this->base_view_path . '.show')
             ->with('model', $show);

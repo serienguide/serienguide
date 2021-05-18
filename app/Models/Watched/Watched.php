@@ -29,6 +29,7 @@ class Watched extends Model
         'path',
         'watched_at_diff_for_humans',
         'watched_at_formatted',
+        'watched_at_for_progress',
     ];
 
     protected $casts = [
@@ -124,6 +125,11 @@ class Watched extends Model
     {
         $this->attributes['watched_at'] = Carbon::createFromFormat('d.m.Y H:i', $value);
         Arr::forget($this->attributes, 'watched_at_formatted');
+    }
+
+    public function getWatchedAtForProgressAttribute() : string
+    {
+        return $this->watched_at->format('d') . '. ' . $this->watched_at->monthName . ' ' . $this->watched_at->format('Y (H:i)');
     }
 
     public function getWatchedAtDiffForHumansAttribute() : string

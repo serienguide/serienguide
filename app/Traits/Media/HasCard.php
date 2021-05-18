@@ -35,6 +35,14 @@ trait HasCard
                 'lists_path',
             ]);
         }
+
+        $this->append([
+            'class_name',
+            'is_collection',
+            'is_episode',
+            'is_movie',
+            'is_show',
+        ]);
     }
 
     public function toCard() : self
@@ -68,11 +76,6 @@ trait HasCard
         }
 
         $this->append([
-            'class_name',
-            'is_collection',
-            'is_episode',
-            'is_movie',
-            'is_show',
             'itemtype',
             'poster_url',
             'backdrop_url',
@@ -86,6 +89,12 @@ trait HasCard
 
         if ($this->is_episode) {
             $this->show->append('path');
+        }
+
+        if ($this->is_movie) {
+            $this->load([
+                'collection',
+            ]);
         }
 
         return $this;
@@ -137,11 +146,6 @@ trait HasCard
         elseif ($this->is_episode) {
             return 'http://schema.org/TVEpisode';
         }
-    }
-
-    public function getWatchedEventNameAttribute() : string
-    {
-        return $this->class_name . '_' . $this->id . '_watched';
     }
 
     public function getVoteAverageFormattedAttribute() : string
