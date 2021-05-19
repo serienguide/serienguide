@@ -63,6 +63,7 @@ class Movie extends Model
 
     protected $appends = [
         'released_at_formatted',
+        'related_path',
     ];
 
     protected $casts = [
@@ -236,6 +237,14 @@ class Movie extends Model
         return [
             Str::singular($this->base_route) => $this->slug
         ];
+    }
+
+    public function getRelatedPathAttribute() : string
+    {
+        return route('media.related.index', [
+            'media_type' => $this->media_type,
+            'model' => $this->id,
+        ]);
     }
 
     public function getReleasedAtFormattedAttribute() : string

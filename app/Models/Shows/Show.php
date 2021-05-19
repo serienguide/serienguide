@@ -54,6 +54,7 @@ class Show extends Model
 
     protected $appends = [
         'progress_event_name',
+        'related_path',
     ];
 
     protected $casts = [
@@ -278,6 +279,14 @@ class Show extends Model
         ]);
 
         return $watched;
+    }
+
+    public function getRelatedPathAttribute() : string
+    {
+        return route('media.related.index', [
+            'media_type' => $this->media_type,
+            'model' => $this->id,
+        ]);
     }
 
     public function getProgressEventNameAttribute() : string

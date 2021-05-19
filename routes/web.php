@@ -34,6 +34,8 @@ Route::resource(App\Models\People\Person::ROUTE_NAME, App\Http\Controllers\Peopl
 Route::resource(App\Models\Shows\Show::ROUTE_NAME, App\Http\Controllers\Shows\ShowController::class);
 Route::resource(App\Models\Shows\Seasons\Season::ROUTE_NAME, App\Http\Controllers\Shows\Seasons\SeasonController::class);
 
+Route::get('/{media_type}/{model}/related', [ App\Http\Controllers\Media\RelatedController::class, 'index' ])->name('media.related.index');
+
 Route::get('/shows/{show}/{season_number}/{episode_number}', [ App\Http\Controllers\Shows\Episodes\EpisodeController::class, 'show' ])->where('season_number', '[\d+]+')->where('episode_number', '[\d+]+')->name('shows.episodes.show');
 Route::get('/seasons/{season}/epsiodes', [ App\Http\Controllers\Shows\Seasons\EpisodeController::class, 'index' ])->name('seasons.episodes.index');
 

@@ -43,7 +43,7 @@
     <section class="bg-gray-400 pt-8">
         <x-container class="py-4">
             <div class="">
-                @livewire('media.related', ['model' => $model])
+                <deck-media-related :model="{{ json_encode($model) }}"></deck-media-related>
             </div>
         </x-container>
     </section>

@@ -16,14 +16,9 @@
 
     <section class="bg-gray-700 mt-8">
         <x-container class="py-12">
-            <ul class="grid grid-rows-1 grid-cols-4-1/1 gap-6 sm:grid-cols-4-1/2 md:grid-cols-4-1/2 lg:grid-cols-4 overflow-auto">
-                @if ($model->next_episode_to_watch)
-                    @livewire('media.card', ['model' => $model->next_episode_to_watch, 'type' => 'backdrop', 'load_next' => true ], key('media-card-' . $model->next_episode_to_watch))
-                @endif
-                @foreach ($model->last_aired_episodes as $key => $last_aired_episode)
-                    @livewire('media.card', ['model' => $last_aired_episode, 'type' => 'backdrop', 'load_next' => false ], key('media-card-' . $last_aired_episode))
-                @endforeach
-            </ul>
+
+            <deck-shows-last-aired-episodes :next-episode="{{ json_encode($model->next_episode_to_watch) }}" :episodes="{{ json_encode($model->last_aired_episodes) }}"></deck-shows-last-aired-episodes>
+
         </x-container>
     </section>
 
@@ -44,7 +39,7 @@
     <section class="bg-gray-400 mt-8">
         <x-container class="py-4">
             <div class="">
-                @livewire('media.related', ['model' => $model])
+                <deck-media-related :model="{{ json_encode($model) }}"></deck-media-related>
             </div>
         </x-container>
     </section>

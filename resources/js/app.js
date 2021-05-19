@@ -58,6 +58,8 @@ Vue.component('deck-episodes-next', require('./components/card/deck/episodes/nex
 Vue.component('deck-following-last-watched', require('./components/card/deck/following/last-watched.vue').default);
 Vue.component('deck-movies-index', require('./components/card/deck/movies/index.vue').default);
 Vue.component('deck-shows-index', require('./components/card/deck/shows/index.vue').default);
+Vue.component('deck-shows-last-aired-episodes', require('./components/card/deck/shows/last-aired-episodes.vue').default);
+Vue.component('deck-media-related', require('./components/card/deck/media/related.vue').default);
 Vue.component('deck-seasons-index', require('./components/card/deck/seasons/index.vue').default);
 Vue.component('media-imports-tmdb-index', require('./components/media/imports/tmdb/index.vue').default);
 Vue.component('media-rating-show', require('./components/media/rating/show.vue').default);

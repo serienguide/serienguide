@@ -73,6 +73,14 @@ class ShowController extends Controller
             ]);
         }
 
+        if (! is_null($show->next_episode_to_watch)) {
+            $show->next_episode_to_watch->toCard();
+        }
+
+        foreach ($show->last_aired_episodes as $episode) {
+            $episode->toCard();
+        }
+
         if ($request->wantsJson()) {
             return $show;
         }
