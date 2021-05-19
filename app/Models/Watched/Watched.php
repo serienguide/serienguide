@@ -151,6 +151,11 @@ class Watched extends Model
         ];
     }
 
+    public function medium() : MorphTo
+    {
+        return $this->morphTo('medium', 'watchable_type', 'watchable_id');
+    }
+
     public function watchable() : MorphTo
     {
         return $this->morphTo();

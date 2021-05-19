@@ -35,40 +35,39 @@ class CalendarController extends Controller
             }
 
             $dates = [];
-            $daily_runtimes = [];
             $last_date = null;
+            $i = -1;
             foreach ($models as $model) {
                 $model->toCard();
                 if (is_null($last_date) || $last_date->format('Ymd') != $model->$sort_by->format('Ymd')) {
 
-                    if (! is_null($last_date)) {
-                        $dates[$last_date->format('Ymd')]['h'] = floor($dates[$last_date->format('Ymd')]['runtime'] / 60);
-                        $dates[$last_date->format('Ymd')]['m'] = $dates[$last_date->format('Ymd')]['runtime'] % 60;
+                    if ($i > 0) {
+                        $dates[$i]['h'] = floor($dates[$i]['runtime'] / 60);
+                        $dates[$i]['m'] = $dates[$i]['runtime'] % 60;
                     }
 
                     $last_date = $model->$sort_by;
-                    $dates[$last_date->format('Ymd')] = [
+                    $i++;
+
+                    $dates[$i] = [
                         'models' => [],
                         'runtime' => 0,
                         'title' => $last_date->dayName . ', ' . $last_date->format('d.') . ' ' . $last_date->monthName . ' ' . $last_date->format('Y'),
                         'h' => 0,
                         'm' => 0,
                     ];
-                    $daily_runtimes[$last_date->format('Ymd')] = 0;
                 }
-                $dates[$last_date->format('Ymd')]['models'][] = $model;
-                $dates[$last_date->format('Ymd')]['runtime'] += $model->runtime;
-                $daily_runtimes[$last_date->format('Ymd')] += $model->runtime;
+                $dates[$i]['models'][] = $model;
+                $dates[$i]['runtime'] += $model->runtime;
             }
 
             if ($models->count()) {
-                $dates[$last_date->format('Ymd')]['h'] = floor($dates[$last_date->format('Ymd')]['runtime'] / 60);
-                $dates[$last_date->format('Ymd')]['m'] = $dates[$last_date->format('Ymd')]['runtime'] % 60;
+                $dates[$i]['h'] = floor($dates[$i]['runtime'] / 60);
+                $dates[$i]['m'] = $dates[$i]['runtime'] % 60;
             }
 
             return [
                 'models' => $models,
-                'daily_runtimes' => $daily_runtimes,
                 'dates' => $dates,
             ];
 

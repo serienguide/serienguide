@@ -90,6 +90,7 @@
 
     <section class="">
         <x-container class="py-4">
+            <component is="profile-{{ $section }}" :filters="{{ json_encode($filters) }}" :user="{{ json_encode($user) }}" index-path="{{ $index_path }}"></component>
             @livewire('users.profiles.' . $section, ['user' => $user])
         </x-container>
     </section>

@@ -18,7 +18,9 @@ trait HasImages
 
     public function initializeHasImages()
     {
-        //
+        $this->append([
+            'poster_url'
+        ]);
     }
 
     public function createImageFromTmdb(string $type, $path)

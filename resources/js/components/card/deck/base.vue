@@ -13,6 +13,7 @@
             <div class="mt-3 flex sm:mt-0 sm:ml-4">
 
                 <slot name="filter"></slot>
+                <slot name="sort"></slot>
                 <slot name="actions"></slot>
 
             </div>
