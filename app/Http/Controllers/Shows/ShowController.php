@@ -55,7 +55,7 @@ class ShowController extends Controller
             'directors',
             'genres',
             'providers',
-            'seasons',
+            'seasons.show',
             'writers',
         ]);
 
@@ -66,6 +66,12 @@ class ShowController extends Controller
             'progress',
             'path',
         ]);
+
+        foreach ($show->seasons as $season) {
+            $season->append([
+                'progress',
+            ]);
+        }
 
         if ($request->wantsJson()) {
             return $show;

@@ -121,6 +121,7 @@
                         }
                         else if (component.model.is_episode) {
                             Bus.$emit(component.model.show.progress_event_name, response.data);
+                            Bus.$emit(component.model.season.progress_event_name, response.data);
                         }
                         Vue.success(component.model.name + ' zum ' + response.data.progress.watched_count + '. mal gesehen');
                 })
@@ -146,6 +147,7 @@
                 }
                 else if (this.model.is_episode) {
                     Bus.$emit(this.model.show.progress_event_name, data);
+                    Bus.$emit(this.model.season.progress_event_name, data);
                 }
                 Vue.success('Datensatz wurde gelöscht.');
             },

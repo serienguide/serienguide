@@ -67,6 +67,7 @@
             watch() {
                 var component = this;
                 component.is_watching = true;
+                component.$emit('watching');
                 axios.post(component.model.watched_path)
                     .then( function (response) {
                         Bus.$emit(component.model.watched_event_name, response.data);
@@ -78,8 +79,12 @@
                         }
                         else if (component.model.is_episode) {
                             Bus.$emit(component.model.show.progress_event_name, response.data);
+                            Bus.$emit(component.model.season.progress_event_name, response.data);
                         }
                         else if (component.model.is_show) {
+                            Bus.$emit(component.model.progress_event_name, response.data);
+                        }
+                        else if(component.model.is_season) {
                             Bus.$emit(component.model.progress_event_name, response.data);
                         }
 
@@ -91,6 +96,9 @@
 
                         if (component.model.is_show) {
                             Vue.success(component.progress.watched_count + ' Episoden der Serie ' + component.model.name + ' als gesehen markiert.');
+                            for (var index in component.model.seasons) {
+                                Bus.$emit(component.model.seasons[index].progress_event_name, response.data);
+                            }
                         }
                         else if (component.model.is_season) {
                             Vue.success(component.progress.watched_count + ' Episoden der ' + component.model.season_number + '. Staffel der Serie ' + component.model.show.name + ' als gesehen markiert.');

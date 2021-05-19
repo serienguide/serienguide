@@ -32,8 +32,10 @@ Route::resource(App\Models\Movies\Movie::ROUTE_NAME, App\Http\Controllers\Movies
 Route::resource(App\Models\Movies\Collection::ROUTE_NAME, App\Http\Controllers\Movies\CollectionController::class);
 Route::resource(App\Models\People\Person::ROUTE_NAME, App\Http\Controllers\People\PersonController::class);
 Route::resource(App\Models\Shows\Show::ROUTE_NAME, App\Http\Controllers\Shows\ShowController::class);
+Route::resource(App\Models\Shows\Seasons\Season::ROUTE_NAME, App\Http\Controllers\Shows\Seasons\SeasonController::class);
 
 Route::get('/shows/{show}/{season_number}/{episode_number}', [ App\Http\Controllers\Shows\Episodes\EpisodeController::class, 'show' ])->where('season_number', '[\d+]+')->where('episode_number', '[\d+]+')->name('shows.episodes.show');
+Route::get('/seasons/{season}/epsiodes', [ App\Http\Controllers\Shows\Seasons\EpisodeController::class, 'index' ])->name('seasons.episodes.index');
 
 Route::get('/impressum', [ App\Http\Controllers\Legal\ImpressumController::class, 'index' ])->name('legal.impressum.index');
 
@@ -92,6 +94,7 @@ Route::bind('model', function ($id) {
         case 'episodes': return App\Models\Shows\Episodes\Episode::findOrFail($id); break;
         case 'movies': return App\Models\Movies\Movie::findOrFail($id); break;
         case 'people': return App\Models\People\Person::findOrFail($id); break;
+        case 'seasons': return App\Models\Shows\Seasons\Season::findOrFail($id); break;
         case 'shows': return App\Models\Shows\Show::findOrFail($id); break;
         default: abort(404);
     }

@@ -30,7 +30,7 @@
     <x-container class="py-4">
         <div>
             @foreach($model->seasons as $season)
-                @livewire('shows.seasons.index', ['season' => $season, 'isCurrent' => ($season->season_number == $model->current_season_number)], key('shows.seasons.index.' . $season->id))
+                <deck-seasons-index :model="{{ json_encode($season) }}" :is-current="{{ ($season->season_number == $model->current_season_number ? 'true' : 'false') }}"></deck-seasons-index>
             @endforeach
         </div>
     </x-container>

@@ -22,11 +22,18 @@ class Season extends Model
 {
     use HasFactory,
         HasImages,
+        HasModelPath,
         HasWatched,
         SoftDeletes;
 
+    const ROUTE_NAME = 'seasons';
+
     protected $appends = [
         'is_season',
+        'episodes_path',
+        'poster_url_sm',
+        'path',
+        'progress_event_name',
     ];
 
     protected $casts = [
@@ -51,6 +58,11 @@ class Season extends Model
     public function isDeletable() : bool
     {
         return true;
+    }
+
+    public function getProgressEventNameAttribute() : string
+    {
+        return 'season_' . $this->id . '_progress';
     }
 
     public function getProgressAttribute() : array
@@ -84,6 +96,13 @@ class Season extends Model
     public function getIsSeasonAttribute() : bool
     {
         return true;
+    }
+
+    public function getEpisodesPathAttribute() : string
+    {
+        return route('seasons.episodes.index', [
+            'season' => $this->id,
+        ]);
     }
 
     public function getMediaTypeAttribute() : string

@@ -45,7 +45,7 @@ trait HasImages
         return Storage::disk('s3')->url($this->poster_path ? 'w680' . $this->poster_path : 'no/680x1000.png');
     }
 
-    public function getPosterUrlMdAttribute() : string
+    public function getPosterUrlSmAttribute() : string
     {
         return Storage::disk('s3')->url($this->poster_path ? 'w118' . $this->poster_path : 'no/680x1000.png');
     }

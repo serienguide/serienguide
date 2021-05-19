@@ -2340,6 +2340,146 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/seasons/index.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/card/deck/seasons/index.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    model: {
+      tpye: Object,
+      required: true
+    },
+    isCurrent: {
+      type: Boolean,
+      required: true
+    }
+  },
+  computed: {
+    progressbar_class: function progressbar_class() {
+      if (this.progress.percent == 100) {
+        return 'rounded-l rounded-r';
+      }
+
+      if (this.progress.percent > 0) {
+        return 'rounded-l';
+      }
+
+      return '';
+    }
+  },
+  data: function data() {
+    return {
+      episodes: [],
+      progress: this.model.progress,
+      is_showing: false,
+      is_fetched: false,
+      is_fetching: false,
+      is_progressing: false
+    };
+  },
+  methods: {
+    fetch: function fetch() {
+      var component = this;
+      axios.get(component.model.episodes_path).then(function (response) {
+        component.episodes = response.data;
+        component.is_fetched = true;
+        component.is_fetching = false;
+      })["catch"](function (error) {
+        console.log(error);
+        Vue.error('Episoden konnten nicht geladen werden.');
+      });
+    },
+    progressed: function progressed() {
+      var component = this;
+      component.is_progressing = true;
+      axios.get(component.model.path).then(function (response) {
+        component.progress = response.data.progress;
+      })["catch"](function (error) {
+        console.log(error);
+        Vue.error('Fortschritt konnten nicht geladen werden.');
+      }).then(function () {
+        component.is_progressing = false;
+      });
+    },
+    show: function show() {
+      if (!this.is_fetched) {
+        this.fetch();
+      }
+
+      this.is_showing = !this.is_showing;
+    },
+    watching: function watching() {
+      if (this.is_showing) {
+        return;
+      }
+
+      this.show();
+    }
+  },
+  mounted: function mounted() {
+    var component = this;
+    Bus.$on(component.model.progress_event_name, function (data) {
+      component.progressed(data);
+    });
+
+    if (!this.isCurrent) {
+      return;
+    }
+
+    this.fetch();
+    this.is_showing = true;
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/shows/index.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/card/deck/shows/index.vue?vue&type=script&lang=js& ***!
@@ -3002,6 +3142,7 @@ __webpack_require__.r(__webpack_exports__);
     watch: function watch() {
       var component = this;
       component.is_watching = true;
+      component.$emit('watching');
       axios.post(component.model.watched_path).then(function (response) {
         Bus.$emit(component.model.watched_event_name, response.data);
         component.watched(response.data);
@@ -3010,7 +3151,10 @@ __webpack_require__.r(__webpack_exports__);
           Bus.$emit(component.model.collection.progress_event_name, response.data);
         } else if (component.model.is_episode) {
           Bus.$emit(component.model.show.progress_event_name, response.data);
+          Bus.$emit(component.model.season.progress_event_name, response.data);
         } else if (component.model.is_show) {
+          Bus.$emit(component.model.progress_event_name, response.data);
+        } else if (component.model.is_season) {
           Bus.$emit(component.model.progress_event_name, response.data);
         }
 
@@ -3022,6 +3166,10 @@ __webpack_require__.r(__webpack_exports__);
 
         if (component.model.is_show) {
           Vue.success(component.progress.watched_count + ' Episoden der Serie ' + component.model.name + ' als gesehen markiert.');
+
+          for (var index in component.model.seasons) {
+            Bus.$emit(component.model.seasons[index].progress_event_name, response.data);
+          }
         } else if (component.model.is_season) {
           Vue.success(component.progress.watched_count + ' Episoden der ' + component.model.season_number + '. Staffel der Serie ' + component.model.show.name + ' als gesehen markiert.');
         } else {
@@ -3170,6 +3318,7 @@ __webpack_require__.r(__webpack_exports__);
           Bus.$emit(component.model.collection.progress_event_name, response.data);
         } else if (component.model.is_episode) {
           Bus.$emit(component.model.show.progress_event_name, response.data);
+          Bus.$emit(component.model.season.progress_event_name, response.data);
         }
 
         Vue.success(component.model.name + ' zum ' + response.data.progress.watched_count + '. mal gesehen');
@@ -3194,6 +3343,7 @@ __webpack_require__.r(__webpack_exports__);
         Bus.$emit(this.model.collection.progress_event_name, data);
       } else if (this.model.is_episode) {
         Bus.$emit(this.model.show.progress_event_name, data);
+        Bus.$emit(this.model.season.progress_event_name, data);
       }
 
       Vue.success('Datensatz wurde gelöscht.');
@@ -22062,6 +22212,189 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/seasons/index.vue?vue&type=template&id=0628801e&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/card/deck/seasons/index.vue?vue&type=template&id=0628801e& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      attrs: {
+        itemprop: "containsSeason",
+        itemtype: "http://schema.org/TVSeason",
+        itemscope: ""
+      }
+    },
+    [
+      _c("div", { staticClass: "flex my-3 items-end" }, [
+        _vm.model.poster_path
+          ? _c("img", {
+              staticClass: "rounded-md mr-1 cursor-pointer",
+              attrs: { src: _vm.model.poster_url_sm },
+              on: { click: _vm.show }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "cursor-pointer flex-grow", on: { click: _vm.show } },
+          [
+            _c("div", { staticClass: "flex" }, [
+              _c("h3", { staticClass: "font-bold" }, [
+                _vm._v("Staffel "),
+                _c("span", { attrs: { itemprop: "seasonNumber" } }, [
+                  _vm._v(_vm._s(_vm.model.season_number))
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(0)
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-sm text-gray-400" }, [
+              _vm.$auth.check()
+                ? _c("span", [_vm._v(_vm._s(_vm.progress.watched_count) + "/")])
+                : _vm._e(),
+              _c("span", { attrs: { itemprop: "numberOfEpisodes" } }, [
+                _vm._v(_vm._s(_vm.model.episode_count))
+              ]),
+              _vm._v(" Folgen")
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _vm.$auth.check()
+          ? _c(
+              "div",
+              [
+                _c("buttons-watched-create", {
+                  staticClass: "relative inline-block",
+                  attrs: {
+                    model: _vm.model,
+                    progress: _vm.progress,
+                    "is-stand-alone": true
+                  },
+                  on: { watching: _vm.watching }
+                })
+              ],
+              1
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "my-3 rounded h-2 w-full bg-blue-900",
+          attrs: {
+            title:
+              _vm.progress.watched_count +
+              "/" +
+              _vm.progress.watchable_count +
+              " " +
+              _vm.progress.percent +
+              "%"
+          }
+        },
+        [
+          _c("div", {
+            staticClass:
+              "bg-blue-500 h-2 text-xs leading-none text-center text-white transition-all duration-500",
+            class: _vm.progressbar_class,
+            style: { width: _vm.progress.percent + "%" }
+          })
+        ]
+      ),
+      _vm._v(" "),
+      _vm.is_fetching
+        ? _c(
+            "div",
+            { staticClass: "p-5" },
+            [
+              _c("center", [
+                _c("span", { staticClass: "text-3xl" }, [
+                  _c("i", { staticClass: "fas fa-spinner fa-spin" }),
+                  _c("br")
+                ]),
+                _vm._v("\n            Lade Daten..\n        ")
+              ])
+            ],
+            1
+          )
+        : _vm.episodes.length
+        ? _c(
+            "transition",
+            {
+              attrs: {
+                "enter-active-class": "transition ease-out duration-100",
+                "enter-from-class": "transform opacity-0 scale-95",
+                "enter-to-class": "transform opacity-100 scale-100",
+                "leave-active-class": "transition ease-in duration-75",
+                "leave-from-class": "transform opacity-100 scale-100",
+                "leave-to-class": "transform opacity-0 scale-95"
+              }
+            },
+            [
+              _c(
+                "ul",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.is_showing,
+                      expression: "is_showing"
+                    }
+                  ],
+                  staticClass:
+                    "grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mb-3"
+                },
+                _vm._l(_vm.episodes, function(episode, index) {
+                  return _c("card-show", {
+                    key: episode.id,
+                    attrs: { model: episode, "img-type": "backdrop" }
+                  })
+                }),
+                1
+              )
+            ]
+          )
+        : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "ml-2 pointer-events-none",
+        attrs: { "wire:loading.delay": "" }
+      },
+      [_c("i", { staticClass: "fa fa-spinner fa-spin text-gray-400" })]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/shows/index.vue?vue&type=template&id=15289d17&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/card/deck/shows/index.vue?vue&type=template&id=15289d17& ***!
@@ -36543,6 +36876,7 @@ Vue.component('deck-episodes-next', __webpack_require__(/*! ./components/card/de
 Vue.component('deck-following-last-watched', __webpack_require__(/*! ./components/card/deck/following/last-watched.vue */ "./resources/js/components/card/deck/following/last-watched.vue")["default"]);
 Vue.component('deck-movies-index', __webpack_require__(/*! ./components/card/deck/movies/index.vue */ "./resources/js/components/card/deck/movies/index.vue")["default"]);
 Vue.component('deck-shows-index', __webpack_require__(/*! ./components/card/deck/shows/index.vue */ "./resources/js/components/card/deck/shows/index.vue")["default"]);
+Vue.component('deck-seasons-index', __webpack_require__(/*! ./components/card/deck/seasons/index.vue */ "./resources/js/components/card/deck/seasons/index.vue")["default"]);
 Vue.component('media-imports-tmdb-index', __webpack_require__(/*! ./components/media/imports/tmdb/index.vue */ "./resources/js/components/media/imports/tmdb/index.vue")["default"]);
 Vue.component('media-rating-show', __webpack_require__(/*! ./components/media/rating/show.vue */ "./resources/js/components/media/rating/show.vue")["default"]);
 Vue.component('media-progress-show', __webpack_require__(/*! ./components/media/progress/show.vue */ "./resources/js/components/media/progress/show.vue")["default"]);
@@ -36993,6 +37327,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_7de00ef8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_7de00ef8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/card/deck/seasons/index.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/card/deck/seasons/index.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _index_vue_vue_type_template_id_0628801e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.vue?vue&type=template&id=0628801e& */ "./resources/js/components/card/deck/seasons/index.vue?vue&type=template&id=0628801e&");
+/* harmony import */ var _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index.vue?vue&type=script&lang=js& */ "./resources/js/components/card/deck/seasons/index.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _index_vue_vue_type_template_id_0628801e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _index_vue_vue_type_template_id_0628801e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/card/deck/seasons/index.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/card/deck/seasons/index.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/card/deck/seasons/index.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./index.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/seasons/index.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/card/deck/seasons/index.vue?vue&type=template&id=0628801e&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/card/deck/seasons/index.vue?vue&type=template&id=0628801e& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_0628801e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./index.vue?vue&type=template&id=0628801e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/card/deck/seasons/index.vue?vue&type=template&id=0628801e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_0628801e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_template_id_0628801e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
