@@ -64,6 +64,8 @@ Vue.component('deck-seasons-index', require('./components/card/deck/seasons/inde
 Vue.component('media-imports-tmdb-index', require('./components/media/imports/tmdb/index.vue').default);
 Vue.component('media-rating-show', require('./components/media/rating/show.vue').default);
 Vue.component('media-progress-show', require('./components/media/progress/show.vue').default);
+Vue.component('profile-index', require('./components/profile/index.vue').default);
+Vue.component('profile-followers', require('./components/profile/followers.vue').default);
 Vue.component('profile-lists', require('./components/profile/lists.vue').default);
 Vue.component('profile-progress', require('./components/profile/progress.vue').default);
 Vue.component('profile-rated', require('./components/profile/rated.vue').default);

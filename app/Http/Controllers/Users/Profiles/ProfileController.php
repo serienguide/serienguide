@@ -18,6 +18,7 @@ class ProfileController extends Controller
     {
         if ($request->wantsJson()) {
             switch($section) {
+                case 'followers': return $this->getFollowers($request, $user); break;
                 case 'lists': return $this->getLists($request, $user); break;
                 case 'progress': return $this->getProgress($request, $user); break;
                 case 'rated': return $this->getRated($request, $user); break;
@@ -65,6 +66,27 @@ class ProfileController extends Controller
             ->with('filters', $filters)
             ->with('section', $section)
             ->with('user', $user);
+    }
+
+    protected function getFollowers(Request $request, User $user)
+    {
+        $follow_type = $request->input('follow_type');
+
+        $models = $user->$follow_type()
+            ->withCount([
+                'followings',
+                'followers'
+            ])
+            ->orderBy('name', 'ASC')
+            ->paginate(12);
+
+        foreach ($models as $key => $model) {
+            $model->append([
+                'profile_path',
+            ]);
+        }
+
+        return $models;
     }
 
     protected function getLists(Request $request, User $user)
