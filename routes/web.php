@@ -91,6 +91,8 @@ Route::resource(App\Models\Lists\Listing::ROUTE_NAME, App\Http\Controllers\Lists
     'show',
 ]);
 
+Route::get('/lists/{list}/items', [ App\Http\Controllers\Lists\Items\ItemController::class, 'index' ])->name('lists.items.index');
+
 Route::bind('model', function ($id) {
     switch(app()->request->route('media_type')) {
         case 'episodes': return App\Models\Shows\Episodes\Episode::findOrFail($id); break;

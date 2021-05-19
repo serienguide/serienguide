@@ -20,6 +20,7 @@
             </div>
         @endif
 
-        @livewire('users.lists.items.index', ['model' => $model])
+        <deck-lists-show :model="{{ json_encode($model) }}"></deck-lists-show>
+
     </x-container>
 </x-app-layout>

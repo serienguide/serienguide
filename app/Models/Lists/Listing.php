@@ -33,6 +33,7 @@ class Listing extends Model
     protected $appends = [
         'is_custom',
         'is_watchlist',
+        'items_path',
     ];
 
     protected $casts = [
@@ -86,6 +87,13 @@ class Listing extends Model
             'user' => $this->user_id,
             'list' => $this->id,
         ];
+    }
+
+    public function getItemsPathAttribute() : string
+    {
+        return route ('lists.items.index', [
+            'list' => $this->id,
+        ]);
     }
 
     public function items() : HasMany

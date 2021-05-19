@@ -69,6 +69,11 @@ class ListingController extends Controller
      */
     public function show(Request $request, User $user, Listing $list)
     {
+        $list->append([
+            'path',
+            'items_path',
+        ]);
+
         if ($request->wantsJson()) {
             return $list;
         }
