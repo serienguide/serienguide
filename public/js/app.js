@@ -25574,16 +25574,16 @@ var render = function() {
                     "a",
                     {
                       staticClass:
-                        "z-10 relative inline-flex items-center px-4 py-2 border text-sm font-medium",
+                        "relative inline-flex items-center px-4 py-2 border text-sm font-medium",
                       class:
                         n == _vm.pagination.currentPage
-                          ? "z-10 bg-indigo-50 border-indigo-500 text-indigo-600"
+                          ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
                           : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50",
                       attrs: { href: "#", "aria-current": "page" },
                       on: {
                         click: function($event) {
                           $event.preventDefault()
-                          return _vm.$emit("paginating", n)
+                          n != "..." ? _vm.$emit("paginating", n) : ""
                         }
                       }
                     },
