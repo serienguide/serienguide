@@ -41,10 +41,10 @@
                         <media-progress-show :model="model.show"></media-progress-show>
                     </div>
                     <div class="px-5 hidden md:block max-w-sm" v-if="model.show.next_episode_to_watch">
-                            <h4 class="mb-3 text-base font-bold leading-6 font-medium text-gray-900">Nächste Folge</h4>
-                            <ul class="grid grid-rows-1">
-                                <card-show :model="model.show.next_episode_to_watch" :key="'next_' + model.show.next_episode_to_watch.id" img-type="backdrop" :load-next="true" @nexted="nexted(index, $event)"></card-show>
-                            </ul>
+                        <h4 class="mb-3 text-base font-bold leading-6 font-medium text-gray-900">Nächste Folge</h4>
+                        <ul class="grid grid-rows-1">
+                            <card-show :model="model.show.next_episode_to_watch" :key="'next_' + model.show.next_episode_to_watch.id" img-type="backdrop" :load-next="true" @nexted="nexted(index, $event)"></card-show>
+                        </ul>
                     </div>
                 </div>
             </li>

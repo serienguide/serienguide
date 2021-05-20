@@ -19,7 +19,7 @@ trait HasImages
     public function initializeHasImages()
     {
         $this->append([
-            'poster_url'
+            // 'poster_url'
         ]);
     }
 

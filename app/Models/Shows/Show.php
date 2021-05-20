@@ -304,27 +304,17 @@ class Show extends Model
             $this->user = auth()->user();
         }
 
-        $watchable_count = $this->episodes->count();
+        $watchable_count = $this->episodes()->count();
         $watchable_runtime = $watchable_count * $this->runtime;
         $unwatched_runtime = $watchable_runtime;
         if ($this->user) {
-            $this->episodes->loadCount([
-                'watched' => function ($query) {
-                    return $query->where('user_id', $this->user->id);
-                }
-            ]);
-            $watched_models = $this->episodes->filter(function ($episode) {
-                return $episode->watched_count > 0;
-            });
-            $unwatched_models = $this->episodes->filter(function ($episode) {
-                return $episode->watched_count == 0;
-            });
-            $watched_count = $watched_models->count();
+            $watched_count = $this->watched()->where('user_id', auth()->user()->id)->count();
             $watched_runtime = $watched_count * $this->runtime;
-            $unwatched_count = $unwatched_models->count();
+            $unwatched_count = $watchable_count - $watched_count;
             $unwatched_runtime = $unwatched_count * $this->runtime;
             return $this->progress = [
                 'watched_count' => $watched_count,
+                'watched_distinct_count' => $watched_count,
                 'percent' => ($watchable_count == 0 ? 0 : min(100, round($watched_count / $watchable_count * 100, 0))),
                 'watchable_count' => $watchable_count,
                 'watchable_runtime' => $watchable_runtime,
@@ -342,6 +332,7 @@ class Show extends Model
             'watched_count' => 0,
             'percent' => 0,
             'watchable_count' => $watchable_count,
+            'watched_distinct_count' => $watchable_count,
             'watchable_runtime' => $watchable_runtime,
             'watched_runtime' => 0,
             'unwatched_count' => $watchable_count,
@@ -416,7 +407,7 @@ class Show extends Model
 
     public function episodes() : HasMany
     {
-        return $this->hasMany(Episode::class, 'show_id');
+        return $this->hasMany(Episode::class, 'show_id')->with('show');
     }
 
     public function watchedBy(User $user, array $attributes = []) : array
