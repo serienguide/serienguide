@@ -113,6 +113,11 @@ class ProfileController extends Controller
             $list->user->append([
                 'profile_path',
             ]);
+            foreach ($list->items as $item) {
+                $item->medium->append([
+                    'poster_url',
+                ]);
+            }
             $list->is_first_custom_list = ($list->is_custom != $last_is_custom);
             $last_is_custom = $list->is_custom;
         }
