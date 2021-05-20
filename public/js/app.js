@@ -2025,6 +2025,11 @@ __webpack_require__.r(__webpack_exports__);
         return null;
       }
     },
+    loadNext: {
+      required: false,
+      "default": false,
+      type: Boolean
+    },
     isFetching: {
       required: true,
       "default": false,
@@ -3203,7 +3208,7 @@ __webpack_require__.r(__webpack_exports__);
         component.$emit('nexted', response.data);
       })["catch"](function (error) {
         console.log(error);
-        Vue.error(component.model.name + 'Nächste Episode konnte nicht geladen werden.');
+        Vue.error(component.model.name + ' nächste Episode konnte nicht geladen werden.');
       }).then(function () {
         component.is_nexting = false;
       });
@@ -3301,7 +3306,7 @@ __webpack_require__.r(__webpack_exports__);
         Bus.$emit(component.model.watched_event_name, response.data);
         component.watched(response.data);
 
-        if (component.model.is_movie) {
+        if (component.model.is_movie && component.model.collection) {
           Bus.$emit(component.model.collection.progress_event_name, response.data);
         } else if (component.model.is_episode) {
           Bus.$emit(component.model.show.progress_event_name, response.data);
@@ -22544,7 +22549,7 @@ var render = function() {
                 _vm._l(_vm.models, function(model, index) {
                   return _c("card-show", {
                     key: model.id,
-                    attrs: { model: model, "load-next": true },
+                    attrs: { model: model, "load-next": _vm.loadNext },
                     on: {
                       nexted: function($event) {
                         return _vm.nexted(index, $event)

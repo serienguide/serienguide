@@ -74,7 +74,7 @@
 
                         component.watched(response.data);
 
-                        if (component.model.is_movie) {
+                        if (component.model.is_movie && component.model.collection) {
                             Bus.$emit(component.model.collection.progress_event_name, response.data);
                         }
                         else if (component.model.is_episode) {

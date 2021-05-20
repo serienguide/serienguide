@@ -244,7 +244,7 @@ class Show extends Model
     {
         return [
             'title' => $this->name . ' Serie (' . $this->year . ') Episodenguide',
-            'description' => 'Im ' . $this->name . ' Episodenguide findest du eine Übersicht aller '.($this->episodes->count() ? $this->episodes->count() : '').' Folgen der ' . ($this->genres->count() ? ' ' . $this->genres->first()->name : '') . ' Serie . Markiere Folgen als gesehen und verliere nie wieder den Überblick!',
+            'description' => 'Im ' . $this->name . ' Episodenguide findest du eine Übersicht aller '.($this->episodes()->count() ?: '').' Folgen der ' . ($this->genres->count() ? ' ' . $this->genres->first()->name : '') . ' Serie . Markiere Folgen als gesehen und verliere nie wieder den Überblick!',
         ];
     }
 

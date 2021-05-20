@@ -205,7 +205,7 @@
                 })
                     .catch(function (error) {
                         console.log(error);
-                        Vue.error(component.model.name + 'Nächste Episode konnte nicht geladen werden.');
+                        Vue.error(component.model.name + ' nächste Episode konnte nicht geladen werden.');
                 })
                     .then(function () {
                         component.is_nexting = false;
