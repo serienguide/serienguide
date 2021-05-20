@@ -86,6 +86,7 @@
                         }
                         else if(component.model.is_season) {
                             Bus.$emit(component.model.progress_event_name, response.data);
+                            Bus.$emit(component.model.show.progress_event_name, response.data);
                         }
 
                         if (component.model.is_show || component.model.is_season) {
