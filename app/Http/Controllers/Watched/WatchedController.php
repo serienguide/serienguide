@@ -23,6 +23,7 @@ class WatchedController extends Controller
     {
         if ($request->wantsJson()) {
             return $model->watched()
+                ->where('user_id', auth()->user()->id)
                 ->latest('watched_at')
                 ->get();
         }
