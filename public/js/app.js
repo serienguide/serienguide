@@ -2351,6 +2351,23 @@ __webpack_require__.r(__webpack_exports__);
     return {
       index_path: this.model.items_path
     };
+  },
+  mounted: function mounted() {
+    var component = this;
+    Bus.$on(component.model.unlisted_event_name, function (model) {
+      var index = -1;
+
+      for (var i in component.models) {
+        if (component.models[i].medium.id == model.id) {
+          index = i;
+          break;
+        }
+      }
+
+      if (index > -1) {
+        component.models.splice(index, 1);
+      }
+    });
   }
 });
 
@@ -2864,6 +2881,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       if (item == '') {
         var items = [];
         Vue.success(this.model.name + ' von Liste ' + this[list_type][index].name + ' entfernt.');
+
+        if (this[list_type][index].user_id == this.$auth.user.id) {
+          Bus.$emit(this[list_type][index].unlisted_event_name, this.model);
+        }
       } else {
         var items = [item];
         Vue.success(this.model.name + ' zu Liste ' + this[list_type][index].name + ' hinzugefügt.');
@@ -3013,6 +3034,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _rating_show_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rating/show.vue */ "./resources/js/components/card/rating/show.vue");
 /* harmony import */ var _watched_index_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./watched/index.vue */ "./resources/js/components/card/watched/index.vue");
 /* harmony import */ var _watched_create_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./watched/create.vue */ "./resources/js/components/card/watched/create.vue");
+//
 //
 //
 //
@@ -23924,468 +23946,495 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "li",
+    "transition",
     {
-      staticClass:
-        "relative col-span-1 flex flex-col justify-between bg-white rounded-lg shadow",
       attrs: {
-        itemtype: _vm.model.itemtype ? _vm.model.itemtype : false,
-        itemscope: _vm.model.itemtype ? "" : false
+        "enter-active-class": "transition ease-out duration-1000",
+        "enter-from-class": "transform opacity-0 scale-95",
+        "enter-to-class": "transform opacity-100 scale-100",
+        "leave-active-class": "transition ease-in duration-1000",
+        "leave-from-class": "transform opacity-100 scale-100",
+        "leave-to-class": "transform opacity-0 scale-95"
       }
     },
     [
-      _vm.loadNext
-        ? _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.is_nexting,
-                  expression: "is_nexting"
-                }
-              ],
-              staticClass:
-                "absolute inset-0 bg-gray-200 bg-opacity-50 z-10 inline-flex flex-col items-center justify-center"
-            },
-            [
-              _vm._m(0),
-              _vm._v(" "),
-              _c("div", [_vm._v("Lade nächste Episode")])
-            ]
-          )
-        : _vm._e(),
-      _vm._v(" "),
       _c(
-        "div",
+        "li",
         {
-          staticClass: "rounded-t-lg h-2 w-full bg-yellow-900",
+          staticClass:
+            "relative col-span-1 flex flex-col justify-between bg-white rounded-lg shadow",
           attrs: {
-            title:
-              _vm.rating_stats.avg_formatted +
-              "/10 " +
-              _vm.rating_stats.count +
-              " Stimmen",
-            itemprop: "aggregateRating",
-            itemscope: "",
-            itemtype: "http://schema.org/AggregateRating"
+            itemtype: _vm.model.itemtype ? _vm.model.itemtype : false,
+            itemscope: _vm.model.itemtype ? "" : false
           }
         },
         [
-          _c("meta", { attrs: { itemprop: "bestRating", content: "10" } }),
+          _vm.loadNext
+            ? _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.is_nexting,
+                      expression: "is_nexting"
+                    }
+                  ],
+                  staticClass:
+                    "absolute inset-0 bg-gray-200 bg-opacity-50 z-10 inline-flex flex-col items-center justify-center"
+                },
+                [
+                  _c("div", [
+                    _c("i", { staticClass: "fas fa-spinner fa-spin text-3xl" })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [_vm._v("Lade nächste Episode")])
+                ]
+              )
+            : _vm._e(),
           _vm._v(" "),
-          _c("meta", { attrs: { itemprop: "worstRating", content: "0" } }),
-          _vm._v(" "),
-          _c("meta", {
-            attrs: { itemprop: "ratingValue", content: _vm.rating_stats.avg }
-          }),
-          _vm._v(" "),
-          _c("meta", {
-            attrs: { itemprop: "ratingCount", content: _vm.rating_stats.count }
-          }),
-          _vm._v(" "),
-          _c("div", {
-            staticClass:
-              "bg-yellow-400 h-2 text-xs leading-none text-center text-white transition-all",
-            class: _vm.rating_bar_class,
-            style: { width: _vm.rating_stats.avg * 10 + "%" }
-          })
-        ]
-      ),
-      _vm._v(" "),
-      _vm.$auth.check()
-        ? _c(
-            "header",
-            { staticClass: "flex items-center justify-center px-3 py-1" },
+          _c(
+            "div",
+            {
+              staticClass: "rounded-t-lg h-2 w-full bg-yellow-900",
+              attrs: {
+                title:
+                  _vm.rating_stats.avg_formatted +
+                  "/10 " +
+                  _vm.rating_stats.count +
+                  " Stimmen",
+                itemprop: "aggregateRating",
+                itemscope: "",
+                itemtype: "http://schema.org/AggregateRating"
+              }
+            },
             [
-              _c("div", { staticClass: "flex-grow" }),
+              _c("meta", { attrs: { itemprop: "bestRating", content: "10" } }),
               _vm._v(" "),
-              _c("rating", {
-                attrs: { model: _vm.model },
-                on: {
-                  rated: function($event) {
-                    return _vm.rated($event)
-                  }
+              _c("meta", { attrs: { itemprop: "worstRating", content: "0" } }),
+              _vm._v(" "),
+              _c("meta", {
+                attrs: {
+                  itemprop: "ratingValue",
+                  content: _vm.rating_stats.avg
                 }
               }),
               _vm._v(" "),
-              !_vm.model.is_episode
-                ? _c("lists", { attrs: { model: _vm.model } })
-                : _vm._e(),
+              _c("meta", {
+                attrs: {
+                  itemprop: "ratingCount",
+                  content: _vm.rating_stats.count
+                }
+              }),
               _vm._v(" "),
-              !_vm.model.is_show
-                ? _c("watched", { attrs: { model: _vm.model } })
-                : _vm._e()
-            ],
-            1
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("main", { staticClass: "flex-grow relative" }, [
-        _c(
-          "a",
-          {
-            attrs: {
-              href: _vm.model.is_episode ? _vm.model.show.path : _vm.model.path,
-              title: _vm.model.name
-            }
-          },
-          [
-            _c("img", {
-              attrs: {
-                loading: "lazy",
-                src:
-                  _vm.imgType == "poster"
-                    ? _vm.model.poster_url
-                    : _vm.model.backdrop_url,
-                itemprop: "image"
-              }
-            }),
-            _vm._v(" "),
-            _vm.action != null
-              ? _c("div", [
-                  _c("div", {
-                    staticClass: "absolute left-0 right-0 bottom-0 h-24",
-                    staticStyle: {
-                      "background-image":
-                        "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)"
-                    }
-                  }),
-                  _vm._v(" "),
-                  _vm.action.class_name == "watched"
-                    ? _c(
-                        "div",
-                        {
-                          staticClass:
-                            "absolute bottom-8 left-0 right-0 inline-flex items-center justify-center"
-                        },
-                        [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "inline-flex items-center",
-                              attrs: {
-                                href: _vm.action.user.profile_path,
-                                title:
-                                  _vm.action.user.name +
-                                  " hat " +
-                                  _vm.model.name +
-                                  " " +
-                                  _vm.action.watched_at_diff_for_humans +
-                                  " am " +
-                                  _vm.action.watched_at_formatted +
-                                  " gesehen"
-                              }
-                            },
-                            [
-                              _c("img", {
-                                staticClass:
-                                  "h-8 w-8 rounded-full ring-2 ring-white",
-                                attrs: {
-                                  src: _vm.action.user.profile_photo_url,
-                                  alt: ""
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm._m(1)
-                            ]
-                          )
-                        ]
-                      )
-                    : _vm.action.class_name == "rating"
-                    ? _c(
-                        "div",
-                        {
-                          staticClass:
-                            "absolute bottom-8 left-0 right-0 inline-flex items-center justify-center"
-                        },
-                        [
-                          _c(
-                            "a",
-                            {
-                              staticClass: "inline-flex items-center",
-                              attrs: {
-                                href: _vm.action.user.profile_path,
-                                title:
-                                  _vm.action.user.name +
-                                  " hat " +
-                                  _vm.model.name +
-                                  " " +
-                                  _vm.action.created_at_diff_for_humans +
-                                  " am " +
-                                  _vm.action.created_at_formatted +
-                                  " mit " +
-                                  _vm.action.rating +
-                                  " Punkten bewertet"
-                              }
-                            },
-                            [
-                              _c("img", {
-                                staticClass:
-                                  "h-8 w-8 rounded-full ring-2 ring-white",
-                                attrs: {
-                                  src: _vm.action.user.profile_photo_url,
-                                  alt: ""
-                                }
-                              }),
-                              _vm._v(" "),
-                              _vm._m(2)
-                            ]
-                          )
-                        ]
-                      )
-                    : _vm._e()
-                ])
-              : _c(
-                  "div",
-                  { staticClass: "absolute bottom-3 left-3" },
-                  [
-                    _vm.model.is_episode
-                      ? [
-                          _vm.model.episode_number == 1
-                            ? [
-                                _vm.model.season.season_number == 1
-                                  ? _c(
-                                      "span",
-                                      {
-                                        staticClass:
-                                          "inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white"
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                            Serienstart\n                        "
-                                        )
-                                      ]
-                                    )
-                                  : _c(
-                                      "span",
-                                      {
-                                        staticClass:
-                                          "inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white"
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                            Staffelstart\n                        "
-                                        )
-                                      ]
-                                    )
-                              ]
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.model.first_aired_at
-                            ? _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800",
-                                  class:
-                                    _vm.model.first_aired_de_at == null
-                                      ? "bg-blue-100 text-blue-800"
-                                      : "bg-yellow-300 text-yellow-800"
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                        " +
-                                      _vm._s(
-                                        _vm.model.first_aired_at_formatted
-                                      ) +
-                                      " "
-                                  ),
-                                  _vm.model.first_aired_de_at != null &&
-                                  _vm.model.show.air_time
-                                    ? _c("span", [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.model.show.air_time.substring(
-                                              0,
-                                              -3
-                                            )
-                                          )
-                                        )
-                                      ])
-                                    : _vm._e()
-                                ]
-                              )
-                            : _vm._e()
-                        ]
-                      : _vm.model.is_movie
-                      ? [
-                          _vm.model.released_at
-                            ? _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800"
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                        " +
-                                      _vm._s(_vm.model.released_at_formatted) +
-                                      "\n                    "
-                                  )
-                                ]
-                              )
-                            : _vm._e()
-                        ]
-                      : _vm._e()
-                  ],
-                  2
-                )
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "footer",
-        { staticClass: "flex items-center px-3 py-1" },
-        [
-          _c(
-            "h3",
-            {
-              staticClass:
-                "flex-grow text-gray-900 leading-5 font-medium overflow-hidden whitespace-nowrap"
-            },
-            [
-              _vm.model.is_episode
-                ? _c(
-                    "a",
-                    {
-                      staticClass: "text-center",
-                      attrs: {
-                        href: _vm.model.path,
-                        title: _vm.model.name,
-                        itemprop: "url"
-                      }
-                    },
-                    [
-                      _c("div", { staticClass: "font-bold" }, [
-                        _c("span", { attrs: { itemprop: "partOfSeason" } }, [
-                          _vm._v(_vm._s(_vm.model.season.season_number))
-                        ]),
-                        _vm._v("x"),
-                        _c("span", { attrs: { itemprop: "episodeNumber" } }, [
-                          _vm._v(_vm._s(_vm.model.episode_number))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "text-gray-400",
-                          attrs: { itemprop: "name" }
-                        },
-                        [_vm._v(_vm._s(_vm.model.name) + " ")]
-                      )
-                    ]
-                  )
-                : _vm.model.next_episode
-                ? _c(
-                    "a",
-                    {
-                      staticClass: "text-center",
-                      attrs: {
-                        href: _vm.model.next_episode.path,
-                        title: _vm.model.next_episode.number
-                      }
-                    },
-                    [
-                      _c("div", { staticClass: "font-bold" }, [
-                        _c("span", { attrs: { itemprop: "partOfSeason" } }, [
-                          _vm._v(
-                            _vm._s(_vm.model.next_episode.season.season_number)
-                          )
-                        ]),
-                        _vm._v("x"),
-                        _c("span", { attrs: { itemprop: "episodeNumber" } }, [
-                          _vm._v(_vm._s(_vm.model.next_episode.episode_number))
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "text-xs text-gray-400" }, [
-                        _vm._v("NÄCHSTE EPISODE")
-                      ])
-                    ]
-                  )
-                : _c(
-                    "a",
-                    {
-                      attrs: {
-                        href: _vm.model.path,
-                        title: _vm.model.name,
-                        itemprop: "url"
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { itemprop: "name" } }, [
-                        _vm._v(_vm._s(_vm.model.name))
-                      ])
-                    ]
-                  )
+              _c("div", {
+                staticClass:
+                  "bg-yellow-400 h-2 text-xs leading-none text-center text-white transition-all",
+                class: _vm.rating_bar_class,
+                style: { width: _vm.rating_stats.avg * 10 + "%" }
+              })
             ]
           ),
           _vm._v(" "),
-          _c("watched-create", {
-            attrs: { model: _vm.model, progress: _vm.progress }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "rounded-b-lg h-2 w-full bg-blue-900",
-          attrs: { title: _vm.progress_title }
-        },
-        [
-          _c("div", {
-            staticClass:
-              "bg-blue-500 h-2 text-xs leading-none text-center text-white transition-all duration-500",
-            class: _vm.progress_bar_class,
-            style: { width: _vm.progress.percent + "%" }
-          })
+          _vm.$auth.check()
+            ? _c(
+                "header",
+                { staticClass: "flex items-center justify-center px-3 py-1" },
+                [
+                  _c("div", { staticClass: "flex-grow" }),
+                  _vm._v(" "),
+                  _c("rating", {
+                    attrs: { model: _vm.model },
+                    on: {
+                      rated: function($event) {
+                        return _vm.rated($event)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  !_vm.model.is_episode
+                    ? _c("lists", { attrs: { model: _vm.model } })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  !_vm.model.is_show
+                    ? _c("watched", { attrs: { model: _vm.model } })
+                    : _vm._e()
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("main", { staticClass: "flex-grow relative" }, [
+            _c(
+              "a",
+              {
+                attrs: {
+                  href: _vm.model.is_episode
+                    ? _vm.model.show.path
+                    : _vm.model.path,
+                  title: _vm.model.name
+                }
+              },
+              [
+                _c("img", {
+                  attrs: {
+                    loading: "lazy",
+                    src:
+                      _vm.imgType == "poster"
+                        ? _vm.model.poster_url
+                        : _vm.model.backdrop_url,
+                    itemprop: "image"
+                  }
+                }),
+                _vm._v(" "),
+                _vm.action != null
+                  ? _c("div", [
+                      _c("div", {
+                        staticClass: "absolute left-0 right-0 bottom-0 h-24",
+                        staticStyle: {
+                          "background-image":
+                            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _vm.action.class_name == "watched"
+                        ? _c(
+                            "div",
+                            {
+                              staticClass:
+                                "absolute bottom-8 left-0 right-0 inline-flex items-center justify-center"
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "inline-flex items-center",
+                                  attrs: {
+                                    href: _vm.action.user.profile_path,
+                                    title:
+                                      _vm.action.user.name +
+                                      " hat " +
+                                      _vm.model.name +
+                                      " " +
+                                      _vm.action.watched_at_diff_for_humans +
+                                      " am " +
+                                      _vm.action.watched_at_formatted +
+                                      " gesehen"
+                                  }
+                                },
+                                [
+                                  _c("img", {
+                                    staticClass:
+                                      "h-8 w-8 rounded-full ring-2 ring-white",
+                                    attrs: {
+                                      src: _vm.action.user.profile_photo_url,
+                                      alt: ""
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white"
+                                    },
+                                    [_c("i", { staticClass: "fas fa-check" })]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        : _vm.action.class_name == "rating"
+                        ? _c(
+                            "div",
+                            {
+                              staticClass:
+                                "absolute bottom-8 left-0 right-0 inline-flex items-center justify-center"
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "inline-flex items-center",
+                                  attrs: {
+                                    href: _vm.action.user.profile_path,
+                                    title:
+                                      _vm.action.user.name +
+                                      " hat " +
+                                      _vm.model.name +
+                                      " " +
+                                      _vm.action.created_at_diff_for_humans +
+                                      " am " +
+                                      _vm.action.created_at_formatted +
+                                      " mit " +
+                                      _vm.action.rating +
+                                      " Punkten bewertet"
+                                  }
+                                },
+                                [
+                                  _c("img", {
+                                    staticClass:
+                                      "h-8 w-8 rounded-full ring-2 ring-white",
+                                    attrs: {
+                                      src: _vm.action.user.profile_photo_url,
+                                      alt: ""
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white"
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "fas fa-star text-yellow-400"
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        : _vm._e()
+                    ])
+                  : _c(
+                      "div",
+                      { staticClass: "absolute bottom-3 left-3" },
+                      [
+                        _vm.model.is_episode
+                          ? [
+                              _vm.model.episode_number == 1
+                                ? [
+                                    _vm.model.season.season_number == 1
+                                      ? _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-red-500 text-white"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Serienstart\n                            "
+                                            )
+                                          ]
+                                        )
+                                      : _c(
+                                          "span",
+                                          {
+                                            staticClass:
+                                              "inline-flex items-center mb-1 px-3 py-0.5 rounded-full text-xs font-bold bg-green-500 text-white"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                Staffelstart\n                            "
+                                            )
+                                          ]
+                                        )
+                                  ]
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.model.first_aired_at
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800",
+                                      class:
+                                        _vm.model.first_aired_de_at == null
+                                          ? "bg-blue-100 text-blue-800"
+                                          : "bg-yellow-300 text-yellow-800"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(
+                                            _vm.model.first_aired_at_formatted
+                                          ) +
+                                          " "
+                                      ),
+                                      _vm.model.first_aired_de_at != null &&
+                                      _vm.model.show.air_time
+                                        ? _c("span", [
+                                            _vm._v(
+                                              _vm._s(
+                                                _vm.model.show.air_time.substring(
+                                                  0,
+                                                  -3
+                                                )
+                                              )
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]
+                          : _vm.model.is_movie
+                          ? [
+                              _vm.model.released_at
+                                ? _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-yellow-300 text-yellow-800"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(
+                                            _vm.model.released_at_formatted
+                                          ) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]
+                          : _vm._e()
+                      ],
+                      2
+                    )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "footer",
+            { staticClass: "flex items-center px-3 py-1" },
+            [
+              _c(
+                "h3",
+                {
+                  staticClass:
+                    "flex-grow text-gray-900 leading-5 font-medium overflow-hidden whitespace-nowrap"
+                },
+                [
+                  _vm.model.is_episode
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "text-center",
+                          attrs: {
+                            href: _vm.model.path,
+                            title: _vm.model.name,
+                            itemprop: "url"
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "font-bold" }, [
+                            _c(
+                              "span",
+                              { attrs: { itemprop: "partOfSeason" } },
+                              [_vm._v(_vm._s(_vm.model.season.season_number))]
+                            ),
+                            _vm._v("x"),
+                            _c(
+                              "span",
+                              { attrs: { itemprop: "episodeNumber" } },
+                              [_vm._v(_vm._s(_vm.model.episode_number))]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "text-gray-400",
+                              attrs: { itemprop: "name" }
+                            },
+                            [_vm._v(_vm._s(_vm.model.name) + " ")]
+                          )
+                        ]
+                      )
+                    : _vm.model.next_episode
+                    ? _c(
+                        "a",
+                        {
+                          staticClass: "text-center",
+                          attrs: {
+                            href: _vm.model.next_episode.path,
+                            title: _vm.model.next_episode.number
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "font-bold" }, [
+                            _c(
+                              "span",
+                              { attrs: { itemprop: "partOfSeason" } },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.model.next_episode.season.season_number
+                                  )
+                                )
+                              ]
+                            ),
+                            _vm._v("x"),
+                            _c(
+                              "span",
+                              { attrs: { itemprop: "episodeNumber" } },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.model.next_episode.episode_number)
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "text-xs text-gray-400" }, [
+                            _vm._v("NÄCHSTE EPISODE")
+                          ])
+                        ]
+                      )
+                    : _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: _vm.model.path,
+                            title: _vm.model.name,
+                            itemprop: "url"
+                          }
+                        },
+                        [
+                          _c("span", { attrs: { itemprop: "name" } }, [
+                            _vm._v(_vm._s(_vm.model.name))
+                          ])
+                        ]
+                      )
+                ]
+              ),
+              _vm._v(" "),
+              _c("watched-create", {
+                attrs: { model: _vm.model, progress: _vm.progress }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "rounded-b-lg h-2 w-full bg-blue-900",
+              attrs: { title: _vm.progress_title }
+            },
+            [
+              _c("div", {
+                staticClass:
+                  "bg-blue-500 h-2 text-xs leading-none text-center text-white transition-all duration-500",
+                class: _vm.progress_bar_class,
+                style: { width: _vm.progress.percent + "%" }
+              })
+            ]
+          )
         ]
       )
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("i", { staticClass: "fas fa-spinner fa-spin text-3xl" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white"
-      },
-      [_c("i", { staticClass: "fas fa-check" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "-ml-2 inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-white bg-white"
-      },
-      [_c("i", { staticClass: "fas fa-star text-yellow-400" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

@@ -42,5 +42,22 @@
             };
         },
 
+        mounted() {
+            var component = this;
+            Bus.$on(component.model.unlisted_event_name, function (model) {
+                var index = -1;
+                for (var i in component.models) {
+                    if (component.models[i].medium.id == model.id) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index > -1) {
+                    component.models.splice(index, 1);
+                }
+            });
+        },
+
     };
 </script>

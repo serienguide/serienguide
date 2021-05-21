@@ -34,6 +34,7 @@ class Listing extends Model
         'is_custom',
         'is_watchlist',
         'items_path',
+        'unlisted_event_name',
     ];
 
     protected $casts = [
@@ -87,6 +88,11 @@ class Listing extends Model
             'user' => $this->user_id,
             'list' => $this->id,
         ];
+    }
+
+    public function getUnlistedEventNameAttribute() : string
+    {
+        return 'list_' . $this->id . '_unlist';
     }
 
     public function getItemsPathAttribute() : string

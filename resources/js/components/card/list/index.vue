@@ -149,6 +149,9 @@
                 if (item == '') {
                     var items = [];
                     Vue.success(this.model.name + ' von Liste ' + this[list_type][index].name + ' entfernt.');
+                    if (this[list_type][index].user_id == this.$auth.user.id) {
+                        Bus.$emit(this[list_type][index].unlisted_event_name, this.model);
+                    }
                 }
                 else {
                     var items = [item];
