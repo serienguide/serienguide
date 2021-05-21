@@ -21,7 +21,7 @@ class MovieController extends Controller
         if ($request->wantsJson()) {
             $models = Movie::whereNotNull('slug')
                 ->search($request->input('query'))
-                ->orderBy('name', 'ASC')
+                ->orderBy('tmdb_popularity', 'DESC')
                 ->paginate(12);
 
             foreach ($models as $key => $model) {
