@@ -23523,8 +23523,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass:
-                "flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600",
+              staticClass: "flex items-center focus:outline-none",
               class:
                 _vm.watchlist_class +
                 (_vm.isStandAlone
@@ -23570,8 +23569,7 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass:
-                "flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600",
+              staticClass: "flex items-center",
               class:
                 _vm.list_class +
                 (_vm.isStandAlone

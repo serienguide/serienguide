@@ -2,7 +2,7 @@
     <div>
         <div class="inline-block text-left" v-show="is_fetched">
             <div class="px-1">
-                <button @click="toggleWatchlist" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" :class="watchlist_class + (isStandAlone ? ' px-3 py-3 border border-gray-300 rounded-full' : '')">
+                <button @click="toggleWatchlist" class="flex items-center focus:outline-none" :class="watchlist_class + (isStandAlone ? ' px-3 py-3 border border-gray-300 rounded-full' : '')">
                     <i class="fas fa-bookmark" v-show="! is_toggling"></i>
                     <i class="text-gray-400 fas fa-spinner fa-spin" v-show="is_toggling"></i>
                 </button>
@@ -10,7 +10,7 @@
         </div>
         <div class="inline-block text-left">
             <div class="px-1">
-                <button @click="isOpen = ! isOpen" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" :class="list_class + (isStandAlone ? ' px-3 py-3 border border-gray-300 rounded-full' : '')" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                <button @click="isOpen = ! isOpen" class="flex items-center" :class="list_class + (isStandAlone ? ' px-3 py-3 border border-gray-300 rounded-full' : '')" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
                     <i class="fas fa-list"></i>
                 </button>
             </div>
