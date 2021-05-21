@@ -97,6 +97,9 @@ class CalendarController extends Controller
                 'show',
                 'season'
             ])
+            ->whereHas('show', function ($query) {
+                return $query->whereNotNull('slug');
+            })
             ->whereRaw('YEARWEEK(first_aired_at, 3) = ' . $start_of_week->year . str_pad($start_of_week->week, 2, '0', STR_PAD_LEFT))
             ->orderBy('first_aired_at', 'ASC')
             ->orderBy('show_id')
