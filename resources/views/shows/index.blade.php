@@ -3,6 +3,6 @@
         Serien
     </x-slot>
     <x-container class="py-4">
-        <deck-shows-index></deck-shows-index>
+        <deck-shows-index :filter-options="{{ json_encode($filter_options) }}"></deck-shows-index>
     </x-container>
 </x-app-layout>

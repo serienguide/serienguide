@@ -3,6 +3,7 @@
 namespace App\Traits\Media;
 
 use App\Models\Genres\Genre;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait HasGenres
@@ -39,6 +40,16 @@ trait HasGenres
         $this->genres()->sync($genre_ids);
     }
 
-    // scopeHasGenres
+    public function scopeGenre(Builder $query, $value) : Builder
+    {
+        if (empty($value)) {
+            return $query;
+        }
+
+        return $query->whereHas('genres', function ($query) use ($value) {
+            return $query->where('id', $value);
+        });
+    }
+
     // scopeHasNotGenres
 }

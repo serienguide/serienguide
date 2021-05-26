@@ -10,6 +10,16 @@ export const baseMixin = {
         },
     },
 
+    props: {
+        filterOptions: {
+            required: false,
+            type: Object,
+            default() {
+                return {};
+            },
+        },
+    },
+
     data () {
         return {
             filter: {
@@ -65,6 +75,10 @@ export const baseMixin = {
         },
         nexted({index, model}) {
             Vue.set(this.models, index, model);
+        },
+        filtering(event) {
+            this.filter[event.filter] = event.value;
+            this.search();
         },
         searching(query) {
             this.filter.query = query;

@@ -7,6 +7,7 @@ use App\Traits\HasSlug;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Genre extends Model
 {
@@ -30,6 +31,17 @@ class Genre extends Model
     ];
 
     public $incrementing = false;
+
+    public static function filterOptions() : Collection
+    {
+        $filter_options = Genre::orderBy('name', 'ASC')->get();
+        $filter_options->prepend([
+            'id' => 0,
+            'name' => 'Alle Genres',
+        ]);
+
+        return $filter_options;
+    }
 
     public function isDeletable() : bool
     {

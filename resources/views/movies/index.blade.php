@@ -3,6 +3,6 @@
         Filme
     </x-slot>
     <x-container class="py-4">
-        <deck-movies-index></deck-movies-index>
+        <deck-movies-index :filter-options="{{ json_encode($filter_options) }}"></deck-movies-index>
     </x-container>
 </x-app-layout>

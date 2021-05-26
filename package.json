@@ -28,6 +28,7 @@
         "autoprefixer": "^10.0.2",
         "laravel-mix-tailwind": "^0.1.1",
         "postcss": "^8.1.10",
-        "vue": "^2.6.12"
+        "vue": "^2.6.12",
+        "vue-multiselect": "^2.1.6"
     }
 }

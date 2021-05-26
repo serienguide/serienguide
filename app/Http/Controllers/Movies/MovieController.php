@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Movies;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genres\Genre;
 use App\Models\Movies\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ class MovieController extends Controller
     {
         if ($request->wantsJson()) {
             $models = Movie::whereNotNull('slug')
+                ->genre($request->input('genre_id'))
                 ->search($request->input('query'))
                 ->orderBy('tmdb_popularity', 'DESC')
                 ->paginate(12);
@@ -31,7 +33,12 @@ class MovieController extends Controller
             return $models;
         }
 
+        $filter_options = [
+            'genre' => Genre::filterOptions(),
+        ];
+
         return view($this->base_view_path . '.index')
+            ->with('filter_options', $filter_options)
             ->with('html_attributes', [
                 'title' => 'Filme',
                 'description' => 'Überblick über alle Filme auf serienguide.tv'

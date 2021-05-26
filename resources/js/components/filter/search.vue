@@ -1,7 +1,6 @@
 <template>
     <div>
-        <label for="search" class="block text-sm font-medium leading-5 text-gray-700">Suche</label>
-        <div class="mt-1 relative rounded-md shadow-sm">
+        <div class="relative rounded-md shadow-sm">
             <input :value="value" type="search" class="form-input block w-full sm:text-sm sm:leading-5" ref="search" placeholder="Suche" autofocus="" @keyup="delay">
         </div>
     </div>
