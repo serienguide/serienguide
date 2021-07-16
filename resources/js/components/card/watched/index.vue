@@ -2,45 +2,44 @@
     <div>
         <div class="inline-block text-left">
             <div class="px-1">
-                <button @click="is_open = ! is_open" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" :class="(isStandAlone ? ' px-3 py-3 border border-gray-300 rounded-full' : '')" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                <button ref="showInputButton" @click="toggle" class="flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600" :class="(isStandAlone ? ' px-3 py-3 border border-gray-300 rounded-full' : '')" aria-label="Options" id="options-menu" aria-haspopup="true" aria-expanded="true">
                     <i class="fas fa-ellipsis-v"></i>
                 </button>
             </div>
 
-            <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                <div v-show="is_open"
-                    class="origin-top-right absolute mt-2 rounded-md shadow-lg z-10"
-                    :style="(isStandAlone ? 'min-width: 250px;' : 'width: 90%; min-width: 250px;')">
-                    <div class="rounded-md bg-white shadow-xs">
-                        <div class="p-3" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <div class="flex items-center mb-3">
-                                <div class="flex-grow font-bold">Gesehen</div>
-                                <div class="hidden">
-                                    <i class="fas fa-plus text-sm leading-5 text-gray-900 cursor-pointer"></i>
-                                </div>
+            <div v-show="is_open"
+                ref="dropdown"
+                class="origin-top-right absolute mt-2 rounded-md shadow-lg z-10"
+                :style="(isStandAlone ? 'min-width: 250px;' : 'width: 90%; min-width: 250px;')">
+                <div class="rounded-md bg-white shadow-xs">
+                    <div class="p-3" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                        <div class="flex items-center mb-3">
+                            <div class="flex-grow font-bold">Gesehen</div>
+                            <div class="hidden">
+                                <i class="fas fa-plus text-sm leading-5 text-gray-900 cursor-pointer"></i>
                             </div>
-                            <div v-if="is_fetching" class="p-5">
-                                <center>
-                                    <span style="font-size: 48px;">
-                                        <i class="fas fa-spinner fa-spin"></i><br />
-                                    </span>
-                                    Lade Daten..
-                                </center>
-                            </div>
-                            <ul v-else>
-                                <li>
-                                    <button @click="create" type="button" class="inline-flex items-center justify-center w-full px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-center text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150" :disabled="is_watching">
-                                        <span v-show="! is_watching">Gesehen</span>
-                                        <span><i class="text-gray-400 fas fa-spinner fa-spin" v-show="is_watching"></i></span>
-                                        &nbsp
-                                    </button>
-                                </li>
-                                <show :model="item" :key="item.id" v-for="(item, index) in items" @destroyed="destroyed(index, $event)" @updated="updated(index, $event)"></show>
-                            </ul>
                         </div>
+                        <div v-if="is_fetching" class="p-5">
+                            <center>
+                                <span style="font-size: 48px;">
+                                    <i class="fas fa-spinner fa-spin"></i><br />
+                                </span>
+                                Lade Daten..
+                            </center>
+                        </div>
+                        <ul v-else>
+                            <li>
+                                <button @click="create" type="button" class="inline-flex items-center justify-center w-full px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-center text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150" :disabled="is_watching">
+                                    <span v-show="! is_watching">Gesehen</span>
+                                    <span><i class="text-gray-400 fas fa-spinner fa-spin" v-show="is_watching"></i></span>
+                                    &nbsp
+                                </button>
+                            </li>
+                            <show :model="item" :key="item.id" v-for="(item, index) in items" @destroyed="destroyed(index, $event)" @updated="updated(index, $event)"></show>
+                        </ul>
                     </div>
                 </div>
-            </transition>
+            </div>
         </div>
 
     </div>
@@ -48,6 +47,8 @@
 </template>
 
 <script type="text/javascript">
+    import { createPopper } from '@popperjs/core';
+
     import show from './show.vue';
 
     export default {
@@ -83,10 +84,16 @@
                 is_fetching: true,
                 is_fetched: false,
                 is_watching: false,
+                popperInstance: null,
             };
         },
 
         mounted () {
+
+            this.popperInstance = createPopper(this.$refs["showInputButton"], this.$refs["dropdown"], {
+                placement: 'bottom-end',
+            });
+
             var component = this;
             Bus.$on(component.model.watched_event_name, function (data) {
                 component.fetch();
@@ -150,6 +157,10 @@
                     Bus.$emit(this.model.season.progress_event_name, data);
                 }
                 Vue.success('Datensatz wurde gelöscht.');
+            },
+            toggle() {
+                this.is_open = !this.is_open;
+                this.popperInstance.update();
             },
         },
 

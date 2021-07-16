@@ -7,6 +7,7 @@ use App\Traits\HasSlug;
 use App\Traits\Media\HasImages;
 use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -121,5 +122,14 @@ class Person extends Model
     public function getPosterPathAttribute() : string
     {
         return $this->profile_path;
+    }
+
+    public function scopeSearch(Builder $query, $value) : Builder
+    {
+        if (empty($value)) {
+            return $query;
+        }
+
+        return $query->where('name', 'LIKE', '%' . $value . '%');
     }
 }

@@ -23,6 +23,7 @@ class ShowController extends Controller
             $models = Show::whereNotNull('slug')
                 ->genre($request->input('genre_id'))
                 ->search($request->input('query'))
+                ->persons($request->input('person_ids'))
                 ->orderBy('tmdb_popularity', 'DESC')
                 ->paginate(12);
 

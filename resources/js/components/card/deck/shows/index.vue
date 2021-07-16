@@ -5,6 +5,7 @@
         <template v-slot:filter>
 
             <filter-genre :filter-options="filterOptions.genre" @filtering="filtering($event)"></filter-genre>
+            <filter-person class="ml-1" @filtering="filtering($event)"></filter-person>
 
         </template>
 
@@ -19,6 +20,7 @@
 <script type="text/javascript">
     import deckBase from '../base.vue';
     import filterGenre from '../../../filter/genre.vue';
+    import filterPerson from '../../../filter/person.vue';
 
     import { baseMixin } from "../../../../mixins/deck/base.js";
 
@@ -27,6 +29,7 @@
         components: {
             deckBase,
             filterGenre,
+            filterPerson,
         },
 
         mixins: [

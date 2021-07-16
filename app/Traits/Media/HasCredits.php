@@ -4,6 +4,7 @@ namespace App\Traits\Media;
 
 use App\Models\People\Credit;
 use App\Models\People\Person;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
@@ -73,5 +74,16 @@ trait HasCredits
 
             $this->credits()->sync($credit_ids);
         }
+    }
+
+    public function scopePersons(Builder $query, $value) : Builder
+    {
+        if (empty($value)) {
+            return $query;
+        }
+
+        return $query->whereHas('credits', function ($query) use ($value) {
+            return $query->whereIn('person_id', $value);
+        });
     }
 }
