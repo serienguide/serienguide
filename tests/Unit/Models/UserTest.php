@@ -63,4 +63,15 @@ class UserTest extends TestCase
             $this->assertCount(1, $this->user->lists()->where('type', $type)->get());
         }
     }
+
+    /**
+     * @test
+     */
+    public function it_can_truncate_all_data()
+    {
+        $model = $this->class_name::factory()->create([
+            'name' => 'New Model',
+        ]);
+        $model->truncate();
+    }
 }

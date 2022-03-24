@@ -99,4 +99,16 @@ class ListingTest extends TestCase
         ]);
         $this->assertEquals('new-list-1', $model_list_1->refresh()->slug);
     }
+
+    /**
+     * @test
+     */
+    public function it_deletes_its_items_on_delete()
+    {
+        $model = Listing::factory()->create([
+            'name' => 'New List',
+        ]);
+
+        $model->delete();
+    }
 }

@@ -54,6 +54,23 @@ class Listing extends Model
 
     protected $table = 'lists';
 
+    /**
+     * The booting method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($model)
+        {
+            $model->items()->delete();
+
+            return true;
+        });
+    }
+
     public function isDeletable() : bool
     {
         return $this->is_custom;

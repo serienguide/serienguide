@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Auth\OauthProvider;
+use App\Models\Commments\Comment;
 use App\Models\Lists\Listing;
 use App\Models\Ratings\Rating;
 use App\Models\Watched\Watched;
@@ -97,6 +98,21 @@ class User extends Authenticatable
         });
     }
 
+    public function truncate(): self
+    {
+        $this->comments()->delete();
+        $this->lists()->delete();
+        $this->oauth_providers()->delete();
+        $this->watched()->delete();
+        $this->ratings()->delete();
+        $this->tokens()->delete();
+        $this->followers()->delete();
+        $this->followings()->delete();
+        $this->notifications()->delete();
+
+        return $this;
+    }
+
     public function setSlug() : void
     {
         if (! $this->isDirty('name')) {
@@ -136,6 +152,11 @@ class User extends Authenticatable
         return route('users.lists.index', [
             'user' => $this->id,
         ]);
+    }
+
+    public function comments() : HasMany
+    {
+        return $this->hasMany(Comment::class, 'user_id');
     }
 
     public function lists() : HasMany
