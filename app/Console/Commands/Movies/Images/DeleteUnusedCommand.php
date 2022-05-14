@@ -4,6 +4,7 @@ namespace App\Console\Commands\Movies\Images;
 
 use App\Models\Movies\Movie;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class DeleteUnusedCommand extends Command
@@ -39,25 +40,31 @@ class DeleteUnusedCommand extends Command
      */
     public function handle()
     {
-        foreach ($this->getMedia() as $key => $medium) {
-            $this->line($medium->name);
-
-            $medium->deleteUnusedImages('backdrop');
-            $medium->deleteUnusedImages('poster');
+        $id = $this->argument('id');
+        if ($id) {
+            $this->handleMedium(Movie::findOrFail($id));
+            return 0;
         }
+
+        Movie::orderBy('id')->chunk(100, function (Collection $media) {
+            foreach ($media as $medium) {
+                $this->handleMedium($medium);
+            }
+        });
 
         return 0;
     }
 
-    protected function getMedia(): Collection
+    /**
+     * Deletes all images that are not used anymore
+     *
+     * @param Model $medium
+     */
+    protected function handleMedium(Model $medium)
     {
-        $id = $this->argument('id');
-        if ($id) {
-            return collect([
-                Movie::findOrFail($id)
-            ]);
-        }
+        $this->line($medium->name);
 
-        return Movie::all();
+        $medium->deleteUnusedImages('backdrop');
+        $medium->deleteUnusedImages('poster');
     }
 }
