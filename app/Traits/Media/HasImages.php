@@ -3,7 +3,6 @@
 namespace App\Traits\Media;
 
 use App\Models\Images\Image;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,12 +28,33 @@ trait HasImages
             return;
         }
 
-        return Image::createFromTmdb([
+        $image = Image::createFromTmdb([
             'type' => $type,
             'path' => $path,
             'medium_type' => self::class,
             'medium_id' => $this->id,
         ]);
+
+        $this->deleteUnusedImages($type);
+
+        return $image;
+    }
+
+    public function deleteUnusedImages(string $type): int
+    {
+        $count = 0;
+        $path_name = $type . '_path';
+        $images = $this->images()
+            ->where('path', '!=', $this->$path_name)
+            ->where('type', $type)
+            ->get();
+
+        foreach ($images as $image) {
+            $image->delete();
+            $count++;
+        }
+
+        return $count;
     }
 
     public function getPosterUrlOriginalAttribute() : string

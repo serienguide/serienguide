@@ -2,9 +2,7 @@
 
 namespace App\Models\Images;
 
-use App\Support\Img;
 use App\Traits\BelongsToMedium;
-use D15r\ModelPath\Traits\HasModelPath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\File;
@@ -54,6 +52,13 @@ class Image extends Model
             // Create Images in different sizes on s3
 
             // in poster_path / backdrop_path in medium speichern
+
+            return true;
+        });
+
+        static::deleted(function($model)
+        {
+            $model->deleteFiles();
 
             return true;
         });
@@ -135,6 +140,16 @@ class Image extends Model
         imagedestroy($original);
 
         return $paths;
+    }
+
+    public function deleteFiles(string $disk = 's3')
+    {
+        $widths = self::WIDTHS[$this->type];
+        $widths[] = 0;
+
+        foreach ($widths as $width) {
+            Storage::disk($disk)->delete($this->getDirectory($width) . '/' . basename($this->path));
+        }
     }
 
     public function upload(int $width = 0, string $disk = 's3')

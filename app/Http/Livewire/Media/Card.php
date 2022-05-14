@@ -154,7 +154,7 @@ class Card extends Component
         return 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700';
     }
 
-    public function fireEvent($event, $params)
+    public function fireEvent($event, $params, $id)
     {
         $eventsAndHandlers = $this->getEventsAndHandlers();
         if (! Arr::has($eventsAndHandlers, $event)) {
