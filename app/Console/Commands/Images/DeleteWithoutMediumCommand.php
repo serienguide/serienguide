@@ -5,21 +5,21 @@ namespace App\Console\Commands\Images;
 use App\Models\Images\Image;
 use Illuminate\Console\Command;
 
-class TruncateUnusedCommand extends Command
+class DeleteWithoutMediumCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'images:truncate-unused {id}';
+    protected $signature = 'images:delete-without-medium';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Deletes an image and its files';
+    protected $description = 'Deletes all images and its files without a medium';
 
     /**
      * Create a new command instance.
@@ -38,7 +38,10 @@ class TruncateUnusedCommand extends Command
      */
     public function handle()
     {
-        $image = Image::findOrFail($this->argument('id'));
-        $image->delete();
+        $images = Image::whereDoesntHave('medium')->get();
+        foreach ($images as $image) {
+            $this->line($image->id . ': ' . $image->path);
+            $image->delete();
+        }
     }
 }
