@@ -4,6 +4,7 @@ namespace App\Console\Commands\Images;
 
 use App\Models\Images\Image;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
 class DeleteWithoutMediumCommand extends Command
 {
@@ -38,10 +39,11 @@ class DeleteWithoutMediumCommand extends Command
      */
     public function handle()
     {
-        $images = Image::whereDoesntHave('medium')->get();
-        foreach ($images as $image) {
-            $this->line($image->id . ': ' . $image->path);
-            $image->delete();
-        }
+        Image::whereDoesntHave('medium')->orderBy('id')->chunk(100, function (Collection $images) {
+            foreach ($images as $image) {
+                $this->line($image->id . ': ' . $image->path);
+                $image->delete();
+            }
+        });
     }
 }
