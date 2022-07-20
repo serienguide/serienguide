@@ -43,16 +43,16 @@ class DeleteUnusedCommand extends Command
         $id = $this->argument('id');
         if ($id) {
             $this->handleMedium(Movie::findOrFail($id));
-            return 0;
+            return self::SUCCESS;
         }
 
-        Movie::orderBy('id')->chunk(100, function (Collection $media) {
+        Movie::withCount('images')->orderBy('images_count', 'DESC')->chunk(100, function (Collection $media) {
             foreach ($media as $medium) {
                 $this->handleMedium($medium);
             }
         });
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**
