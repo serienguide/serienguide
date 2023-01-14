@@ -168,7 +168,7 @@ class Season extends Model
         $this->episodes()->delete();
 
         foreach ($tmdb_episodes as $tmdb_episode) {
-            Arr::forget($tmdb_episode, ['show_id', 'season_id', 'episode_number']);
+            Arr::forget($tmdb_episode, ['show_id', 'season_id']);
             $this->episodes()->withTrashed()->updateOrCreate([
                 'show_id' => $this->show_id,
                 'season_id' => $this->id,
