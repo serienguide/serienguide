@@ -14,7 +14,7 @@ class WatchedCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'stats:watched';
+    protected $signature = 'stats:watched {--days=7}';
 
     /**
      * The console command description.
@@ -47,10 +47,12 @@ class WatchedCommand extends Command
                 FROM
                     watched
                 WHERE
-                    watched_at >= DATE(NOW() - INTERVAL 7 DAY)
+                    watched_at >= DATE(NOW() - INTERVAL :days DAY)
                 GROUP BY
                     user_id";
-        $results = DB::select($sql);
+        $results = DB::select($sql, [
+            'days' => $this->option('days'),
+        ]);
 
         $users = [];
         $episodes_count = 0;
@@ -76,7 +78,7 @@ class WatchedCommand extends Command
             $episodes_count,
         ];
 
-        $this->line('Watched Episodes and movies grouped by user for the last 7 days');
+        $this->line('Watched Episodes and movies grouped by user for the last ' . $this->option('days') . ' days');
         $this->table(['#', 'user_id', 'username', 'movies_count', 'episodes_count'], $users);
     }
 }
