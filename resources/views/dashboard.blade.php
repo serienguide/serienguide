@@ -4,6 +4,19 @@
     </x-slot>
 
     <x-container class="py-4">
+        <p>Schwerenherzens werde ich serienguide.tv einstellen.</p>
+
+        <p>Die Gründe sind vielfältig. Zum einen ist die Zeit, die ich in das Projekt investieren kann und möchte, stark begrenzt. Zum anderen ist die Technik veraltet und die Codebasis nicht mehr zeitgemäß.</p>
+        <p>Ich habe mich daher entschlossen, das Projekt einzustellen.</p>
+
+        <p>Ich habe die Domain gekündigt und die Webseite ist noch bis zum 10.11.2023 zu erreichen.</p>
+
+        <p>Das Github Repository wird weiterhin erreichbar sein.</p>
+
+        <p>Ich empfehle euch <a href="https://trakt.tv" target="_blank">Trakt</a> zu nutzen.</p>
+    </x-container>
+
+    <x-container class="py-4">
         <deck-episodes-next index-path="{{ route('episodes.next.index') }}"></deck-episodes-next>
     </x-container>
 
